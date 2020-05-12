@@ -15,7 +15,7 @@ class End extends Phaser.Scene{
     update(){
 
         if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('menuScene');
+            this.scene.start('creditScene');
         }
 
     }
