@@ -21,6 +21,14 @@ class Play extends Phaser.Scene{
         playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
+        //Creates the obstacle groups for the parry and attacks
+        this.attackGroup = this.add.group({
+            runChildUpdate: true
+        });
+        this.parryGroup = this.add.group({
+            runChildUpdate: true
+        });
+
         //Creates the main player
         mainPlayer = new PlayerObject(this, centerX, centerY, 'playerSprite').setOrigin(0.5);
 
