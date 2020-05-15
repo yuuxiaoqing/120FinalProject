@@ -1,32 +1,34 @@
 //our game settings
 let config = {
     type: Phaser.CANVAS,
+    pixelArt: true,
     width: 640,
     height:640,
     scale: {
         autocenter: Phaser.Scale.CENTER_BOTH
     },
+    zoom: 1,
     physics: {
-        defaut: 'arcade',
+        default: 'arcade',
         arcade: {
             debug:true,
-            gravity:{
-                x:0,
-                y:1000
-            }
+
         }
     },
     scene:[Load,Menu,Play,End, Credit]
-}
 
-let game = new Phaser.Game(config);
-let width = game.config.width;
-let height = game.config.height;
-let centerX = width/2;
-let centerY = height/2;
+    //scene:[Play]
+};
+
+const game = new Phaser.Game(config);
+const width = game.config.width;
+const height = game.config.height;
+const centerX = width/2;
+const centerY = height/2;
 
 //debug key
 let keyS;
+let cursors = null;
 
 //loading google text, taken from: https://phaser.io/examples/v2/text/google-webfonts
 let WebFontConfig = {
