@@ -7,6 +7,8 @@ class Play extends Phaser.Scene{
     //Preload
     preload(){
         this.load.image('playerSprite', './assets/penisfuckjesus.png');
+        this.load.image('attackHitbox', './assets/attacktemp.png');
+        this.load.image('guardHitbox', './assets/guardtemp.png');
     }
 
     //Create Function
@@ -15,12 +17,12 @@ class Play extends Phaser.Scene{
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         playerRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        playerAttack = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        playerAttack = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+        playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         //Creates the main player
-        mainPlayer = new PlayerObject(this, centerX, centerY).setOrigin(0.5);
-
-        this.add.sprite(centerX,centerY, 'playerSprite');
+        mainPlayer = new PlayerObject(this, centerX, centerY, 'playerSprite').setOrigin(0.5);
 
         //Adds physics to the player
         this.physics.add.existing(mainPlayer);
@@ -34,11 +36,6 @@ class Play extends Phaser.Scene{
     update(){
         //Updates main player
         mainPlayer.update();
-
-        if(mainPlayer.body.onFloor()){
-            mainPlayer.resetJump();
-        }
-
 
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){

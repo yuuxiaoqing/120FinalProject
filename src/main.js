@@ -44,4 +44,4 @@ let WebFontConfig = {
 let mainPlayer;
 
 //Player Movement / Keybinds
-let playerLeft, playerRight, playerJump, playerAttack;
+let playerLeft, playerRight, playerJump, playerAttack, playerDash, playerGuard;
