@@ -11,7 +11,9 @@ class Play extends Phaser.Scene{
         this.JUMP_VELOCITY = -650;
 
         //create burgerArray
-        this.burgerArray = ["bun1","meat","lettuce","bun2"];
+        this.burgerArray = ["bottomBun","meat","lettuce","topBun"];
+        //create ingredient count
+        this.topBunCount = 0, this.meatCount = 0, this.lettuceCount = 0, this.bottomBunCount =0;
     }
     preload(){
         
@@ -126,27 +128,32 @@ class Play extends Phaser.Scene{
         //NOTE: DYNAMIC LAYER ISSUE: TILESET ID OFFSET BY +1
         //try making the map with a transparency setting and see if offset problem is fixed
         this.physics.add.overlap(this.player, this.bottomBunGroup, (obj1, obj2)=>{
-            //implement BOTTOME BUN counter here
-            background.putTilesAt([1024+1,1025+1,1026+1], 32, 35) //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
-            this.burgerStack("bun01", this.burgerArray); //REMOVE THE TOP
+            //implement BOTTOM BUN counter here
+            //INVENTORY INCREMENT HERE @ NIKO
+            this.bottomBunCount++;
+            //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
+            this.burgerStack("bottomBun", this.burgerArray, this.bottomBunCount,background); //REMOVE THE TOP
             obj2.destroy(); //remove the obj from the scene
         });
         this.physics.add.overlap(this.player, this.meatGroup, (obj1, obj2)=>{
             //implement MEAT counter here
-            background.putTilesAt([946+1,946+1,946+1], 32, 33)
-            this.burgerStack("meat", this.burgerArray);
+            this.meatCount++;
+            //background.putTilesAt([946+1,946+1,946+1], 32, 33);
+            this.burgerStack("meat", this.burgerArray, this.meatCount,background);
             obj2.destroy();
         });
         this.physics.add.overlap(this.player, this.lettuceGroup, (obj1, obj2)=>{
             //implement LETTUCE counter here
-            background.putTilesAt([994+1,994+1,994+1], 32, 34)
-            this.burgerStack("lettuce", this.burgerArray);
+            this.lettuceCount++;
+            //background.putTilesAt([994+1,994+1,994+1], 32, 34);
+            this.burgerStack("lettuce", this.burgerArray, this.lettuceCount,background);
             obj2.destroy();
         });
         this.physics.add.overlap(this.player, this.topBunGroup, (obj1, obj2)=>{
             //implement TOP BUN counter here
-            background.putTilesAt([928+1, 929+1, 930+1], 32, 32)
-            this.burgerStack('bun02', this.burgerArray);
+            this.topBunCount++;
+            //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
+            this.burgerStack('topBun', this.burgerArray, this.topBunCount,background);
             obj2.destroy();
         });
 
@@ -191,27 +198,31 @@ class Play extends Phaser.Scene{
 
     //each time it's call, it takes a sprite from the sprite sheet and stack it 
     //on top of the burger
-    burgerStack(removeElement, burgerArray){
+    burgerStack(removeElement, burgerArray, ingredientCount, background){
         //delete the elements from the burgerArray when player gather enought resources
         //delete just leave the index empty and doesn't change the array index or change array length
         //so no reindexing array problem
-        if(removeElement == "bun01"){
-        
+        if(removeElement == "bottomBun" && ingredientCount >= 5){
+           //if the ingredient is bottom bun and ingredientCount is more than #, remove ingredient from list
+           //display the ingredient
+           background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
            delete burgerArray[0];
-           console.log("remove bun01")
+           console.log("remove bottom bun")
         }
-        if(removeElement == "meat"){
-
+        if(removeElement == "meat" && ingredientCount >= 5){
+            background.putTilesAt([946+1,946+1,946+1], 32, 33);
             delete burgerArray[1];
             console.log("remove meat");
         }
-        if(removeElement == "lettuce"){
+        if(removeElement == "lettuce" && ingredientCount >= 5){
+            background.putTilesAt([994+1,994+1,994+1], 32, 34);
             delete burgerArray[2];
             console.log("remove lettuce");
         }
-        if(removeElement == "bun02"){
+        if(removeElement == "topBun" && ingredientCount >= 5){
+            background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
             delete burgerArray[3];
-            console.log("remove bun02")
+            console.log("remove top bun")
         }
         console.log(burgerArray)
     }
