@@ -1,5 +1,5 @@
 // Our Play scene
-
+//ハンバーガーが食べたいなあー　
 class Play extends Phaser.Scene{
     constructor(){
         super('playScene');
@@ -9,18 +9,21 @@ class Play extends Phaser.Scene{
         this.MAX_Y_VEL = 2000;
         this.DRAG = 600;
         this.JUMP_VELOCITY = -650;
+
+        //create burgerArray
         this.burgerArray = ["bun1","meat","lettuce","bun2"];
     }
     preload(){
-
-         //From Nathan's Tiled Examples
+        
+         //once the spritesheets are set, move all these loading to loading scene
+         //from Prof. Nathan's Tiled examples
          this.load.path = "./assets/";
          //prototype tile sheet
          this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
              frameWidth: 16,
-             frameHeight: 16
+             frameHeight: 16,
          });
-         // map is 1024 x 1024 pixels, but canvas is 640 x 640
+         //map is 1024 x 1024 pixels, but canvas is 640 x 640
          this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
          this.load.image('temp', 'temp.png');
          this.load.spritesheet('burger', 'burgersheet.png',{
@@ -30,14 +33,17 @@ class Play extends Phaser.Scene{
 
     }
     create(){
-        this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
+       
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         
-        //FROM NATHAN'S MAPPY REPO
+        //from Prof. Nathan's Mappy tutorial
         const map = this.add.tilemap("map01");
         const tileset = map.addTilesetImage("colored_packed", "kenney_sheet");
         //const background = map.createDynamicLayer("background",tileset, 0,0);
-        const background = map.createDynamicLayer(0,tileset, 0,0);
+        
+        /* create a new layer specifically for the burger
+        */
+        const background = map.createDynamicLayer("background",tileset, 0,0);
         const ground = map.createStaticLayer("ground",tileset,0,0);
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
@@ -47,9 +53,8 @@ class Play extends Phaser.Scene{
             faceColor: new Phaser.Display.Color(40,39,37,255)
 
         });
-
         
-
+      
 
         ///REPLACE LATER WITH NIKO'S CODE, 
         const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
@@ -61,39 +66,102 @@ class Play extends Phaser.Scene{
         this.player.body.setCollideWorldBounds(true);
 
 
-        //DYNAMIC LAYER ISSUE
-        this.temp =background.putTilesAt(519, 32, 32, true);
-        console.log(this.temp.x, this.temp.y);
+  
+        //BOTTOM BUN obj group, burgerArray[0]
+        //create a bottom bun, obj locations are from tilemap
+        this.bottomBun = map.createFromObjects("object", 'bun01', {
+            key:'kenney_sheet', //tilesheet name
+            frame: 850 //tileID in tileset
+        }, this);
+        this.physics.world.enable(this.bottomBun, Phaser.Physics.Arcade.STATIC_BODY);//enable physics on obj
+        this.bottomBun.map((bun) =>{
+            bun.body.setCircle(4).setOffset(4,4);//add a circle physic body
+        });
+        this.bottomBunGroup = this.add.group(this.bottomBun);//add bottomBun to a bottomBun group.
 
-        //meat obj group
+
+        //MEAT obj group, burgerArray[1]
         this.meats = map.createFromObjects("object", 'meat', {
             key:'kenney_sheet',
             frame: 946
         }, this);
-
         this.physics.world.enable(this.meats, Phaser.Physics.Arcade.STATIC_BODY);
         this.meats.map((meat) =>{
             meat.body.setCircle(4).setOffset(4,4);
         });
         this.meatGroup = this.add.group(this.meats);
+
+
+        //LETTUCE obj group, burgerArray[2]
+         this.lettuces = map.createFromObjects("object", 'lettuce', {
+            key:'kenney_sheet',
+            frame: 994
+        }, this);
+        this.physics.world.enable(this.lettuces, Phaser.Physics.Arcade.STATIC_BODY);
+        this.lettuces.map((lettuce) =>{
+            lettuce.body.setCircle(4).setOffset(4,4);
+        });
+        this.lettuceGroup = this.add.group(this.lettuces);
+
+
+        //TOP BUN obj group, burgerArray[3]
+         this.topBun = map.createFromObjects("object", 'bun02', {
+            key:'kenney_sheet',
+            frame: 802
+        }, this);
+        this.physics.world.enable(this.topBun, Phaser.Physics.Arcade.STATIC_BODY);
+        this.topBun.map((bun2) =>{
+            bun2.body.setCircle(4).setOffset(4,4);
+        });
+        this.topBunGroup = this.add.group(this.topBun);
         
         //setting world physics from nathan's code dont forget this.
         this.physics.world.gravity.y = 2000;
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
-
+        //make sure player don't fall through the ground
         this.physics.add.collider(this.player, ground);
+
+
+        //build the burger into the tilemap here
+        //NOTE: DYNAMIC LAYER ISSUE: TILESET ID OFFSET BY +1
+        //try making the map with a transparency setting and see if offset problem is fixed
+        this.physics.add.overlap(this.player, this.bottomBunGroup, (obj1, obj2)=>{
+            //implement BOTTOME BUN counter here
+            background.putTilesAt([1024+1,1025+1,1026+1], 32, 35) //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
+            this.burgerStack("bun01", this.burgerArray); //REMOVE THE TOP
+            obj2.destroy(); //remove the obj from the scene
+        });
         this.physics.add.overlap(this.player, this.meatGroup, (obj1, obj2)=>{
-            //prob implement meat counter here
+            //implement MEAT counter here
+            background.putTilesAt([946+1,946+1,946+1], 32, 33)
+            this.burgerStack("meat", this.burgerArray);
+            obj2.destroy();
+        });
+        this.physics.add.overlap(this.player, this.lettuceGroup, (obj1, obj2)=>{
+            //implement LETTUCE counter here
+            background.putTilesAt([994+1,994+1,994+1], 32, 34)
+            this.burgerStack("lettuce", this.burgerArray);
+            obj2.destroy();
+        });
+        this.physics.add.overlap(this.player, this.topBunGroup, (obj1, obj2)=>{
+            //implement TOP BUN counter here
+            background.putTilesAt([928+1, 929+1, 930+1], 32, 32)
+            this.burgerStack('bun02', this.burgerArray);
             obj2.destroy();
         });
 
 
-        //CAMERA STUFF TAKEN FROM NATHAN'S REPO
+
+        //Camera setup: from Prof. Nathan's repo
+        //Camera follows the player
         this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.player, true, 0.15,0.15);
 
         //temp scene switch controls
         cursors = this.input.keyboard.createCursorKeys();
+
+        //temp scene title, doesn't show up with tilesheet
+        this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
 
 
     }
@@ -123,10 +191,29 @@ class Play extends Phaser.Scene{
 
     //each time it's call, it takes a sprite from the sprite sheet and stack it 
     //on top of the burger
-    burgerStack(removeElement){
-        //splice 
+    burgerStack(removeElement, burgerArray){
+        //delete the elements from the burgerArray when player gather enought resources
+        //delete just leave the index empty and doesn't change the array index or change array length
+        //so no reindexing array problem
+        if(removeElement == "bun01"){
         
+           delete burgerArray[0];
+           console.log("remove bun01")
+        }
+        if(removeElement == "meat"){
 
+            delete burgerArray[1];
+            console.log("remove meat");
+        }
+        if(removeElement == "lettuce"){
+            delete burgerArray[2];
+            console.log("remove lettuce");
+        }
+        if(removeElement == "bun02"){
+            delete burgerArray[3];
+            console.log("remove bun02")
+        }
+        console.log(burgerArray)
     }
 
 
