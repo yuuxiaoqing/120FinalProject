@@ -9,6 +9,7 @@ class Play extends Phaser.Scene{
         this.MAX_Y_VEL = 2000;
         this.DRAG = 600;
         this.JUMP_VELOCITY = -650;
+        this.burgerArray = ["bun1","meat","lettuce","bun2"];
     }
     preload(){
 
@@ -22,6 +23,10 @@ class Play extends Phaser.Scene{
          // map is 1024 x 1024 pixels, but canvas is 640 x 640
          this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
          this.load.image('temp', 'temp.png');
+         this.load.spritesheet('burger', 'burgersheet.png',{
+             frameWidth: 64,
+             frameWidth: 64
+         });
 
     }
     create(){
@@ -31,7 +36,8 @@ class Play extends Phaser.Scene{
         //FROM NATHAN'S MAPPY REPO
         const map = this.add.tilemap("map01");
         const tileset = map.addTilesetImage("colored_packed", "kenney_sheet");
-        const background = map.createStaticLayer("background",tileset, 0,0);
+        //const background = map.createDynamicLayer("background",tileset, 0,0);
+        const background = map.createDynamicLayer(0,tileset, 0,0);
         const ground = map.createStaticLayer("ground",tileset,0,0);
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
@@ -41,6 +47,10 @@ class Play extends Phaser.Scene{
             faceColor: new Phaser.Display.Color(40,39,37,255)
 
         });
+
+        
+
+
         ///REPLACE LATER WITH NIKO'S CODE, 
         const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
         console.log(playerSpawn, playerSpawn.x, playerSpawn.y, "temp") 
@@ -49,6 +59,11 @@ class Play extends Phaser.Scene{
         this.player.body.setSize(this.player.width/2);
         this.player.setMaxVelocity(this.MAX_X_VEL, this.MAX_Y_VEL);
         this.player.body.setCollideWorldBounds(true);
+
+
+        //DYNAMIC LAYER ISSUE
+        this.temp =background.putTilesAt(519, 32, 32, true);
+        console.log(this.temp.x, this.temp.y);
 
         //meat obj group
         this.meats = map.createFromObjects("object", 'meat', {
@@ -105,4 +120,16 @@ class Play extends Phaser.Scene{
         
     
     }
+
+    //each time it's call, it takes a sprite from the sprite sheet and stack it 
+    //on top of the burger
+    burgerStack(removeElement){
+        //splice 
+        
+
+    }
+
+
+
+
 }
