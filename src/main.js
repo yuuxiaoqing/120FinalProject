@@ -21,6 +21,7 @@ let config = {
         }
     },    
     scene:[Load,Menu,Play,End, Credit]
+    //scene: [Play]
 };
 
 

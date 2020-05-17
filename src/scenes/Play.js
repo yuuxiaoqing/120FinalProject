@@ -36,9 +36,9 @@ class Play extends Phaser.Scene{
          });
 
         //player sprites
-        this.load.image('playerSprite', './assets/penisfuckjesus.png');
-        this.load.image('attackHitbox', './assets/attacktemp.png');
-        this.load.image('guardHitbox', './assets/guardtemp.png');
+        this.load.image('playerSprite', 'penisfuckjesus.png');
+        this.load.image('attackHitbox', 'attacktemp.png');
+        this.load.image('guardHitbox', 'guardtemp.png');
     }
 
     //Create Function
@@ -64,18 +64,39 @@ class Play extends Phaser.Scene{
 
         });
         
-      
+        /* PLAYER CODE */
+        //Assigns the Keybinds
+        playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        playerRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        playerAttack = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+        playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
-        ///REPLACE LATER WITH NIKO'S CODE, 
+        //Creates the obstacle groups for the parry and attacks
+        this.attackGroup = this.add.group({
+            runChildUpdate: true
+        });
+        this.parryGroup = this.add.group({
+            runChildUpdate: true
+        });
+
+        //Creates the main player
         const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
-        console.log(playerSpawn, playerSpawn.x, playerSpawn.y, "temp") 
-        console.log(this.physics)
-        this.player = this.physics.add.sprite(playerSpawn.x, playerSpawn.y, "kenney_sheet", 317);
-        this.player.body.setSize(this.player.width/2);
-        this.player.setMaxVelocity(this.MAX_X_VEL, this.MAX_Y_VEL);
-        this.player.body.setCollideWorldBounds(true);
+        mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "kenney_sheet", 317).setOrigin(0.5);
 
-
+        this.physics.add.existing(mainPlayer);
+        mainPlayer.body.collideWorldBounds = true;
+        console.log(mainPlayer)
+        //console.log(mainPlayer.body);
+        //setting world physics from Prof.Nathan's code: don't forget this!!
+        this.physics.world.gravity.y = 2000;
+        this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
+        //make sure mainPlayer don't fall through the ground
+        this.physics.add.collider(mainPlayer, ground);
+        console.log(ground);
+;
+      
   
         //BOTTOM BUN obj group, burgerArray[0]
         //create a bottom bun, obj locations are from tilemap
@@ -125,46 +146,41 @@ class Play extends Phaser.Scene{
         });
         this.topBunGroup = this.add.group(this.topBun);
         
-        /* COOKING STATIONS */ //doesn't work bc player touches one station and then the other ones don't work
-        //bread station
-        this.breadMaker = map.createFromObjects("object", 'breadmaker', {
-            key:'kenney_sheet',
-            frame: 383
-        }, this);
-        this.physics.world.enable(this.breadMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        this.physics.add.overlap(this.player,this.breadMaker, ()=>{
-            this.bunCooked = true;
-        });
-        //meat station
-        this.meatMaker = map.createFromObjects("object", 'meatmachine', {
-            key:'kenney_sheet',
-            frame: 416
-        }, this);
-        this.physics.world.enable(this.meatMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        this.physics.add.overlap(this.player,this.meatMaker, ()=>{
-            this.meatCooked = true;
-        });
-        //lettuce station
-        this.veggieMaker = map.createFromObjects("object", 'lettuceharvest', {
-            key:'kenney_sheet',
-            frame: 431
-        }, this);
-        this.physics.world.enable(this.veggieMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        this.physics.add.overlap(this.player,this.veggieMaker, ()=>{
-            this.lettuceCooked = true;
-        });
-
-        //setting world physics from nathan's code dont forget this.
-        this.physics.world.gravity.y = 2000;
-        this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
-        //make sure player don't fall through the ground
-        this.physics.add.collider(this.player, ground);
+        // /* COOKING STATIONS */ MIGHT SCRAP
+        //doesn't work bc player touches one station and then the other ones don't work
+        // //bread station
+        // // this.breadMaker = map.createFromObjects("object", 'breadmaker', {
+        // //     key:'kenney_sheet',
+        // //     frame: 383
+        // // }, this);
+        // // this.physics.world.enable(this.breadMaker, Phaser.Physics.Arcade.STATIC_BODY);
+        // // this.physics.add.overlap(this.mainPlayer,this.breadMaker, ()=>{
+        // //     this.bunCooked = true;
+        // // });
+        // // //meat station
+        // // this.meatMaker = map.createFromObjects("object", 'meatmachine', {
+        // //     key:'kenney_sheet',
+        // //     frame: 416
+        // // }, this);
+        // // this.physics.world.enable(this.meatMaker, Phaser.Physics.Arcade.STATIC_BODY);
+        // // this.physics.add.overlap(this.mainPlayer,this.meatMaker, ()=>{
+        // //     this.meatCooked = true;
+        // // });
+        // // //lettuce station
+        // // this.veggieMaker = map.createFromObjects("object", 'lettuceharvest', {
+        // //     key:'kenney_sheet',
+        // //     frame: 431
+        // // }, this);
+        // // this.physics.world.enable(this.veggieMaker, Phaser.Physics.Arcade.STATIC_BODY);
+        // // this.physics.add.overlap(this.mainPlayer,this.veggieMaker, ()=>{
+        // //     this.lettuceCooked = true;
+        // // });
 
 
         //build the burger into the tilemap here
         //NOTE: DYNAMIC LAYER ISSUE: TILESET ID OFFSET BY +1
         //try making the map with a transparency setting and see if offset problem is fixed
-        this.physics.add.overlap(this.player, this.bottomBunGroup, (obj1, obj2)=>{
+        this.physics.add.overlap(mainPlayer, this.bottomBunGroup, (obj1, obj2)=>{
             //implement BOTTOM BUN counter here
             //INVENTORY INCREMENT HERE @NIKO
             this.bottomBunCount++;
@@ -172,21 +188,21 @@ class Play extends Phaser.Scene{
             this.burgerStack("bottomBun", this.burgerArray, this.bottomBunCount,background, this.bunCooked); //REMOVE THE TOP
             obj2.destroy(); //remove the obj from the scene
         });
-        this.physics.add.overlap(this.player, this.meatGroup, (obj1, obj2)=>{
+        this.physics.add.overlap(mainPlayer, this.meatGroup, (obj1, obj2)=>{
             //implement MEAT counter here
             this.meatCount++;
             //background.putTilesAt([946+1,946+1,946+1], 32, 33);
             this.burgerStack("meat", this.burgerArray, this.meatCount,background, this.meatCooked);
             obj2.destroy();
         });
-        this.physics.add.overlap(this.player, this.lettuceGroup, (obj1, obj2)=>{
+        this.physics.add.overlap(mainPlayer, this.lettuceGroup, (obj1, obj2)=>{
             //implement LETTUCE counter here
             this.lettuceCount++;
             //background.putTilesAt([994+1,994+1,994+1], 32, 34);
             this.burgerStack("lettuce", this.burgerArray, this.lettuceCount,background, this.lettuceCooked);
             obj2.destroy();
         });
-        this.physics.add.overlap(this.player, this.topBunGroup, (obj1, obj2)=>{
+        this.physics.add.overlap(mainPlayer, this.topBunGroup, (obj1, obj2)=>{
             //implement TOP BUN counter here
             this.topBunCount++;
             //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
@@ -197,40 +213,18 @@ class Play extends Phaser.Scene{
 
 
         //Camera setup: from Prof. Nathan's repo
-        //Camera follows the player
+        //Camera follows the mainPlayer
         this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(this.player, true, 0.15,0.15);
+        //console.log(mainPlayer);
+        this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
+        
 
+        //Debug
         //temp scene switch controls
         cursors = this.input.keyboard.createCursorKeys();
 
-        //temp scene title, doesn't show up with tilesheet
-        //Assigns the Keybinds
-        playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        playerRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        playerAttack = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-        playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
-        playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-
-        //Creates the obstacle groups for the parry and attacks
-        this.attackGroup = this.add.group({
-            runChildUpdate: true
-        });
-        this.parryGroup = this.add.group({
-            runChildUpdate: true
-        });
-
-        //Creates the main player
-        mainPlayer = new PlayerObject(this, centerX, centerY, 'playerSprite').setOrigin(0.5);
-
-        //Adds physics to the player
-        this.physics.add.existing(mainPlayer);
-        mainPlayer.body.collideWorldBounds = true;
-
-
-        //Debug
-        this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
+        //temp scene title
+        this.add.text(640, 640, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
 
 
     }
@@ -243,21 +237,6 @@ class Play extends Phaser.Scene{
             this.scene.start('endScene');
         }
 
-        //temp player control from nathan's mappy code, replace with NIKO'S CODE
-        if(cursors.left.isDown){
-            this.player.body.setAccelerationX(-this.ACCELERATION);
-            this.player.setFlip(true,false);
-        }else if(cursors.right.isDown){
-            this.player.body.setAccelerationX(this.ACCELERATION);
-            this.player.resetFlip();
-        }else{
-            this.player.body.setAccelerationX(0);
-            this.player.body.setDragX(this.DRAG);
-        }
-        if(this.player.body.blocked.down && Phaser.Input.Keyboard.JustDown(cursors.up)){
-            this.player.body.setVelocityY(this.JUMP_VELOCITY);
-        }
-        
     
     }
 
