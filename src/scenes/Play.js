@@ -14,6 +14,8 @@ class Play extends Phaser.Scene{
         this.burgerArray = ["bottomBun","meat","lettuce","topBun"];
         //create ingredient count
         this.topBunCount = 0, this.meatCount = 0, this.lettuceCount = 0, this.bottomBunCount =0;
+        //cooking status booleans
+        this.bunCooked = false, this.meatCooked = false, this.lettuceCooked = false;
     }
     preload(){
         
@@ -95,7 +97,7 @@ class Play extends Phaser.Scene{
 
 
         //LETTUCE obj group, burgerArray[2]
-         this.lettuces = map.createFromObjects("object", 'lettuce', {
+        this.lettuces = map.createFromObjects("object", 'lettuce', {
             key:'kenney_sheet',
             frame: 994
         }, this);
@@ -107,7 +109,7 @@ class Play extends Phaser.Scene{
 
 
         //TOP BUN obj group, burgerArray[3]
-         this.topBun = map.createFromObjects("object", 'bun02', {
+        this.topBun = map.createFromObjects("object", 'bun02', {
             key:'kenney_sheet',
             frame: 802
         }, this);
@@ -117,6 +119,35 @@ class Play extends Phaser.Scene{
         });
         this.topBunGroup = this.add.group(this.topBun);
         
+        /* COOKING STATIONS */ //doesn't work bc player touches one station and then the other ones don't work
+        //bread station
+        this.breadMaker = map.createFromObjects("object", 'breadmaker', {
+            key:'kenney_sheet',
+            frame: 383
+        }, this);
+        this.physics.world.enable(this.breadMaker, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.add.overlap(this.player,this.breadMaker, ()=>{
+            this.bunCooked = true;
+        });
+        //meat station
+        this.meatMaker = map.createFromObjects("object", 'meatmachine', {
+            key:'kenney_sheet',
+            frame: 416
+        }, this);
+        this.physics.world.enable(this.meatMaker, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.add.overlap(this.player,this.meatMaker, ()=>{
+            this.meatCooked = true;
+        });
+        //lettuce station
+        this.veggieMaker = map.createFromObjects("object", 'lettuceharvest', {
+            key:'kenney_sheet',
+            frame: 431
+        }, this);
+        this.physics.world.enable(this.veggieMaker, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.add.overlap(this.player,this.veggieMaker, ()=>{
+            this.lettuceCooked = true;
+        });
+
         //setting world physics from nathan's code dont forget this.
         this.physics.world.gravity.y = 2000;
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
@@ -129,31 +160,31 @@ class Play extends Phaser.Scene{
         //try making the map with a transparency setting and see if offset problem is fixed
         this.physics.add.overlap(this.player, this.bottomBunGroup, (obj1, obj2)=>{
             //implement BOTTOM BUN counter here
-            //INVENTORY INCREMENT HERE @ NIKO
+            //INVENTORY INCREMENT HERE @NIKO
             this.bottomBunCount++;
             //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
-            this.burgerStack("bottomBun", this.burgerArray, this.bottomBunCount,background); //REMOVE THE TOP
+            this.burgerStack("bottomBun", this.burgerArray, this.bottomBunCount,background, this.bunCooked); //REMOVE THE TOP
             obj2.destroy(); //remove the obj from the scene
         });
         this.physics.add.overlap(this.player, this.meatGroup, (obj1, obj2)=>{
             //implement MEAT counter here
             this.meatCount++;
             //background.putTilesAt([946+1,946+1,946+1], 32, 33);
-            this.burgerStack("meat", this.burgerArray, this.meatCount,background);
+            this.burgerStack("meat", this.burgerArray, this.meatCount,background, this.meatCooked);
             obj2.destroy();
         });
         this.physics.add.overlap(this.player, this.lettuceGroup, (obj1, obj2)=>{
             //implement LETTUCE counter here
             this.lettuceCount++;
             //background.putTilesAt([994+1,994+1,994+1], 32, 34);
-            this.burgerStack("lettuce", this.burgerArray, this.lettuceCount,background);
+            this.burgerStack("lettuce", this.burgerArray, this.lettuceCount,background, this.lettuceCooked);
             obj2.destroy();
         });
         this.physics.add.overlap(this.player, this.topBunGroup, (obj1, obj2)=>{
             //implement TOP BUN counter here
             this.topBunCount++;
             //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
-            this.burgerStack('topBun', this.burgerArray, this.topBunCount,background);
+            this.burgerStack('topBun', this.burgerArray, this.topBunCount,background, this.bunCooked);
             obj2.destroy();
         });
 
@@ -198,8 +229,8 @@ class Play extends Phaser.Scene{
 
     //each time it's call, it takes a sprite from the sprite sheet and stack it 
     //on top of the burger
-    burgerStack(removeElement, burgerArray, ingredientCount, background){
-        //delete the elements from the burgerArray when player gather enought resources
+    burgerStack(removeElement, burgerArray, ingredientCount, background, cooked=null){
+        //delete the elements from the burgerArray when player gather enough resources
         //delete just leave the index empty and doesn't change the array index or change array length
         //so no reindexing array problem
         if(removeElement == "bottomBun" && ingredientCount >= 5){
