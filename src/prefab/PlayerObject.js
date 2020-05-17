@@ -246,9 +246,5 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         }, null, this);        
         this.parrying = false;
     }
-
-
-
-
-
+    
 }

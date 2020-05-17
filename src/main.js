@@ -31,6 +31,7 @@ let centerY = height/2;
 
 //debug key
 let keyS;
+let keyW;
 
 //loading google text, taken from: https://phaser.io/examples/v2/text/google-webfonts
 let WebFontConfig = {

@@ -15,8 +15,10 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         //States
         this.attacking = false;
 
-        //Creates the detection circle variable
-        this.detectionField;    
+        //Creates a detection circle
+        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(5);
+        this.detectionField.body.allowGravity = false;
+        this.detectionField.body.setCircle(62);
 
         //Creates a variable to tell if it's being bounced back
         this.bouncingBack = false;
@@ -25,35 +27,67 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         //// 1 = right
         //// -1 = left
         this.directionFacing = 1;
+
+        //Creates a variable for the living situation
+        this.alive = true;
     }
 
     create(){
-        //Creates a detection circle
-        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(1.75);
-        this.detectionField.allowGravity = false;
+        
     }
 
     update(){
-        //Checks if a player is parrying the enemy
-        if(this.scene.physics.world.overlap(this, this.parryGroup)){
-            console.log("Enemy Parried");
-            this.bounceBack(500);
-        }
+        //Updates the detection field
+        this.detectionFieldUpdate();
 
-        //Checks if the player is attacking the enemy
-        if(this.scene.physics.world.overlap(this, this.attackGroup)){
-            console.log("Enemy Attacked");
-            this.bounceBack(100);
-        }
+        //Checks the direction of the enemy
+        if(!this.bouncingBack)
+            this.checkDirection();
+
+        //Resets bounceBack
+        if(this.bouncingBack)
+            this.resetBounce();
+
     }
 
     //Bounce back bounces the enemy backwards
     bounceBack(speed){
         this.bouncingBack = true;
         this.setVelocityX(speed * this.directionFacing * -1);
-        this.scene.time.delayedCall(250, () => {
+        this.setVelocityY(-1 * speed);
+    }
+
+    //Resets bounceback
+    resetBounce(){
+        //If it's not falling down then set bouncingBack to false
+        if(this.body.velocity.y == 0){
+            this.setVelocityX(0);
             this.bouncingBack = false;
-        }, null, this);
+        }
+    }
+
+    //Checks the direction of the player then updates the facing function
+    checkDirection(){
+        //If it's facing right
+        if(this.body.velocity.x > 0)
+            this.directionFacing = 1;
+
+        //If it's facing left
+        if(this.body.velocity.x < 0)
+            this.directionFacing = -1;
+    }
+
+    //Move towards player
+    detectionFieldUpdate(){
+        this.detectionField.body.velocity.x = this.body.velocity.x;
+        this.detectionField.body.velocity.y = this.body.velocity.y;
+    }
+
+    //Reset Attack
+    resetAttacking(){
+        this.attacking = false;
+        this.setVelocityX(0);
+        this.setAccelerationX(0);
     }
 
 }
