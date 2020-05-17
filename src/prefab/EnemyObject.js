@@ -37,12 +37,13 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         //Checks if a player is parrying the enemy
         if(this.scene.physics.world.overlap(this, this.parryGroup)){
             console.log("Enemy Parried");
-            this.bounceBack(300);
+            this.bounceBack(500);
         }
 
         //Checks if the player is attacking the enemy
-        if(this.scene.physics.world.overlap()){
-            
+        if(this.scene.physics.world.overlap(this, this.attackGroup)){
+            console.log("Enemy Attacked");
+            this.bounceBack(100);
         }
     }
 

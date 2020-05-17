@@ -9,17 +9,10 @@ let config = {
     physics: {
         defaut: 'arcade',
         arcade: {
-<<<<<<< Updated upstream
-            debug:true,
-            gravity:{
-                x:0,
-                y:1000
-=======
             debug: true,
             gravity: {
                 x: 0,
                 y: 1000
->>>>>>> Stashed changes
             }
         }
     },

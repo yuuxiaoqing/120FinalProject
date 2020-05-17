@@ -4,20 +4,15 @@ class Play extends Phaser.Scene{
     constructor(){
         super('playScene');
     }
+    
     preload(){
-<<<<<<< Updated upstream
-=======
         this.load.image('playerSprite', './assets/penisfuckjesus.png');
         this.load.image('attackHitbox', './assets/attacktemp.png');
         this.load.image('guardHitbox', './assets/guardtemp.png');
         this.load.image('enemytemp', './assets/enemytemp.png');
     }
->>>>>>> Stashed changes
 
-    }
     create(){
-<<<<<<< Updated upstream
-=======
         //Assigns the Keybinds
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         playerRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -52,19 +47,15 @@ class Play extends Phaser.Scene{
         this.enemy.body.collideWorldBounds = true;
 
 
->>>>>>> Stashed changes
 
         this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     }
     
     update(){
-<<<<<<< Updated upstream
-=======
         //Updates main player
         mainPlayer.update();
         this.enemy.update();
->>>>>>> Stashed changes
 
         if(Phaser.Input.Keyboard.JustDown(keyS)){
             this.scene.start('endScene');
