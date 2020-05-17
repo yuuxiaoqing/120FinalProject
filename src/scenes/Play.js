@@ -1,17 +1,17 @@
 // Our Play scene
-
 class Play extends Phaser.Scene{
     constructor(){
         super('playScene');
     }
-    
+
+    //Preload
     preload(){
         this.load.image('playerSprite', './assets/penisfuckjesus.png');
         this.load.image('attackHitbox', './assets/attacktemp.png');
         this.load.image('guardHitbox', './assets/guardtemp.png');
-        this.load.image('enemytemp', './assets/enemytemp.png');
     }
 
+    //Create Function
     create(){
         //Assigns the Keybinds
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -48,6 +48,7 @@ class Play extends Phaser.Scene{
 
 
 
+        //Debug
         this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     }
@@ -57,6 +58,7 @@ class Play extends Phaser.Scene{
         mainPlayer.update();
         this.enemy.update();
 
+        //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
             this.scene.start('endScene');
         }
