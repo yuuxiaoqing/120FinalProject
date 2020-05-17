@@ -5,7 +5,7 @@ class Load extends Phaser.Scene{
         super('loadScene');
     }
     preload(){
-
+        //Player Sprites
     }
     create(){
 

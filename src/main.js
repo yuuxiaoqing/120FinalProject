@@ -1,30 +1,35 @@
-//our game settings
+//game settings
 let config = {
+
     type: Phaser.CANVAS,
     pixelArt: true,
-    width: 640,
+    //width: 640,
+    width:960,
     height:640,
     scale: {
-        autocenter: Phaser.Scale.CENTER_BOTH
+        autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    zoom: 1,
+
     physics: {
         default: 'arcade',
         arcade: {
-            debug:true,
-
+            debug: true,
+            gravity: {
+                x: 0,
+                y: 1000
+            }
         }
-    },
-    //scene:[Load,Menu,Play,End, Credit]
-
-    scene:[Play]
+    },    
+    scene:[Load,Menu,Play,End, Credit]
 };
 
-const game = new Phaser.Game(config);
-const width = game.config.width;
-const height = game.config.height;
-const centerX = width/2;
-const centerY = height/2;
+
+//Game Window stuff
+let game = new Phaser.Game(config);
+let width = game.config.width;
+let height = game.config.height;
+let centerX = width/2;
+let centerY = height/2;
 
 //debug key
 let keyS;
@@ -37,3 +42,9 @@ let WebFontConfig = {
         families: []
     }
 }
+
+//Player Objects
+let mainPlayer;
+
+//Player Movement / Keybinds
+let playerLeft, playerRight, playerJump, playerAttack, playerDash, playerGuard;
