@@ -3,13 +3,6 @@
 class Play extends Phaser.Scene{
     constructor(){
         super('playScene');
-        //temp var from nathan's example
-        this.ACCELERATION = 500;
-        this.MAX_X_VEL = 200;
-        this.MAX_Y_VEL = 2000;
-        this.DRAG = 600;
-        this.JUMP_VELOCITY = -650;
-
         //create burgerArray
         this.burgerArray = ["bottomBun","meat","lettuce","topBun"];
         //create ingredient count
@@ -23,23 +16,33 @@ class Play extends Phaser.Scene{
         this.load.image('guardHitbox', './assets/guardtemp.png');
         this.load.image('enemytemp', './assets/enemytemp.png');
         
-        //once the spritesheets are set, move all these loading to loading scene
-        //from Prof. Nathan's Tiled examples
-        this.load.path = "./assets/";
-        //prototype tile sheet
-        this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
-            frameWidth: 16,
-            frameHeight: 16,
-        });
-        //map is 1024 x 1024 pixels, but canvas is 640 x 640
-        this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
-        this.load.image('temp', 'temp.png');
-        this.load.spritesheet('burger', 'burgersheet.png',{
-            frameWidth: 64,
-            frameWidth: 64
-        });
+         //once the spritesheets are set, move all these loading to loading scene
+         //from Prof. Nathan's Tiled examples
+         this.load.path = "./assets/";
+         //prototype tile sheet
+         this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
+             frameWidth: 16,
+             frameHeight: 16,
+         });
+         //map is 1024 x 1024 pixels, but canvas is 640 x 640
+         this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
+         this.load.image('temp', 'temp.png');
+        //  this.load.atlas('burger', 'burgersheet.png',{
+        //      frameWidth: 64,
+        //      frameHeight: 64
+        //  }, 'burger.json');
 
-
+        //burger layer sprites -> remember to turn it into a spritesheet
+        this.load.image('bun1','bun1.png');
+        this.load.image('meat','meat.png');
+        this.load.image('lettuce','lettuce.png');
+        this.load.image('bun2','bun2.png');
+        
+        //player sprites
+        this.load.image('playerSprite', 'penisfuckjesus.png');
+        this.load.image('attackHitbox', 'attacktemp.png');
+        this.load.image('guardHitbox', 'guardtemp.png');
+        this.load.image('playerPrototype','player_prototype.png');
     }
 
     //Create Function
@@ -89,19 +92,19 @@ class Play extends Phaser.Scene{
 
         //Creates the main player
         const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
-        mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "kenney_sheet", 354).setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "playerPrototype").setOrigin(0.5);
 
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
-        console.log(mainPlayer)
+        //console.log(mainPlayer)
         //console.log(mainPlayer.body);
         //setting world physics from Prof.Nathan's code: don't forget this!!
         //this.physics.world.gravity.y = 2000;
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
         //make sure mainPlayer don't fall through the ground
         this.physics.add.collider(mainPlayer, ground);
-        console.log(ground);
-//;
+        //console.log(ground);
+;
       
   
         //BOTTOM BUN obj group, burgerArray[0]
@@ -240,13 +243,13 @@ class Play extends Phaser.Scene{
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
         
 
-        //Debug
-        //temp scene switch controls
-        cursors = this.input.keyboard.createCursorKeys();
-
+    
+    
         //temp scene title
-        this.add.text(640, 640, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
+        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff', align:"center"}).setOrigin(0.5);
 
+        //BURGER TEXT
+        this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
 
     }
     
@@ -320,24 +323,29 @@ class Play extends Phaser.Scene{
         if(removeElement == "bottomBun" && ingredientCount >= 5){
            //if the ingredient is bottom bun and ingredientCount is more than #, remove ingredient from list
            //display the ingredient
-           background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
+           this.add.image(540, 500, 'bun2').setOrigin(0.5);
+           //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
            delete burgerArray[0];
-           console.log("remove bottom bun")
+           //console.log("remove bottom bun")
         }
         if(removeElement == "meat" && ingredientCount >= 5){
-            background.putTilesAt([946+1,946+1,946+1], 32, 33);
+
+            //background.putTilesAt([946+1,946+1,946+1], 32, 33);
+            this.add.image(540, 505,  'meat').setOrigin(0.5);
             delete burgerArray[1];
-            console.log("remove meat");
+           // console.log("remove meat");
         }
         if(removeElement == "lettuce" && ingredientCount >= 5){
-            background.putTilesAt([994+1,994+1,994+1], 32, 34);
+           // background.putTilesAt([994+1,994+1,994+1], 32, 34);
+            this.add.image(540, 515,  'lettuce').setOrigin(0.5);
             delete burgerArray[2];
-            console.log("remove lettuce");
+           // console.log("remove lettuce");
         }
         if(removeElement == "topBun" && ingredientCount >= 5){
-            background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
+            //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
+            this.add.image(540, 520,  'bun1').setOrigin(0.5);
             delete burgerArray[3];
-            console.log("remove top bun")
+           // console.log("remove top bun")
         }
         console.log(burgerArray)
     }

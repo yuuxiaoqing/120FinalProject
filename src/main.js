@@ -1,3 +1,16 @@
+
+/*
+PROTOTYPE REQUIREMENTS 5/17/2020
+Angela Jiang, Xiao Qing Yu, Nikolas Sanchez
+Notes:
+Our game is a burger building adventure game. 
+In our prototype, we have all of our nececessary scenes in place, 
+the player's basic fighting mechanics and movement are implemented, 
+and some placeholder burger art, enemy arts, and player art in place.
+We've also got some basic sound sfx implemented. We will use our own tilesheet for our tilemap,
+however, right now we are using the kenney sheet 1bit pack as placeholders.
+*/
+
 //game settings
 let config = {
 
@@ -34,7 +47,6 @@ let centerY = height/2;
 
 //debug key
 let keyS;
-let cursors = null;
 
 //loading google text, taken from: https://phaser.io/examples/v2/text/google-webfonts
 let WebFontConfig = {
