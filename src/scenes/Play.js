@@ -3,13 +3,6 @@
 class Play extends Phaser.Scene{
     constructor(){
         super('playScene');
-        //temp var from nathan's example
-        this.ACCELERATION = 500;
-        this.MAX_X_VEL = 200;
-        this.MAX_Y_VEL = 2000;
-        this.DRAG = 600;
-        this.JUMP_VELOCITY = -650;
-
         //create burgerArray
         this.burgerArray = ["bottomBun","meat","lettuce","topBun"];
         //create ingredient count
@@ -87,14 +80,14 @@ class Play extends Phaser.Scene{
 
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
-        console.log(mainPlayer)
+        //console.log(mainPlayer)
         //console.log(mainPlayer.body);
         //setting world physics from Prof.Nathan's code: don't forget this!!
         this.physics.world.gravity.y = 2000;
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
         //make sure mainPlayer don't fall through the ground
         this.physics.add.collider(mainPlayer, ground);
-        console.log(ground);
+        //console.log(ground);
 ;
       
   
@@ -224,8 +217,10 @@ class Play extends Phaser.Scene{
         cursors = this.input.keyboard.createCursorKeys();
 
         //temp scene title
-        this.add.text(640, 640, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
+        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff', align:"center"}).setOrigin(0.5);
 
+        //BURGER TEXT
+        this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
 
     }
     update(){
@@ -251,22 +246,22 @@ class Play extends Phaser.Scene{
            //display the ingredient
            background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
            delete burgerArray[0];
-           console.log("remove bottom bun")
+           //console.log("remove bottom bun")
         }
         if(removeElement == "meat" && ingredientCount >= 5){
             background.putTilesAt([946+1,946+1,946+1], 32, 33);
             delete burgerArray[1];
-            console.log("remove meat");
+           // console.log("remove meat");
         }
         if(removeElement == "lettuce" && ingredientCount >= 5){
             background.putTilesAt([994+1,994+1,994+1], 32, 34);
             delete burgerArray[2];
-            console.log("remove lettuce");
+           // console.log("remove lettuce");
         }
         if(removeElement == "topBun" && ingredientCount >= 5){
             background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
             delete burgerArray[3];
-            console.log("remove top bun")
+           // console.log("remove top bun")
         }
         console.log(burgerArray)
     }
