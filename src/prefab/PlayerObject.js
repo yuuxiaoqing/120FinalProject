@@ -172,7 +172,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
 
     //If the thing gets stuck push the player back up
     pushUp(){
-        this.setVelocityY(-500);
+        this.setVelocityY(-600);
     }
 
     //Lets the player lose health, only if they're invuln
@@ -226,6 +226,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
                 this.attacking = 0;
             }, null, this);
         }
+
     }
 
     //Player Guards
@@ -245,6 +246,27 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
             parryHitbox.destroy();
         }, null, this);        
         this.parrying = false;
+    }
+
+    //Lose health and sets invuln
+    loseHealth(){
+        //Only works if player is NOT invulnerable
+        if(!this.invuln){
+            this.health -= 1;
+            this.alpha = 0.5;
+            this.invuln = true;
+            this.pushUp();
+            this.scene.time.delayedCall(1000, () => {
+                this.invuln = false;
+                this.alpha = 1;
+            }, null, this);   
+        }
+
+        if(this.health <= 0){
+            this.x = centerX;
+            this.y = centerY;
+            this.health = 10;
+        }
     }
     
 }

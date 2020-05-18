@@ -6,14 +6,15 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         scene.add.existing(this);
         
         //Health of the enemy
-        this.health = 3;
+        this.health = 18;
 
         //Original Positions
         this.originalX = x;
         this.originalY = y;
 
-        //States
+        //States for attacking and being attacked
         this.attacking = false;
+        this.attackedByPlayer = false;
 
         //Creates a detection circle
         this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(5);
@@ -88,6 +89,26 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         this.attacking = false;
         this.setVelocityX(0);
         this.setAccelerationX(0);
+    }
+
+    //Lose health
+    loseHealth(){
+        if(this.attackedByPlayer){
+            this.health -= 1;
+            this.attackedByPlayer = false;
+        }
+    }
+
+    //Checks if the enemy is still alive, if it isn't send it to the voice
+    toTheVoid(){
+        //Deleting objects straight up crashes the game
+        //To the void they go.
+        if(this.health <= 0){
+            this.x = -69420;
+            this.y = 69420
+            this.detectionField.x = -69420;
+            this.detectionField.y = 69420
+        }
     }
 
 }

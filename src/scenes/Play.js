@@ -44,6 +44,7 @@ class Play extends Phaser.Scene{
 
         //Debug
         this.enemy = new EnemyObject(this, centerX, centerY, 'enemytemp').setOrigin(0.5);
+        //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.enemy);
         this.enemy.body.collideWorldBounds = true;
 
@@ -65,16 +66,24 @@ class Play extends Phaser.Scene{
             this.scene.start('endScene');
         }
 
-        if(this.enemy.attacking){
+        //If the enemy is in the state to attack accerlate towards player
+        //(it just runs towards player)
+        if(this.enemy.attacking && this.enemy.alive){
             this.physics.accelerateTo(this.enemy, mainPlayer.x, this.enemy.y, 500, 1000);
         }
 
+        //Checks if the player is in the detection field, if it is set attacking to true if not dont attack
         if(this.physics.overlap(this.enemy.detectionField, mainPlayer)){
             this.enemy.attacking = true;
         } else {
             this.enemy.resetAttacking();
         }
 
+        //Checks if a player runs into an enemy, lose health and set invuln for a time
+        if(this.physics.collide(mainPlayer, this.enemy)){
+            mainPlayer.loseHealth()
+            console.log(mainPlayer.health);
+        }
 
         //Checks if a player is parrying the enemy
         if(this.physics.overlap(this.enemy, this.parryGroup)){
@@ -82,10 +91,21 @@ class Play extends Phaser.Scene{
             this.enemy.bounceBack(500);
         }
 
+        //Sends the enemy to the void if they're "dead"
+        if(this.enemy.health <= 0){
+            this.enemy.body.collideWorldBounds = false;
+            this.enemy.toTheVoid();
+        }
+        
+
         //Checks if the player is attacking the enemy
         if(this.physics.overlap(this.enemy, this.attackGroup)){
             console.log("Enemy Attacked");
             this.enemy.bounceBack(100);
+            this.enemy.attackedByPlayer = true;
+            this.enemy.loseHealth();
+            mainPlayer.attackConnected = true;
+            console.log(this.enemy.health);
         }
 
     }
