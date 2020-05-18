@@ -5,7 +5,9 @@ class Load extends Phaser.Scene{
         super('loadScene');
     }
     preload(){
-        //Player Sprites
+        //Loads sounds
+        this.load.audio('jump', './assets/Jump.wav');
+        this.load.audio('hit', './assets/Lose.wav');
     }
     create(){
 

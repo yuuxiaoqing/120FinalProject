@@ -23,21 +23,23 @@ class Play extends Phaser.Scene{
         this.load.image('guardHitbox', './assets/guardtemp.png');
         this.load.image('enemytemp', './assets/enemytemp.png');
         
-         //once the spritesheets are set, move all these loading to loading scene
-         //from Prof. Nathan's Tiled examples
-         this.load.path = "./assets/";
-         //prototype tile sheet
-         this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
-             frameWidth: 16,
-             frameHeight: 16,
-         });
-         //map is 1024 x 1024 pixels, but canvas is 640 x 640
-         this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
-         this.load.image('temp', 'temp.png');
-         this.load.spritesheet('burger', 'burgersheet.png',{
-             frameWidth: 64,
-             frameWidth: 64
-         });
+        //once the spritesheets are set, move all these loading to loading scene
+        //from Prof. Nathan's Tiled examples
+        this.load.path = "./assets/";
+        //prototype tile sheet
+        this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+        });
+        //map is 1024 x 1024 pixels, but canvas is 640 x 640
+        this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
+        this.load.image('temp', 'temp.png');
+        this.load.spritesheet('burger', 'burgersheet.png',{
+            frameWidth: 64,
+            frameWidth: 64
+        });
+
+
     }
 
     //Create Function
@@ -87,19 +89,19 @@ class Play extends Phaser.Scene{
 
         //Creates the main player
         const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
-        mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "kenney_sheet", 317).setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "kenney_sheet", 354).setOrigin(0.5);
 
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
         console.log(mainPlayer)
         //console.log(mainPlayer.body);
         //setting world physics from Prof.Nathan's code: don't forget this!!
-        this.physics.world.gravity.y = 2000;
+        //this.physics.world.gravity.y = 2000;
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
         //make sure mainPlayer don't fall through the ground
         this.physics.add.collider(mainPlayer, ground);
         console.log(ground);
-;
+//;
       
   
         //BOTTOM BUN obj group, burgerArray[0]
@@ -217,12 +219,13 @@ class Play extends Phaser.Scene{
 
 
         //Debug
-        this.enemy = new EnemyObject(this, centerX, centerY + 500, 'enemytemp').setScale(2).setOrigin(0.5);
+        this.enemy = new EnemyObject(this, centerX, centerY,  "kenney_sheet", 317).setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.enemy);
-        this.enemy.body.allowGravity = false;
-        this.enemy.body.setImmovable(true);
+        //this.enemy.body.allowGravity = false;
+        //this.enemy.body.setImmovable(true);
         this.enemy.body.collideWorldBounds = true;
+        this.physics.add.collider(this.enemy, ground);
 
 
 
@@ -257,10 +260,17 @@ class Play extends Phaser.Scene{
             this.scene.start('endScene');
         }
 
+        //sounds
+        if(mainPlayer.jumping)
+            this.sound.play('jump');
+
+        if(mainPlayer.attacking)
+            this.sound.play('hit');
+
         //If the enemy is in the state to attack accerlate towards player
         //(it just runs towards player)
         if(this.enemy.attacking && this.enemy.alive){
-            this.physics.accelerateTo(this.enemy, mainPlayer.x, this.enemy.y, 500, 1000);
+            this.physics.accelerateTo(this.enemy, mainPlayer.x, this.enemy.y, 200, 500);
         }
 
         //Checks if the player is in the detection field, if it is set attacking to true if not dont attack
@@ -271,7 +281,7 @@ class Play extends Phaser.Scene{
         }
 
         //Checks if a player runs into an enemy, lose health and set invuln for a time
-        if(this.physics.collide(mainPlayer, this.enemy)){
+        if(this.physics.overlap(mainPlayer, this.enemy)){
             mainPlayer.loseHealth()
             console.log(mainPlayer.health);
         }

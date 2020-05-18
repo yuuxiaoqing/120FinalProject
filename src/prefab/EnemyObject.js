@@ -17,7 +17,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         this.attackedByPlayer = false;
 
         //Creates a detection circle
-        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(5);
+        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(2);
         this.detectionField.body.allowGravity = false;
         this.detectionField.body.setCircle(62);
 
@@ -80,8 +80,11 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
     //Move towards player
     detectionFieldUpdate(){
-        this.detectionField.body.velocity.x = this.body.velocity.x;
-        this.detectionField.body.velocity.y = this.body.velocity.y;
+        //this.detectionField.body.velocity.x = this.body.velocity.x;
+        //this.detectionField.body.velocity.y = this.body.velocity.y;
+
+        this.detectionField.x = this.x;
+        this.detectionField.y = this.y;
     }
 
     //Reset Attack

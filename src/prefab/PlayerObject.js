@@ -15,7 +15,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         this.health = 10;
 
         //Creates Player Movement Variables
-        this.speed = 150;
+        this.speed = 250;
         this.movingLeft;
         this.movingRight;
 
@@ -72,6 +72,9 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         //Player is guarding
         if(!this.dashing && this.attacking == 0 && this.guarding)
             this.guard();
+
+        if(playerGuard.isUp)
+            this.invuln = false;
 
         //Creates the parry
         if(this.parrying)
@@ -212,7 +215,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Player attacking method
     attack(){
         //Creates the attack hitbox and stuff
-        var attackHitBox = this.scene.physics.add.sprite(this.x + (124 * this.playerFacing), this.y, 'attackHitbox');
+        var attackHitBox = this.scene.physics.add.sprite(this.x + (16 * this.playerFacing), this.y, 'attackHitbox').setScale(.125).setOrigin(0.5);
         attackHitBox.body.allowGravity = false;
         this.scene.attackGroup.add(attackHitBox);
         this.attacking = 2;
@@ -238,7 +241,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Creates the parry
     parry(){
         //Creates a parry hitbox, cannot be attacked
-        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(1.75);
+        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(.3);
         parryHitbox.body.allowGravity = false;
         parryHitbox.body.setCircle(62);
         this.scene.parryGroup.add(parryHitbox);
