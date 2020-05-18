@@ -217,9 +217,11 @@ class Play extends Phaser.Scene{
 
 
         //Debug
-        this.enemy = new EnemyObject(this, centerX, centerY, 'enemytemp').setOrigin(0.5);
+        this.enemy = new EnemyObject(this, centerX, centerY + 500, 'enemytemp').setScale(2).setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.enemy);
+        this.enemy.body.allowGravity = false;
+        this.enemy.body.setImmovable(true);
         this.enemy.body.collideWorldBounds = true;
 
 

@@ -7,11 +7,15 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         //Adds the object to the scene
         scene.add.existing(this);
 
+        //Saves the original coordinates
+        this.originalX = x;
+        this.originalY = y;
+
         //Creates player health
         this.health = 10;
 
         //Creates Player Movement Variables
-        this.speed = 300;
+        this.speed = 150;
         this.movingLeft;
         this.movingRight;
 
@@ -102,10 +106,6 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         } else {
             this.jumping = false;
         }
-
-        //Resets generic animation
-        //if(!playerJump.isDown && !playerRight.isDown && !playerLeft.isDown)
-        //    this.setTexture('playerSprite');
 
         //If the player dashes it checks for one press
         if(Phaser.Input.Keyboard.JustDown(playerDash) && !this.dashing){
@@ -198,7 +198,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Player Dashing
     dash(){
         //Dashes the playe rand gets the speed and direction
-        var dashSpeed = this.playerFacing * 2000;
+        var dashSpeed = this.playerFacing * 500;
         this.setVelocityX(dashSpeed);
         this.setVelocityY(0);
 
@@ -266,6 +266,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
             this.x = centerX;
             this.y = centerY;
             this.health = 10;
+            
         }
     }
     
