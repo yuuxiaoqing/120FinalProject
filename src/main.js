@@ -2,6 +2,8 @@
 let config = {
 
     type: Phaser.CANVAS,
+    pixelArt: true,
+    //width: 640,
     width:960,
     height:640,
     scale: {
@@ -19,6 +21,7 @@ let config = {
         }
     },    
     scene:[Load,Menu,Play,End, Credit]
+    //scene: [Play]
 };
 
 
@@ -31,7 +34,7 @@ let centerY = height/2;
 
 //debug key
 let keyS;
-let keyW;
+let cursors = null;
 
 //loading google text, taken from: https://phaser.io/examples/v2/text/google-webfonts
 let WebFontConfig = {

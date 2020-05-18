@@ -1,8 +1,8 @@
 class PlayerObject extends Phaser.Physics.Arcade.Sprite{
 
     //Constructor
-    constructor(scene, x, y, texture){
-        super(scene, x, y, texture);
+    constructor(scene, x, y, texture, frame){
+        super(scene, x, y, texture, frame);
 
         //Adds the object to the scene
         scene.add.existing(this);
