@@ -8,6 +8,19 @@ class Load extends Phaser.Scene{
         //Loads sounds
         this.load.audio('jump', './assets/Jump.wav');
         this.load.audio('hit', './assets/Lose.wav');
+
+        //Player Sprites
+        this.load.image('attackHitbox', './assets/attackHitbox.png');
+        this.load.image('parryHitbox', './assets/parryHitbox.png');
+        this.load.image('detectionHitbox', './assets/detectionHitbox.png');
+        this.load.image('playerPrototype','./assets/player_prototype.png');
+        this.load.image('enemytemp', './assets/enemytemp.png');
+
+        //burger layer sprites -> remember to turn it into a spritesheet
+        this.load.image('bun1','./assets/bun1.png');
+        this.load.image('meat','./assets/meat.png');
+        this.load.image('lettuce','./assets/lettuce.png');
+        this.load.image('bun2','./assets/bun2.png');
     }
     create(){
         this.cameras.main.setBackgroundColor(0xE6B61C);

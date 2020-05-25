@@ -215,7 +215,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Player attacking method
     attack(){
         //Creates the attack hitbox and stuff
-        var attackHitBox = this.scene.physics.add.sprite(this.x + (32 * this.playerFacing), this.y, 'attackHitbox').setScale(.25).setOrigin(0.5);
+        var attackHitBox = this.scene.physics.add.sprite(this.x + (32 * this.playerFacing), this.y, 'attackHitbox').setOrigin(0.5);
         attackHitBox.body.allowGravity = false;
         this.scene.attackGroup.add(attackHitBox);
         this.attacking = 2;
@@ -241,9 +241,9 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Creates the parry
     parry(){
         //Creates a parry hitbox, cannot be attacked
-        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(.5);
+        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'parryHitbox').setScale(2.5).setOrigin(0.5);
         parryHitbox.body.allowGravity = false;
-        parryHitbox.body.setCircle(62);
+        parryHitbox.body.setCircle(16);
         this.scene.parryGroup.add(parryHitbox);
         this.scene.time.delayedCall(100, () => {
             parryHitbox.destroy();

@@ -11,11 +11,6 @@ class Play extends Phaser.Scene{
         this.bunCooked = false, this.meatCooked = false, this.lettuceCooked = false;
     }
     preload(){
-        this.load.image('playerSprite', './assets/meme.png');
-        this.load.image('attackHitbox', './assets/attacktemp.png');
-        this.load.image('guardHitbox', './assets/guardtemp.png');
-        this.load.image('enemytemp', './assets/enemytemp.png');
-        
          //once the spritesheets are set, move all these loading to loading scene
          //from Prof. Nathan's Tiled examples
          this.load.path = "./assets/";
@@ -32,17 +27,6 @@ class Play extends Phaser.Scene{
         //      frameHeight: 64
         //  }, 'burger.json');
 
-        //burger layer sprites -> remember to turn it into a spritesheet
-        this.load.image('bun1','bun1.png');
-        this.load.image('meat','meat.png');
-        this.load.image('lettuce','lettuce.png');
-        this.load.image('bun2','bun2.png');
-        
-        //player sprites
-        this.load.image('playerSprite', 'penisfuckjesus.png');
-        this.load.image('attackHitbox', 'attacktemp.png');
-        this.load.image('guardHitbox', 'guardtemp.png');
-        this.load.image('playerPrototype','player_prototype.png');
     }
 
     //Create Function
@@ -77,6 +61,15 @@ class Play extends Phaser.Scene{
         playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
+        //Creates the main player
+        //const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
+        mainPlayer = new PlayerObject(this, centerX, centerY - 200, 'playerPrototype').setOrigin(0.5);
+        this.physics.add.existing(mainPlayer);
+        mainPlayer.body.collideWorldBounds = true;
+
+        //make sure mainPlayer don't fall through the ground
+        this.physics.add.collider(mainPlayer, ground);
+
         //Creates the physics groups for the parry and attacks
         this.attackGroup = this.add.group({
             runChildUpdate: true
@@ -90,19 +83,12 @@ class Play extends Phaser.Scene{
             runChildUpdate: true
         });
 
-        //Creates the main player
-        const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
-        mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "playerPrototype").setOrigin(0.5);
-
-        this.physics.add.existing(mainPlayer);
-        mainPlayer.body.collideWorldBounds = true;
         //console.log(mainPlayer)
         //console.log(mainPlayer.body);
         //setting world physics from Prof.Nathan's code: don't forget this!!
         //this.physics.world.gravity.y = 2000;
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
-        //make sure mainPlayer don't fall through the ground
-        this.physics.add.collider(mainPlayer, ground);
+        
         //console.log(ground);
 ;
       
@@ -222,7 +208,7 @@ class Play extends Phaser.Scene{
 
 
         //Debug
-        this.enemy = new EnemyObject(this, centerX, centerY,  "kenney_sheet", 317).setOrigin(0.5);
+        this.enemy = new EnemyObject(this, centerX, centerY,  'enemytemp').setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.enemy);
         //this.enemy.body.allowGravity = false;
