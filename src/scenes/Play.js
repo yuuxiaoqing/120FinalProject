@@ -50,6 +50,8 @@ class Play extends Phaser.Scene{
        
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         
+       
+
         //from Prof. Nathan's Mappy tutorial
         const map = this.add.tilemap("map01");
         const tileset = map.addTilesetImage("colored_packed", "kenney_sheet");
@@ -104,8 +106,13 @@ class Play extends Phaser.Scene{
         //make sure mainPlayer don't fall through the ground
         this.physics.add.collider(mainPlayer, ground);
         //console.log(ground);
-;
-      
+        
+        //To Do list text
+        this.toDoList = this.add.text(540,405,"topBun: "+ this.topBunCount
+                                             +" lettuce: "+ this.lettuceCount
+                                             +" meat: "+this.meatCount
+                                             +" bottom: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5);
+        
   
         //BOTTOM BUN obj group, burgerArray[0]
         //create a bottom bun, obj locations are from tilemap
@@ -154,38 +161,7 @@ class Play extends Phaser.Scene{
             bun2.body.setCircle(4).setOffset(4,4);
         });
         this.topBunGroup = this.add.group(this.topBun);
-        
-        // /* COOKING STATIONS */ MIGHT SCRAP
-        //doesn't work bc player touches one station and then the other ones don't work
-        // //bread station
-        // // this.breadMaker = map.createFromObjects("object", 'breadmaker', {
-        // //     key:'kenney_sheet',
-        // //     frame: 383
-        // // }, this);
-        // // this.physics.world.enable(this.breadMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        // // this.physics.add.overlap(this.mainPlayer,this.breadMaker, ()=>{
-        // //     this.bunCooked = true;
-        // // });
-        // // //meat station
-        // // this.meatMaker = map.createFromObjects("object", 'meatmachine', {
-        // //     key:'kenney_sheet',
-        // //     frame: 416
-        // // }, this);
-        // // this.physics.world.enable(this.meatMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        // // this.physics.add.overlap(this.mainPlayer,this.meatMaker, ()=>{
-        // //     this.meatCooked = true;
-        // // });
-        // // //lettuce station
-        // // this.veggieMaker = map.createFromObjects("object", 'lettuceharvest', {
-        // //     key:'kenney_sheet',
-        // //     frame: 431
-        // // }, this);
-        // // this.physics.world.enable(this.veggieMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        // // this.physics.add.overlap(this.mainPlayer,this.veggieMaker, ()=>{
-        // //     this.lettuceCooked = true;
-        // // });
-
-
+  
         //build the burger into the tilemap here
         //NOTE: DYNAMIC LAYER ISSUE: TILESET ID OFFSET BY +1
         //try making the map with a transparency setting and see if offset problem is fixed
@@ -193,6 +169,10 @@ class Play extends Phaser.Scene{
             //implement BOTTOM BUN counter here
             //INVENTORY INCREMENT HERE @NIKO
             this.bottomBunCount++;
+            this.toDoList.setText("topBun: "+ this.topBunCount
+                                             +" lettuce: "+ this.lettuceCount
+                                             +" meat: "+this.meatCount
+                                             +" bottom: "+this.bottomBunCount);
             //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
             this.burgerStack("bottomBun", this.burgerArray, this.bottomBunCount,background, this.bunCooked); //REMOVE THE TOP
             obj2.destroy(); //remove the obj from the scene
@@ -201,6 +181,10 @@ class Play extends Phaser.Scene{
             //implement MEAT counter here
             this.meatCount++;
             //background.putTilesAt([946+1,946+1,946+1], 32, 33);
+            this.toDoList.setText("topBun: "+ this.topBunCount
+                                             +" lettuce: "+ this.lettuceCount
+                                             +" meat: "+this.meatCount
+                                             +" bottom: "+this.bottomBunCount);
             this.burgerStack("meat", this.burgerArray, this.meatCount,background, this.meatCooked);
             obj2.destroy();
         });
@@ -208,6 +192,10 @@ class Play extends Phaser.Scene{
             //implement LETTUCE counter here
             this.lettuceCount++;
             //background.putTilesAt([994+1,994+1,994+1], 32, 34);
+            this.toDoList.setText("topBun: "+ this.topBunCount
+                                             +" lettuce: "+ this.lettuceCount
+                                             +" meat: "+this.meatCount
+                                             +" bottom: "+this.bottomBunCount);
             this.burgerStack("lettuce", this.burgerArray, this.lettuceCount,background, this.lettuceCooked);
             obj2.destroy();
         });
@@ -215,6 +203,11 @@ class Play extends Phaser.Scene{
             //implement TOP BUN counter here
             this.topBunCount++;
             //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
+            console.log("top bun count",this.topBunCount)
+            this.toDoList.setText("topBun: "+ this.topBunCount
+                                             +" lettuce: "+ this.lettuceCount
+                                             +" meat: "+this.meatCount
+                                             +" bottom: "+this.bottomBunCount);
             this.burgerStack('topBun', this.burgerArray, this.topBunCount,background, this.bunCooked);
             obj2.destroy();
         });
@@ -233,7 +226,7 @@ class Play extends Phaser.Scene{
 
 
         //Debug
-        this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
+       // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         
         //Camera setup: from Prof. Nathan's repo
@@ -246,18 +239,20 @@ class Play extends Phaser.Scene{
     
     
         //temp scene title
-        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff', align:"center"}).setOrigin(0.5);
+        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\nGather '+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:"center"}).setOrigin(0.5);
 
         //BURGER TEXT
-        this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
+        //this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
 
+        
+       
     }
     
     update(){
         //Updates main player
         mainPlayer.update();
         this.enemy.update();
-
+        //this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
             this.scene.start('endScene');
@@ -312,7 +307,28 @@ class Play extends Phaser.Scene{
             console.log(this.enemy.health);
         }
 
+      
+
     }
+
+    
+    bun1Text(){
+        this.topBunCount++;
+        this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
+    }
+
+  
+    bun1Trigger(){
+        //add bun1 to world
+        for(i =0; i<5 ; i++){
+            this.bun01 = this.physics.add.sprite(100,100,'kenney_sheet', 850);
+            this.bun01.body.setSize(24,24);
+
+        }
+        
+        
+    }
+
 
     //each time it's call, it takes a sprite from the sprite sheet and stack it 
     //on top of the burger
@@ -320,37 +336,41 @@ class Play extends Phaser.Scene{
         //delete the elements from the burgerArray when player gather enough resources
         //delete just leave the index empty and doesn't change the array index or change array length
         //so no reindexing array problem
-        if(removeElement == "bottomBun" && ingredientCount >= 5){
+        if(removeElement == "bottomBun" && ingredientCount >= ingredientAmt){
            //if the ingredient is bottom bun and ingredientCount is more than #, remove ingredient from list
            //display the ingredient
+           
            this.add.image(540, 500, 'bun2').setOrigin(0.5);
            //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
            delete burgerArray[0];
            //console.log("remove bottom bun")
         }
-        if(removeElement == "meat" && ingredientCount >= 5){
+        if(removeElement == "meat" && ingredientCount >= ingredientAmt){
 
             //background.putTilesAt([946+1,946+1,946+1], 32, 33);
             this.add.image(540, 505,  'meat').setOrigin(0.5);
+           
+           
             delete burgerArray[1];
            // console.log("remove meat");
         }
-        if(removeElement == "lettuce" && ingredientCount >= 5){
+        if(removeElement == "lettuce" && ingredientCount >= ingredientAmt){
            // background.putTilesAt([994+1,994+1,994+1], 32, 34);
             this.add.image(540, 515,  'lettuce').setOrigin(0.5);
+           
+           
             delete burgerArray[2];
            // console.log("remove lettuce");
         }
-        if(removeElement == "topBun" && ingredientCount >= 5){
+        if(removeElement == "topBun" && ingredientCount >= ingredientAmt){
             //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
             this.add.image(540, 520,  'bun1').setOrigin(0.5);
+
+            
             delete burgerArray[3];
            // console.log("remove top bun")
         }
         console.log(burgerArray)
     }
-
-
-
 
 }

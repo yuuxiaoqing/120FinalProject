@@ -55,6 +55,8 @@ let WebFontConfig = {
         families: []
     }
 }
+//ingredients counter: can change here
+let ingredientAmt = 5;
 
 //Player Objects
 let mainPlayer;
