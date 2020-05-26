@@ -6,7 +6,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         scene.add.existing(this);
         
         //Health of the enemy
-        this.health = 18;
+        this.health = 30;
 
         //Original Positions
         this.originalX = x;
@@ -17,7 +17,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         this.attackedByPlayer = false;
 
         //Creates a detection circle
-        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'detectionHitbox').setScale(2);
+        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'detectionHitbox').setScale(6);
         this.detectionField.body.allowGravity = false;
         this.detectionField.body.setCircle(62);
 
@@ -95,9 +95,9 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
     }
 
     //Lose health
-    loseHealth(){
+    loseHealth(healthLost){
         if(this.attackedByPlayer){
-            this.health -= 1;
+            this.health -= healthLost;
             this.attackedByPlayer = false;
         }
     }

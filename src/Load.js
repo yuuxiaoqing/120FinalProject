@@ -17,6 +17,7 @@ class Load extends Phaser.Scene{
         this.load.image('enemytemp', './assets/enemytemp.png');
 
         //burger layer sprites -> remember to turn it into a spritesheet
+        this.load.image('plate','./assets/plate.png');
         this.load.image('bun1','./assets/bun1.png');
         this.load.image('meat','./assets/meat.png');
         this.load.image('lettuce','./assets/lettuce.png');

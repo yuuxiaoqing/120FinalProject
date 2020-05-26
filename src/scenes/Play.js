@@ -140,37 +140,6 @@ class Play extends Phaser.Scene{
             bun2.body.setCircle(4).setOffset(4,4);
         });
         this.topBunGroup = this.add.group(this.topBun);
-        
-        // /* COOKING STATIONS */ MIGHT SCRAP
-        //doesn't work bc player touches one station and then the other ones don't work
-        // //bread station
-        // // this.breadMaker = map.createFromObjects("object", 'breadmaker', {
-        // //     key:'kenney_sheet',
-        // //     frame: 383
-        // // }, this);
-        // // this.physics.world.enable(this.breadMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        // // this.physics.add.overlap(this.mainPlayer,this.breadMaker, ()=>{
-        // //     this.bunCooked = true;
-        // // });
-        // // //meat station
-        // // this.meatMaker = map.createFromObjects("object", 'meatmachine', {
-        // //     key:'kenney_sheet',
-        // //     frame: 416
-        // // }, this);
-        // // this.physics.world.enable(this.meatMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        // // this.physics.add.overlap(this.mainPlayer,this.meatMaker, ()=>{
-        // //     this.meatCooked = true;
-        // // });
-        // // //lettuce station
-        // // this.veggieMaker = map.createFromObjects("object", 'lettuceharvest', {
-        // //     key:'kenney_sheet',
-        // //     frame: 431
-        // // }, this);
-        // // this.physics.world.enable(this.veggieMaker, Phaser.Physics.Arcade.STATIC_BODY);
-        // // this.physics.add.overlap(this.mainPlayer,this.veggieMaker, ()=>{
-        // //     this.lettuceCooked = true;
-        // // });
-
 
         //build the burger into the tilemap here
         //NOTE: DYNAMIC LAYER ISSUE: TILESET ID OFFSET BY +1
@@ -208,7 +177,7 @@ class Play extends Phaser.Scene{
 
 
         //Debug
-        this.enemy = new EnemyObject(this, centerX, centerY,  'enemytemp').setOrigin(0.5);
+        this.enemy = new EnemyObject(this, centerX, centerY + 500,  'enemytemp').setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.enemy);
         //this.enemy.body.allowGravity = false;
@@ -253,51 +222,10 @@ class Play extends Phaser.Scene{
         if(mainPlayer.jumping)
             this.sound.play('jump');
 
-        if(mainPlayer.attacking)
+        if(mainPlayer.attacking == 1)
             this.sound.play('hit');
 
-        //If the enemy is in the state to attack accerlate towards player
-        //(it just runs towards player)
-        if(this.enemy.attacking && this.enemy.alive){
-            this.physics.accelerateTo(this.enemy, mainPlayer.x, this.enemy.y, 200, 500);
-        }
-
-        //Checks if the player is in the detection field, if it is set attacking to true if not dont attack
-        if(this.physics.overlap(this.enemy.detectionField, mainPlayer)){
-            this.enemy.attacking = true;
-        } else {
-            this.enemy.resetAttacking();
-        }
-
-        //Checks if a player runs into an enemy, lose health and set invuln for a time
-        if(this.physics.overlap(mainPlayer, this.enemy)){
-            mainPlayer.loseHealth()
-            console.log(mainPlayer.health);
-        }
-
-        //Checks if a player is parrying the enemy
-        if(this.physics.overlap(this.enemy, this.parryGroup)){
-            console.log("Enemy Parried");
-            this.enemy.bounceBack(500);
-        }
-
-        //Sends the enemy to the void if they're "dead"
-        if(this.enemy.health <= 0){
-            this.enemy.body.collideWorldBounds = false;
-            this.enemy.toTheVoid();
-        }
-        
-
-        //Checks if the player is attacking the enemy
-        if(this.physics.overlap(this.enemy, this.attackGroup)){
-            console.log("Enemy Attacked");
-            this.enemy.bounceBack(100);
-            this.enemy.attackedByPlayer = true;
-            this.enemy.loseHealth();
-            mainPlayer.attackConnected = true;
-            console.log(this.enemy.health);
-        }
-
+        this.enemyBehavior(this.enemy);
     }
 
     //each time it's call, it takes a sprite from the sprite sheet and stack it 
@@ -334,6 +262,59 @@ class Play extends Phaser.Scene{
            // console.log("remove top bun")
         }
         console.log(burgerArray)
+    }
+
+
+    //Test
+    enemyBehavior(enemyAffected){
+        //If the enemy is in the state to attack accerlate towards player
+        //(it just runs towards player)
+        if(enemyAffected.attacking && enemyAffected.alive){
+            this.physics.accelerateTo(enemyAffected, mainPlayer.x, enemyAffected.y, 600, 1000);
+        }
+
+        //Checks if the player is in the detection field, if it is set attacking to true if not dont attack
+        if(this.physics.overlap(enemyAffected.detectionField, mainPlayer)){
+            enemyAffected.attacking = true;
+        } else {
+            enemyAffected.resetAttacking();
+        }
+
+        //Checks if a player runs into an enemy, lose health and set invuln for a time
+        if(this.physics.overlap(mainPlayer, enemyAffected)){
+            mainPlayer.loseHealth();
+            console.log("Checking if it's getting hurt");
+            console.log(mainPlayer.invuln);
+            console.log(mainPlayer.guarding);
+            console.log(mainPlayer.health);
+        }
+
+        //Checks if a player is parrying the enemy
+        if(this.physics.overlap(enemyAffected, this.parryGroup)){
+            console.log("Enemy Parried");
+            enemyAffected.bounceBack(500);
+            enemyAffected.attackedByPlayer = true;
+            enemyAffected.loseHealth(3);
+            mainPlayer.attackConnected = true;
+            console.log(enemyAffected.health);
+        }
+
+        //Sends the enemy to the void if they're "dead"
+        if(enemyAffected.health <= 0){
+            enemyAffected.body.collideWorldBounds = false;
+            enemyAffected.toTheVoid();
+        }
+        
+
+        //Checks if the player is attacking the enemy
+        if(this.physics.overlap(enemyAffected, this.attackGroup)){
+            console.log("Enemy Attacked");
+            enemyAffected.bounceBack(200);
+            enemyAffected.attackedByPlayer = true;
+            enemyAffected.loseHealth(1);
+            mainPlayer.attackConnected = true;
+            console.log(enemyAffected.health);
+        }
     }
 
 
