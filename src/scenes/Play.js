@@ -180,8 +180,6 @@ class Play extends Phaser.Scene{
         this.enemy = new EnemyObject(this, centerX, centerY + 500,  'enemytemp').setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.enemy);
-        //this.enemy.body.allowGravity = false;
-        //this.enemy.body.setImmovable(true);
         this.enemy.body.collideWorldBounds = true;
         this.physics.add.collider(this.enemy, ground);
 
@@ -227,6 +225,9 @@ class Play extends Phaser.Scene{
 
         this.enemyBehavior(this.enemy);
     }
+
+
+
 
     //each time it's call, it takes a sprite from the sprite sheet and stack it 
     //on top of the burger

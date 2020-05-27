@@ -80,9 +80,6 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
     //Move towards player
     detectionFieldUpdate(){
-        //this.detectionField.body.velocity.x = this.body.velocity.x;
-        //this.detectionField.body.velocity.y = this.body.velocity.y;
-
         this.detectionField.x = this.x;
         this.detectionField.y = this.y;
     }
