@@ -46,7 +46,7 @@ let centerX = width/2;
 let centerY = height/2;
 
 //debug key
-let keyS;
+let keyS, buildBurgerButton, addBun, addMEAT, addLettuce;
 
 //loading google text, taken from: https://phaser.io/examples/v2/text/google-webfonts
 let WebFontConfig = {
@@ -57,6 +57,10 @@ let WebFontConfig = {
 }
 //ingredients counter: can change here
 let ingredientAmt = 5;
+
+//The burger array
+burgerArray = [];
+
 
 //Player Objects
 let mainPlayer;

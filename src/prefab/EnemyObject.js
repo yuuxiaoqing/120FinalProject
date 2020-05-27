@@ -6,7 +6,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         scene.add.existing(this);
         
         //Health of the enemy
-        this.health = 30;
+        this.health = 60;
 
         //Original Positions
         this.originalX = x;

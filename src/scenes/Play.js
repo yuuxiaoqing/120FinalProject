@@ -3,12 +3,17 @@
 class Play extends Phaser.Scene{
     constructor(){
         super('playScene');
+        /**
         //create burgerArray
         this.burgerArray = ["bottomBun","meat","lettuce","topBun"];
+        **/
         //create ingredient count
         this.topBunCount = 0, this.meatCount = 0, this.lettuceCount = 0, this.bottomBunCount =0;
+        /**
         //cooking status booleans
         this.bunCooked = false, this.meatCooked = false, this.lettuceCooked = false;
+        */
+
     }
     preload(){
          //once the spritesheets are set, move all these loading to loading scene
@@ -31,18 +36,14 @@ class Play extends Phaser.Scene{
 
     //Create Function
     create(){
-       
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        
-       
 
         //from Prof. Nathan's Mappy tutorial
         const map = this.add.tilemap("map01");
         const tileset = map.addTilesetImage("colored_packed", "kenney_sheet");
         //const background = map.createDynamicLayer("background",tileset, 0,0);
         
-        /* create a new layer specifically for the burger
-        */
+        //create a new layer specifically for the burger
         const background = map.createDynamicLayer("background",tileset, 0,0);
         const ground = map.createStaticLayer("ground",tileset,0,0);
         ground.setCollisionByProperty({collide:true});
@@ -51,9 +52,8 @@ class Play extends Phaser.Scene{
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243,134,48,255),
             faceColor: new Phaser.Display.Color(40,39,37,255)
-
         });
-        
+
         /* PLAYER CODE */
         //Assigns the Keybinds
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -85,6 +85,11 @@ class Play extends Phaser.Scene{
             runChildUpdate: true
         });
 
+        this.burgerStation = new BurgerCompiler(this, 200, 300).setOrigin(0.5);
+        this.physics.add.existing(this.burgerStation);
+        this.burgerStation.body.allowGravity =false ;
+
+
         //console.log(mainPlayer)
         //console.log(mainPlayer.body);
         //setting world physics from Prof.Nathan's code: don't forget this!!
@@ -100,6 +105,7 @@ class Play extends Phaser.Scene{
                                              +" bottom: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5);
         
   
+        /**
         //BOTTOM BUN obj group, burgerArray[0]
         //create a bottom bun, obj locations are from tilemap
         this.bottomBun = map.createFromObjects("object", 'bun01', {
@@ -111,7 +117,6 @@ class Play extends Phaser.Scene{
             bun.body.setCircle(4).setOffset(4,4);//add a circle physic body
         });
         this.bottomBunGroup = this.add.group(this.bottomBun);//add bottomBun to a bottomBun group.
-
 
         //MEAT obj group, burgerArray[1]
         this.meats = map.createFromObjects("object", 'meat', {
@@ -195,7 +200,11 @@ class Play extends Phaser.Scene{
                                              +" bottom: "+this.bottomBunCount);
             this.burgerStack('topBun', this.burgerArray, this.topBunCount,background, this.bunCooked);
             obj2.destroy();
+            
         });
+        
+        **/
+
 
 
 
@@ -211,6 +220,10 @@ class Play extends Phaser.Scene{
         //Debug
        // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        buildBurgerButton = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+        addBun = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        addMEAT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        addLettuce = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         
         //Camera setup: from Prof. Nathan's repo
         //Camera follows the mainPlayer
@@ -235,23 +248,17 @@ class Play extends Phaser.Scene{
         //Updates main player
         mainPlayer.update();
         this.enemy.update();
+        this.burgerStation.update();
         //this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
             this.scene.start('endScene');
         }
 
-        //sounds
-        if(mainPlayer.jumping)
-            this.sound.play('jump');
-
-        if(mainPlayer.attacking == 1)
-            this.sound.play('hit');
-
         this.enemyBehavior(this.enemy);
     }
 
-    
+ /**  
     bun1Text(){
         this.topBunCount++;
         this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
@@ -312,9 +319,12 @@ class Play extends Phaser.Scene{
         }
         console.log(burgerArray)
     }
+    **/
 
 
-    //Test
+    //All the functions and physics stuff for the enemy ai
+    //This takes in an EnemyObject then deals with all the stuff like attacks
+    //AI etc
     enemyBehavior(enemyAffected){
         //If the enemy is in the state to attack accerlate towards player
         //(it just runs towards player)

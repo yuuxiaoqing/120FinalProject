@@ -151,6 +151,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         if(this.jumpCount > 0 && this.jumping){
             this.setVelocityY(-500);
             this.jumpCount -= 1;
+            this.scene.sound.play('jump');
         }
 
         //Jump collision stuff
@@ -178,7 +179,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Player Dashing
     dash(){
         //Dashes the playe rand gets the speed and direction
-        var dashSpeed = this.playerFacing * 500;
+        var dashSpeed = this.playerFacing * 800;
         this.setVelocityX(dashSpeed);
         this.setVelocityY(0);
 
@@ -196,6 +197,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         attackHitBox.body.allowGravity = false;
         this.scene.attackGroup.add(attackHitBox);
         this.attacking = 2;
+        this.scene.sound.play('hit');
 
         //stops player from moving, then deletes the hitbox
         if(this.attacking == 2){
@@ -219,7 +221,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Creates the parry
     parry(){
         //Creates a parry hitbox, cannot be attacked
-        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'parryHitbox').setScale(1.75).setOrigin(0.5);
+        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'parryHitbox').setScale(1.8).setOrigin(0.5);
         parryHitbox.body.allowGravity = false;
         parryHitbox.body.setCircle(16);
         this.scene.parryGroup.add(parryHitbox);
