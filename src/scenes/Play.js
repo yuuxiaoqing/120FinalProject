@@ -11,38 +11,44 @@ class Play extends Phaser.Scene{
         this.bunCooked = false, this.meatCooked = false, this.lettuceCooked = false;
     }
     preload(){
-        this.load.image('playerSprite', './assets/meme.png');
-        this.load.image('attackHitbox', './assets/attacktemp.png');
-        this.load.image('guardHitbox', './assets/guardtemp.png');
-        this.load.image('enemytemp', './assets/enemytemp.png');
+        // this.load.image('playerSprite', './assets/meme.png');
+        // this.load.image('attackHitbox', './assets/attacktemp.png');
+        // this.load.image('guardHitbox', './assets/guardtemp.png');
+        // this.load.image('enemytemp', './assets/enemytemp.png');
         
-         //once the spritesheets are set, move all these loading to loading scene
-         //from Prof. Nathan's Tiled examples
-         this.load.path = "./assets/";
-         //prototype tile sheet
-         this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
-             frameWidth: 16,
-             frameHeight: 16,
-         });
-         //map is 1024 x 1024 pixels, but canvas is 640 x 640
-         this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
-         this.load.image('temp', 'temp.png');
-        //  this.load.atlas('burger', 'burgersheet.png',{
-        //      frameWidth: 64,
-        //      frameHeight: 64
-        //  }, 'burger.json');
+        //  //once the spritesheets are set, move all these loading to loading scene
+        //  //from Prof. Nathan's Tiled examples
+        //  this.load.path = "./assets/";
+        //  //prototype tile sheet
+        //  this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
+        //      frameWidth: 16,
+        //      frameHeight: 16,
+        //  });
+        //  this.load.spritesheet('proto_sheet',"/tilemaps/proto_sheet.png",{
+        //      frameWidth:64,
+        //      frameHeight:64,
+        //  });
+        //  //map is 1024 x 1024 pixels, but canvas is 640 x 640
+        //  this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
+         
+        //  this.load.tilemapTiledJSON('map02', './tilemaps/map02.json');
+        //  this.load.image('temp', 'temp.png');
+        // //  this.load.atlas('burger', 'burgersheet.png',{
+        // //      frameWidth: 64,
+        // //      frameHeight: 64
+        // //  }, 'burger.json');
 
-        //burger layer sprites -> remember to turn it into a spritesheet
-        this.load.image('bun1','bun1.png');
-        this.load.image('meat','meat.png');
-        this.load.image('lettuce','lettuce.png');
-        this.load.image('bun2','bun2.png');
+        // //burger layer sprites -> remember to turn it into a spritesheet
+        // this.load.image('bun1','bun1.png');
+        // this.load.image('meat','meat.png');
+        // this.load.image('lettuce','lettuce.png');
+        // this.load.image('bun2','bun2.png');
         
-        //player sprites
-        this.load.image('playerSprite', 'penisfuckjesus.png');
-        this.load.image('attackHitbox', 'attacktemp.png');
-        this.load.image('guardHitbox', 'guardtemp.png');
-        this.load.image('playerPrototype','player_prototype.png');
+        // //player sprites
+        // this.load.image('playerSprite', 'penisfuckjesus.png');
+        // this.load.image('attackHitbox', 'attacktemp.png');
+        // this.load.image('guardHitbox', 'guardtemp.png');
+        // this.load.image('playerPrototype','player_prototype.png');
     }
 
     //Create Function
@@ -56,13 +62,16 @@ class Play extends Phaser.Scene{
         const map = this.add.tilemap("map01");
         const tileset = map.addTilesetImage("colored_packed", "kenney_sheet");
         //const background = map.createDynamicLayer("background",tileset, 0,0);
-        
+       // const map02 = this.add.tilemap('map02');
+        //const tileset02 = map02.addTilesetImage('proto', 'proto_sheet')
         /* create a new layer specifically for the burger
         */
         const background = map.createDynamicLayer("background",tileset, 0,0);
         const ground = map.createStaticLayer("ground",tileset,0,0);
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
+
+
         ground.renderDebug(debugGraphics,{
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243,134,48,255),
@@ -107,13 +116,21 @@ class Play extends Phaser.Scene{
         this.physics.add.collider(mainPlayer, ground);
         //console.log(ground);
         
+
+
+
         //To Do list text
-        this.toDoList = this.add.text(540,405,"topBun: "+ this.topBunCount
-                                             +" lettuce: "+ this.lettuceCount
-                                             +" meat: "+this.meatCount
-                                             +" bottom: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5);
+        // this.ingredientBar = this.add.rectangle(centerX, 60, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
+        // this.toDoList = this.add.text(centerX,60,"topBun: "+ this.topBunCount
+        //                                      +" lettuce: "+ this.lettuceCount
+        //                                      +" meat: "+this.meatCount
+        //                                      +" bottom: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
         
   
+
+
+
+
         //BOTTOM BUN obj group, burgerArray[0]
         //create a bottom bun, obj locations are from tilemap
         this.bottomBun = map.createFromObjects("object", 'bun01', {
@@ -169,10 +186,10 @@ class Play extends Phaser.Scene{
             //implement BOTTOM BUN counter here
             //INVENTORY INCREMENT HERE @NIKO
             this.bottomBunCount++;
-            this.toDoList.setText("topBun: "+ this.topBunCount
+            this.toDoList.setText("top bun: "+ this.topBunCount
                                              +" lettuce: "+ this.lettuceCount
                                              +" meat: "+this.meatCount
-                                             +" bottom: "+this.bottomBunCount);
+                                             +" bottom bun: "+this.bottomBunCount);
             //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
             this.burgerStack("bottomBun", this.burgerArray, this.bottomBunCount,background, this.bunCooked); //REMOVE THE TOP
             obj2.destroy(); //remove the obj from the scene
@@ -181,10 +198,10 @@ class Play extends Phaser.Scene{
             //implement MEAT counter here
             this.meatCount++;
             //background.putTilesAt([946+1,946+1,946+1], 32, 33);
-            this.toDoList.setText("topBun: "+ this.topBunCount
+            this.toDoList.setText("top bun: "+ this.topBunCount
                                              +" lettuce: "+ this.lettuceCount
                                              +" meat: "+this.meatCount
-                                             +" bottom: "+this.bottomBunCount);
+                                             +" bottom bun: "+this.bottomBunCount);
             this.burgerStack("meat", this.burgerArray, this.meatCount,background, this.meatCooked);
             obj2.destroy();
         });
@@ -192,10 +209,10 @@ class Play extends Phaser.Scene{
             //implement LETTUCE counter here
             this.lettuceCount++;
             //background.putTilesAt([994+1,994+1,994+1], 32, 34);
-            this.toDoList.setText("topBun: "+ this.topBunCount
+            this.toDoList.setText("top bun: "+ this.topBunCount
                                              +" lettuce: "+ this.lettuceCount
                                              +" meat: "+this.meatCount
-                                             +" bottom: "+this.bottomBunCount);
+                                             +" bottom bun: "+this.bottomBunCount);
             this.burgerStack("lettuce", this.burgerArray, this.lettuceCount,background, this.lettuceCooked);
             obj2.destroy();
         });
@@ -204,10 +221,10 @@ class Play extends Phaser.Scene{
             this.topBunCount++;
             //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
             console.log("top bun count",this.topBunCount)
-            this.toDoList.setText("topBun: "+ this.topBunCount
+            this.toDoList.setText("top bun: "+ this.topBunCount
                                              +" lettuce: "+ this.lettuceCount
                                              +" meat: "+this.meatCount
-                                             +" bottom: "+this.bottomBunCount);
+                                             +" bottom bun: "+this.bottomBunCount);
             this.burgerStack('topBun', this.burgerArray, this.topBunCount,background, this.bunCooked);
             obj2.destroy();
         });
@@ -244,7 +261,19 @@ class Play extends Phaser.Scene{
         //BURGER TEXT
         //this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
 
-        
+      
+        //To Do list text bar
+        this.ingredientBar = this.add.rectangle(centerX, 60, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX, 50, "TO DO LIST: Gather "+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
+        this.toDoList = this.add.text(centerX,80,"top bun: "+ this.topBunCount
+                                                +" lettuce: "+ this.lettuceCount
+                                                +" meat: "+this.meatCount
+                                                +" bottom bun: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
+           
+     
+   
+   
+   
        
     }
     
@@ -314,7 +343,7 @@ class Play extends Phaser.Scene{
     
     bun1Text(){
         this.topBunCount++;
-        this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
+        this.topBunAmt.setText(540,400,"top bun: "+this.topBunCount);
     }
 
   

@@ -11,6 +11,16 @@ We've also got some basic sound sfx implemented. We will use our own tilesheet f
 however, right now we are using the kenney sheet 1bit pack as placeholders.
 */
 
+var sceneConfig = {
+        
+    pack: {
+        preload: preload,
+        create: create,
+        files: [
+            {type: 'image', key: 'load', url: 'assets/loadAssets/load04.png'}
+        ]
+    }
+};
 //game settings
 let config = {
 
@@ -33,9 +43,19 @@ let config = {
             }
         }
     },    
-    scene:[Load,Menu,Play,End, Credit]
-    //scene: [Play]
+    scene:[Load,Menu,Tutorial,Play,End,Credit,Info]
+    //scene: [Load]
 };
+
+function preload(){
+
+}
+
+function create(){
+    this.add.image(0,0, 'load').setOrigin(0.5);
+}
+
+
 
 
 //Game Window stuff
@@ -52,7 +72,7 @@ let keyS;
 let WebFontConfig = {
     active: function() {game.time.events.add(Phaser.Timer.SECOND,createText,this);},
     google:{
-        families: []
+        families: ['Caveat Brush']
     }
 }
 //ingredients counter: can change here
