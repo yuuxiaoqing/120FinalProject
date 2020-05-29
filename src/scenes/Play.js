@@ -11,44 +11,7 @@ class Play extends Phaser.Scene{
         this.bunCooked = false, this.meatCooked = false, this.lettuceCooked = false;
     }
     preload(){
-        // this.load.image('playerSprite', './assets/meme.png');
-        // this.load.image('attackHitbox', './assets/attacktemp.png');
-        // this.load.image('guardHitbox', './assets/guardtemp.png');
-        // this.load.image('enemytemp', './assets/enemytemp.png');
-        
-        //  //once the spritesheets are set, move all these loading to loading scene
-        //  //from Prof. Nathan's Tiled examples
-        //  this.load.path = "./assets/";
-        //  //prototype tile sheet
-        //  this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
-        //      frameWidth: 16,
-        //      frameHeight: 16,
-        //  });
-        //  this.load.spritesheet('proto_sheet',"/tilemaps/proto_sheet.png",{
-        //      frameWidth:64,
-        //      frameHeight:64,
-        //  });
-        //  //map is 1024 x 1024 pixels, but canvas is 640 x 640
-        //  this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
-         
-        //  this.load.tilemapTiledJSON('map02', './tilemaps/map02.json');
-        //  this.load.image('temp', 'temp.png');
-        // //  this.load.atlas('burger', 'burgersheet.png',{
-        // //      frameWidth: 64,
-        // //      frameHeight: 64
-        // //  }, 'burger.json');
-
-        // //burger layer sprites -> remember to turn it into a spritesheet
-        // this.load.image('bun1','bun1.png');
-        // this.load.image('meat','meat.png');
-        // this.load.image('lettuce','lettuce.png');
-        // this.load.image('bun2','bun2.png');
-        
-        // //player sprites
-        // this.load.image('playerSprite', 'penisfuckjesus.png');
-        // this.load.image('attackHitbox', 'attacktemp.png');
-        // this.load.image('guardHitbox', 'guardtemp.png');
-        // this.load.image('playerPrototype','player_prototype.png');
+      
     }
 
     //Create Function
@@ -59,15 +22,13 @@ class Play extends Phaser.Scene{
        
 
         //from Prof. Nathan's Mappy tutorial
-        const map = this.add.tilemap("map01");
-        const tileset = map.addTilesetImage("colored_packed", "kenney_sheet");
-        //const background = map.createDynamicLayer("background",tileset, 0,0);
-       // const map02 = this.add.tilemap('map02');
-        //const tileset02 = map02.addTilesetImage('proto', 'proto_sheet')
+        const map02 = this.add.tilemap('map02');
+        const tileset02 = map02.addTilesetImage('proto_sheet', 'proto_sheet')
         /* create a new layer specifically for the burger
         */
-        const background = map.createDynamicLayer("background",tileset, 0,0);
-        const ground = map.createStaticLayer("ground",tileset,0,0);
+        const background = map02.createDynamicLayer("background",tileset02, 0,0);
+        const ground = map02.createStaticLayer("ground",tileset02,0,0);
+
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
 
@@ -102,7 +63,7 @@ class Play extends Phaser.Scene{
         });
 
         //Creates the main player
-        const playerSpawn = map.findObject("object", obj=> obj.name ==="player");
+        const playerSpawn = map02.findObject("object", obj=> obj.name ==="player");
         mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "playerPrototype").setOrigin(0.5);
 
         this.physics.add.existing(mainPlayer);
@@ -111,29 +72,16 @@ class Play extends Phaser.Scene{
         //console.log(mainPlayer.body);
         //setting world physics from Prof.Nathan's code: don't forget this!!
         //this.physics.world.gravity.y = 2000;
-        this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
+        this.physics.world.bounds.setTo(0,0,map02.widthInPixels, map02.heightInPixels);
         //make sure mainPlayer don't fall through the ground
         this.physics.add.collider(mainPlayer, ground);
         //console.log(ground);
         
-
-
-
-        //To Do list text
-        // this.ingredientBar = this.add.rectangle(centerX, 60, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        // this.toDoList = this.add.text(centerX,60,"topBun: "+ this.topBunCount
-        //                                      +" lettuce: "+ this.lettuceCount
-        //                                      +" meat: "+this.meatCount
-        //                                      +" bottom: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
-        
   
-
-
-
 
         //BOTTOM BUN obj group, burgerArray[0]
         //create a bottom bun, obj locations are from tilemap
-        this.bottomBun = map.createFromObjects("object", 'bun01', {
+        this.bottomBun = map02.createFromObjects("object", 'bun01', {
             key:'kenney_sheet', //tilesheet name
             frame: 850 //tileID in tileset
         }, this);
@@ -145,7 +93,7 @@ class Play extends Phaser.Scene{
 
 
         //MEAT obj group, burgerArray[1]
-        this.meats = map.createFromObjects("object", 'meat', {
+        this.meats = map02.createFromObjects("object", 'meat', {
             key:'kenney_sheet',
             frame: 946
         }, this);
@@ -157,7 +105,7 @@ class Play extends Phaser.Scene{
 
 
         //LETTUCE obj group, burgerArray[2]
-        this.lettuces = map.createFromObjects("object", 'lettuce', {
+        this.lettuces = map02.createFromObjects("object", 'lettuce', {
             key:'kenney_sheet',
             frame: 994
         }, this);
@@ -169,7 +117,7 @@ class Play extends Phaser.Scene{
 
 
         //TOP BUN obj group, burgerArray[3]
-        this.topBun = map.createFromObjects("object", 'bun02', {
+        this.topBun = map02.createFromObjects("object", 'bun02', {
             key:'kenney_sheet',
             frame: 802
         }, this);
@@ -248,7 +196,7 @@ class Play extends Phaser.Scene{
         
         //Camera setup: from Prof. Nathan's repo
         //Camera follows the mainPlayer
-        this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setBounds(0,0, map02.widthInPixels, map02.heightInPixels);
         //console.log(mainPlayer);
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
         

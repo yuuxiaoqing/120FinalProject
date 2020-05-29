@@ -22,25 +22,21 @@ class Load extends Phaser.Scene{
         
          //once the spritesheets are set, move all these loading to loading scene
          //from Prof. Nathan's Tiled examples
-         this.load.path = "./assets/";
+        this.load.path = "./assets/";
          //prototype tile sheet
-         this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
-             frameWidth: 16,
-             frameHeight: 16,
-         });
-         this.load.spritesheet('proto_sheet',"/tilemaps/proto_sheet.png",{
-             frameWidth:64,
-             frameHeight:64,
-         });
+        this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+        });
+        this.load.spritesheet('proto_sheet',"/tilemaps/proto_sheet.png",{
+            frameWidth:64,
+            frameHeight:64,
+        });
          //map is 1024 x 1024 pixels, but canvas is 640 x 640
-         this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
+        this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
          
-         this.load.tilemapTiledJSON('map02', './tilemaps/map02.json');
-         this.load.image('temp', 'temp.png');
-        //  this.load.atlas('burger', 'burgersheet.png',{
-        //      frameWidth: 64,
-        //      frameHeight: 64
-        //  }, 'burger.json');
+        this.load.tilemapTiledJSON('map02', './tilemaps/map02.json');
+        this.load.image('temp', 'temp.png');
 
         //burger layer sprites -> remember to turn it into a spritesheet
         this.load.image('bun1','bun1.png');
@@ -86,7 +82,7 @@ class Load extends Phaser.Scene{
             progressBar.destroy();
             progressBox.destroy();
             loadMessage.setText("Loading Complete!").setOrigin(0.5);
-            //this.scene.start('menuScene');
+            
         });
         
 
