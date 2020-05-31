@@ -22,6 +22,15 @@ class Load extends Phaser.Scene{
         this.load.image('meat','./assets/meat.png');
         this.load.image('lettuce','./assets/lettuce.png');
         this.load.image('bun2','./assets/bun2.png');
+
+        //Ingredient Sprites
+        this.load.image('bunsDroppable','./assets/bunsDroppable.png');
+        this.load.image('burgerDroppable','./assets/burgerDroppable.png');
+        this.load.image('lettuceDroppable','./assets/lettuceDroppable.png');
+
+
+
+
     }
     create(){
         this.cameras.main.setBackgroundColor(0xE6B61C);

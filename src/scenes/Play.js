@@ -45,7 +45,7 @@ class Play extends Phaser.Scene{
         
         //create a new layer specifically for the burger
         const background = map.createDynamicLayer("background",tileset, 0,0);
-        const ground = map.createStaticLayer("ground",tileset,0,0);
+        ground = map.createStaticLayer("ground",tileset,0,0);
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
         ground.renderDebug(debugGraphics,{
@@ -84,6 +84,11 @@ class Play extends Phaser.Scene{
         this.enemyGroup = this.add.group({
             runChildUpdate: true
         });
+
+        //Temp ingredients so the game doesn't crash, shoved into the void.
+        this.bunPickup = new IngredientObject(this, 69420, 69420, 1).setOrigin(0.5);
+        this.meatPickup = new IngredientObject(this, 69420, 69420, 2).setOrigin(0.5);
+        this.lettucePickup = new IngredientObject(this, 69420, 69420, 3).setOrigin(0.5);
 
         this.burgerStation = new BurgerCompiler(this, 200, 300).setOrigin(0.5);
         this.physics.add.existing(this.burgerStation);
@@ -209,16 +214,16 @@ class Play extends Phaser.Scene{
 
 
         //Debug
-        this.enemy = new EnemyObject(this, centerX, centerY + 500,  'enemytemp').setOrigin(0.5);
+        this.bunEnemy1 = new EnemyObject(this, centerX, centerY + 500,  'enemytemp', 1).setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
-        this.physics.add.existing(this.enemy);
-        this.enemy.body.collideWorldBounds = true;
-        this.physics.add.collider(this.enemy, ground);
+        this.physics.add.existing(this.bunEnemy1);
+        this.bunEnemy1.body.collideWorldBounds = true;
+        this.physics.add.collider(this.bunEnemy1, ground);
 
 
 
         //Debug
-       // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
+        // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         buildBurgerButton = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
         addBun = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -247,7 +252,7 @@ class Play extends Phaser.Scene{
     update(){
         //Updates main player
         mainPlayer.update();
-        this.enemy.update();
+        this.bunEnemy1.update();
         this.burgerStation.update();
         //this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
         //Debug
@@ -255,7 +260,11 @@ class Play extends Phaser.Scene{
             this.scene.start('endScene');
         }
 
-        this.enemyBehavior(this.enemy);
+        //Runs the behavior for enemies
+        this.enemyBehavior(this.bunEnemy1);
+
+        this.ingredientBehavior();
+
     }
 
  /**  
@@ -275,52 +284,58 @@ class Play extends Phaser.Scene{
         
         
     }
+    */
 
+    //handles the ingredient behavior
+    ingredientBehavior(){
+        if(Phaser.Input.Keyboard.JustDown(addBun)){
+            this.bunPickup = new IngredientObject(this, 100, 100 - 32, 1).setOrigin(0.5);
+            this.physics.add.existing(this.bunPickup);
+            this.bunPickup.body.collideWorldBounds = true;
+            this.physics.add.collider(this.bunPickup, ground);
+            this.bunPickup.setVelocityY(-500);
+        }
 
-    //each time it's call, it takes a sprite from the sprite sheet and stack it 
-    //on top of the burger
-    burgerStack(removeElement, burgerArray, ingredientCount, background, cooked=null){
-        //delete the elements from the burgerArray when player gather enough resources
-        //delete just leave the index empty and doesn't change the array index or change array length
-        //so no reindexing array problem
-        if(removeElement == "bottomBun" && ingredientCount >= ingredientAmt){
-           //if the ingredient is bottom bun and ingredientCount is more than #, remove ingredient from list
-           //display the ingredient
-           
-           this.add.image(540, 500, 'bun2').setOrigin(0.5);
-           //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
-           delete burgerArray[0];
-           //console.log("remove bottom bun")
+        if(Phaser.Input.Keyboard.JustDown(addMEAT)){
+            this.meatPickup =new IngredientObject(this, 200, 100, 2).setOrigin(0.5);
+            this.physics.add.existing(this.meatPickup);
+            this.meatPickup.body.collideWorldBounds = true;
+            this.physics.add.collider(this.meatPickup, ground);
         }
-        if(removeElement == "meat" && ingredientCount >= ingredientAmt){
 
-            //background.putTilesAt([946+1,946+1,946+1], 32, 33);
-            this.add.image(540, 505,  'meat').setOrigin(0.5);
-           
-           
-            delete burgerArray[1];
-           // console.log("remove meat");
+        if(Phaser.Input.Keyboard.JustDown(addLettuce)){
+            this.lettucePickup =new IngredientObject(this, 300, 100, 3).setOrigin(0.5);
+            this.physics.add.existing(this.lettucePickup);
+            this.lettucePickup.body.collideWorldBounds = true;
+            this.physics.add.collider(this.lettucePickup, ground);
         }
-        if(removeElement == "lettuce" && ingredientCount >= ingredientAmt){
-           // background.putTilesAt([994+1,994+1,994+1], 32, 34);
-            this.add.image(540, 515,  'lettuce').setOrigin(0.5);
-           
-           
-            delete burgerArray[2];
-           // console.log("remove lettuce");
-        }
-        if(removeElement == "topBun" && ingredientCount >= ingredientAmt){
-            //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
-            this.add.image(540, 520,  'bun1').setOrigin(0.5);
 
-            
-            delete burgerArray[3];
-           // console.log("remove top bun")
+        if(this.physics.overlap(this.bunPickup, mainPlayer)){
+            this.ingredientPickup(this.bunPickup);
         }
-        console.log(burgerArray)
+        if(this.physics.overlap(this.meatPickup, mainPlayer)){
+            this.ingredientPickup(this.meatPickup);
+        }
+        if(this.physics.overlap(this.lettucePickup, mainPlayer)){
+            this.ingredientPickup(this.lettucePickup);
+        }
     }
-    **/
 
+    //Adds ingredient to the burger array then rebuilds the burger accordingly
+    ingredientPickup(ingredientToAdd){
+            this.burgerStation.addIngredient(ingredientToAdd.ingredientKey);
+            this.burgerStation.buildBurger();
+            ingredientToAdd.destroy();
+    }
+
+    //Ingredient Spawn
+    ingredientCreate(x, y, ingredient, ingredientNumber){
+        ingredient = new IngredientObject(this, x, y - 32, ingredientNumber).setOrigin(0.5);
+        this.physics.add.existing(ingredient);
+        ingredient.body.collideWorldBounds = true;
+        this.physics.add.collider(ingredient, ground);
+        ingredient.setVelocityY(-500);
+    }
 
     //All the functions and physics stuff for the enemy ai
     //This takes in an EnemyObject then deals with all the stuff like attacks
@@ -359,9 +374,8 @@ class Play extends Phaser.Scene{
         }
 
         //Sends the enemy to the void if they're "dead"
-        if(enemyAffected.health <= 0){
-            enemyAffected.body.collideWorldBounds = false;
-            enemyAffected.toTheVoid();
+        if(enemyAffected.health <= 0 && !enemyAffected.voided){
+            this.enemyPoop(enemyAffected);
         }
         
 
@@ -374,6 +388,48 @@ class Play extends Phaser.Scene{
             mainPlayer.attackConnected = true;
             console.log(enemyAffected.health);
         }
+    }
+
+    //Kills the enemy, separate function because this will get FUCKING HUGE
+    //So key thing to note is that you cannot pass a this.bunpickup etc in a separate function
+    //It fucks witht he hitboxes etc etc idk why but it breaks i dont care this works
+    //Who cares
+    //I'm done.
+    enemyPoop(enemyAffected){
+        var poopOnce = true;
+            if(poopOnce){
+                switch(enemyAffected.ingredientKey){
+                    case 1:
+                        this.bunPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
+                        this.physics.add.existing(this.bunPickup);
+                        this.bunPickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.bunPickup, ground);
+                        this.bunPickup.setVelocityY(-500);
+                        poopOnce = false;
+                        break;
+        
+                    case 2:
+                        this.meatPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
+                        this.physics.add.existing(this.meatPickup);
+                        this.meatPickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.meatPickup, ground);
+                        this.meatPickup.setVelocityY(-500);
+                        poopOnce = false;
+                        break;
+        
+                    case 3:
+                        this.lettucePickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
+                        this.physics.add.existing(this.lettucePickup);
+                        this.lettucePickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.lettucePickup, ground);
+                        this.lettucePickup.setVelocityY(-500);
+                        poopOnce = false;
+                        poopOnce = false;
+                        break;
+                }
+            }
+            enemyAffected.body.collideWorldBounds = false;
+            enemyAffected.toTheVoid();
     }
 
 

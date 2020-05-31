@@ -61,9 +61,11 @@ let ingredientAmt = 5;
 //The burger array
 burgerArray = [];
 
-
 //Player Objects
 let mainPlayer;
 
 //Player Movement / Keybinds
 let playerLeft, playerRight, playerJump, playerAttack, playerDash, playerGuard;
+
+//Map collisions
+let ground;

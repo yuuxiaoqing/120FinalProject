@@ -16,26 +16,6 @@ class BurgerCompiler extends Phaser.Physics.Arcade.Sprite{
     }
 
     update(){
-        if(Phaser.Input.Keyboard.JustDown(buildBurgerButton)){
-            this.buildBurger();
-        }
-        if(Phaser.Input.Keyboard.JustDown(addBun)){
-            console.log(burgerArray);
-            this.addIngredient(1);
-            console.log(burgerArray);
-        }
-        if(Phaser.Input.Keyboard.JustDown(addMEAT)){
-            console.log(burgerArray);
-            this.addIngredient(2);
-            console.log(burgerArray);
-
-        }
-        if(Phaser.Input.Keyboard.JustDown(addLettuce)){
-            console.log(burgerArray);
-            this.addIngredient(3);
-            console.log(burgerArray);
-
-        }
     }
 
     //Builds the burger visually so it looks like a burger
