@@ -210,14 +210,20 @@ class Play extends Phaser.Scene{
         //BURGER TEXT
         //this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
 
+      
         //To Do list text bar
         this.ingredientBar = this.add.rectangle(centerX, 60, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        this.add.text(centerX, 50, "TO DO LIST: Gather "+ ingredientAmt +" of each ingredients to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX, 50, "TO DO LIST: Gather "+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
         this.toDoList = this.add.text(centerX,80,"top bun: "+ this.topBunCount
                                                 +" lettuce: "+ this.lettuceCount
                                                 +" meat: "+this.meatCount
                                                 +" bottom bun: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
            
+     
+   
+   
+   
+       
     }
     
     update(){
