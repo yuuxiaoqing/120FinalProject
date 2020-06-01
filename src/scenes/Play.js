@@ -21,7 +21,7 @@ class Play extends Phaser.Scene{
         /* create a new layer specifically for the burger
         */
         const background = map02.createDynamicLayer("background",tileset02, 0,0);
-        const ground = map02.createStaticLayer("ground",tileset02,0,0);
+        ground = map02.createStaticLayer("ground",tileset02,0,0);
 
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
