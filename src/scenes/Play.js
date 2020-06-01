@@ -89,7 +89,10 @@ class Play extends Phaser.Scene{
         //Debug
        // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-       
+        buildBurgerButton = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+        addBun = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        addMEAT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        addLettuce = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         //Camera setup: from Prof. Nathan's repo
         //Camera follows the mainPlayer
@@ -126,18 +129,11 @@ class Play extends Phaser.Scene{
         //Updates main player
         mainPlayer.update();
         this.bunEnemy1.update();
-        //this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
+        this.burgerStation.update();
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
             this.scene.start('badEndScene');
         }
-        
-        //sounds
-        if(mainPlayer.jumping)
-            this.sound.play('jump');
-
-        if(mainPlayer.attacking)
-            this.sound.play('hit');
 
         //If the enemy is in the state to attack accerlate towards player
         //(it just runs towards player)
@@ -145,106 +141,163 @@ class Play extends Phaser.Scene{
             this.physics.accelerateTo(this.bunEnemy1, mainPlayer.x, this.bunEnemy1.y, 200, 500);
         }
 
+        //Runs the behavior for enemies
+        this.enemyBehavior(this.bunEnemy1);
+
+        this.ingredientBehavior();
+        
+        this.toDoList.setText("Buns: "+ this.topBunCount
+                            +" lettuce: "+ this.lettuceCount
+                            +" meat: "+this.meatCount);
+
+    }
+
+    //handles the ingredient behavior
+    ingredientBehavior(){
+        if(Phaser.Input.Keyboard.JustDown(addBun)){
+            this.bunPickup = new IngredientObject(this, 100, 100 - 32, 1).setOrigin(0.5);
+            this.physics.add.existing(this.bunPickup);
+            this.bunPickup.body.collideWorldBounds = true;
+            this.physics.add.collider(this.bunPickup, ground);
+            this.bunPickup.setVelocityY(-500);
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(addMEAT)){
+            this.meatPickup =new IngredientObject(this, 200, 100, 2).setOrigin(0.5);
+            this.physics.add.existing(this.meatPickup);
+            this.meatPickup.body.collideWorldBounds = true;
+            this.physics.add.collider(this.meatPickup, ground);
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(addLettuce)){
+            this.lettucePickup =new IngredientObject(this, 300, 100, 3).setOrigin(0.5);
+            this.physics.add.existing(this.lettucePickup);
+            this.lettucePickup.body.collideWorldBounds = true;
+            this.physics.add.collider(this.lettucePickup, ground);
+        }
+
+        if(this.physics.overlap(this.bunPickup, mainPlayer)){
+            this.ingredientPickup(this.bunPickup);
+            this.topBunCount += 1;
+        }
+        if(this.physics.overlap(this.meatPickup, mainPlayer)){
+            this.ingredientPickup(this.meatPickup);
+            this.meatCount += 1;
+        }
+        if(this.physics.overlap(this.lettucePickup, mainPlayer)){
+            this.ingredientPickup(this.lettucePickup);
+            this.lettuceCount += 1;
+        }
+    }
+
+    //Adds ingredient to the burger array then rebuilds the burger accordingly
+    ingredientPickup(ingredientToAdd){
+            this.burgerStation.addIngredient(ingredientToAdd.ingredientKey);
+            this.burgerStation.buildBurger();
+            ingredientToAdd.destroy();
+    }
+
+    //Ingredient Spawn
+    ingredientCreate(x, y, ingredient, ingredientNumber){
+        ingredient = new IngredientObject(this, x, y - 32, ingredientNumber).setOrigin(0.5);
+        this.physics.add.existing(ingredient);
+        ingredient.body.collideWorldBounds = true;
+        this.physics.add.collider(ingredient, ground);
+        ingredient.setVelocityY(-500);
+    }
+
+    //All the functions and physics stuff for the enemy ai
+    //This takes in an EnemyObject then deals with all the stuff like attacks
+    //AI etc
+    enemyBehavior(enemyAffected){
+        //If the enemy is in the state to attack accerlate towards player
+        //(it just runs towards player)
+        if(enemyAffected.attacking && enemyAffected.alive){
+            this.physics.accelerateTo(enemyAffected, mainPlayer.x, enemyAffected.y, 600, 1000);
+        }
+
         //Checks if the player is in the detection field, if it is set attacking to true if not dont attack
-        if(this.physics.overlap(this.bunEnemy1.detectionField, mainPlayer)){
-            this.bunEnemy1.attacking = true;
+        if(this.physics.overlap(enemyAffected.detectionField, mainPlayer)){
+            enemyAffected.attacking = true;
         } else {
-            this.bunEnemy1.resetAttacking();
+            enemyAffected.resetAttacking();
         }
 
         //Checks if a player runs into an enemy, lose health and set invuln for a time
-        if(this.physics.overlap(mainPlayer, this.bunEnemy1)){
-            mainPlayer.loseHealth()
+        if(this.physics.overlap(mainPlayer, enemyAffected)){
+            mainPlayer.loseHealth();
+            console.log("Checking if it's getting hurt");
+            console.log(mainPlayer.invuln);
+            console.log(mainPlayer.guarding);
             console.log(mainPlayer.health);
         }
 
         //Checks if a player is parrying the enemy
-        if(this.physics.overlap(this.bunEnemy1, this.parryGroup)){
+        if(this.physics.overlap(enemyAffected, this.parryGroup)){
             console.log("Enemy Parried");
-            this.bunEnemy1.bounceBack(500);
+            enemyAffected.bounceBack(500);
+            enemyAffected.attackedByPlayer = true;
+            enemyAffected.loseHealth(3);
+            mainPlayer.attackConnected = true;
+            console.log(enemyAffected.health);
         }
 
         //Sends the enemy to the void if they're "dead"
-        if(this.bunEnemy1.health <= 0){
-            this.bunEnemy1.body.collideWorldBounds = false;
-            this.bunEnemy1.toTheVoid();
+        if(enemyAffected.health <= 0 && !enemyAffected.voided){
+            this.enemyPoop(enemyAffected);
         }
         
 
         //Checks if the player is attacking the enemy
-        if(this.physics.overlap(this.bunEnemy1, this.attackGroup)){
+        if(this.physics.overlap(enemyAffected, this.attackGroup)){
             console.log("Enemy Attacked");
-            this.bunEnemy1.bounceBack(100);
-            this.bunEnemy1.attackedByPlayer = true;
-            this.bunEnemy1.loseHealth();
+            enemyAffected.bounceBack(200);
+            enemyAffected.attackedByPlayer = true;
+            enemyAffected.loseHealth(1);
             mainPlayer.attackConnected = true;
-            console.log(this.bunEnemy1.health);
+            console.log(enemyAffected.health);
         }
-
-      
-
     }
 
-    
-    bun1Text(){
-        this.topBunCount++;
-        this.topBunAmt.setText(540,400,"top bun: "+this.topBunCount);
-    }
-
-  
-    bun1Trigger(){
-        //add bun1 to world
-        for(i =0; i<5 ; i++){
-            this.bun01 = this.physics.add.sprite(100,100,'kenney_sheet', 850);
-            this.bun01.body.setSize(24,24);
-
-        }
+    //Kills the enemy, separate function because this will get FUCKING HUGE
+    //So key thing to note is that you cannot pass a this.bunpickup etc in a separate function
+    //It fucks witht he hitboxes etc etc idk why but it breaks i dont care this works
+    //Who cares
+    //I'm done.
+    enemyPoop(enemyAffected){
+        var poopOnce = true;
+            if(poopOnce){
+                switch(enemyAffected.ingredientKey){
+                    case 1:
+                        this.bunPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
+                        this.physics.add.existing(this.bunPickup);
+                        this.bunPickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.bunPickup, ground);
+                        this.bunPickup.setVelocityY(-500);
+                        poopOnce = false;
+                        break;
         
+                    case 2:
+                        this.meatPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
+                        this.physics.add.existing(this.meatPickup);
+                        this.meatPickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.meatPickup, ground);
+                        this.meatPickup.setVelocityY(-500);
+                        poopOnce = false;
+                        break;
         
-    }
-
-
-    //each time it's call, it takes a sprite from the sprite sheet and stack it 
-    //on top of the burger
-    burgerStack(removeElement, burgerArray, ingredientCount, background, cooked=null){
-        //delete the elements from the burgerArray when player gather enough resources
-        //delete just leave the index empty and doesn't change the array index or change array length
-        //so no reindexing array problem
-        if(removeElement == "bottomBun" && ingredientCount >= ingredientAmt){
-           //if the ingredient is bottom bun and ingredientCount is more than #, remove ingredient from list
-           //display the ingredient
-           
-           this.add.image(540, 500, 'bun2').setOrigin(0.5);
-           //background.putTilesAt([1024+1,1025+1,1026+1], 32, 35); //ADD SPECIFIC TILES TO THIS LOCATION ON THE DYNAMIC LAYER
-           delete burgerArray[0];
-           //console.log("remove bottom bun")
+                    case 3:
+                        this.lettucePickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
+                        this.physics.add.existing(this.lettucePickup);
+                        this.lettucePickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.lettucePickup, ground);
+                        this.lettucePickup.setVelocityY(-500);
+                        poopOnce = false;
+                        poopOnce = false;
+                        break;
+                }
+            }
+            enemyAffected.body.collideWorldBounds = false;
+            enemyAffected.toTheVoid();
         }
-        if(removeElement == "meat" && ingredientCount >= ingredientAmt){
-
-            //background.putTilesAt([946+1,946+1,946+1], 32, 33);
-            this.add.image(540, 505,  'meat').setOrigin(0.5);
-           
-           
-            delete burgerArray[1];
-           // console.log("remove meat");
-        }
-        if(removeElement == "lettuce" && ingredientCount >= ingredientAmt){
-           // background.putTilesAt([994+1,994+1,994+1], 32, 34);
-            this.add.image(540, 515,  'lettuce').setOrigin(0.5);
-           
-           
-            delete burgerArray[2];
-           // console.log("remove lettuce");
-        }
-        if(removeElement == "topBun" && ingredientCount >= ingredientAmt){
-            //background.putTilesAt([928+1, 929+1, 930+1], 32, 32);
-            this.add.image(540, 520,  'bun1').setOrigin(0.5);
-
-            
-            delete burgerArray[3];
-           // console.log("remove top bun")
-        }
-        console.log(burgerArray)
-    }
-
 }
