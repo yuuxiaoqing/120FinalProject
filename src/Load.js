@@ -91,6 +91,27 @@ class Load extends Phaser.Scene{
             
         });
         
+        //Player Sprites
+        this.load.image('attackHitbox', './assets/attackHitbox.png');
+        this.load.image('parryHitbox', './assets/parryHitbox.png');
+        this.load.image('detectionHitbox', './assets/detectionHitbox.png');
+        this.load.image('playerPrototype','./assets/player_prototype.png');
+        this.load.image('enemytemp', './assets/enemytemp.png');
+
+        //burger layer sprites -> remember to turn it into a spritesheet
+        this.load.image('plate','./assets/plate.png');
+        this.load.image('bun1','./assets/bun1.png');
+        this.load.image('meat','./assets/meat.png');
+        this.load.image('lettuce','./assets/lettuce.png');
+        this.load.image('bun2','./assets/bun2.png');
+
+        //Ingredient Sprites
+        this.load.image('bunsDroppable','./assets/bunsDroppable.png');
+        this.load.image('burgerDroppable','./assets/burgerDroppable.png');
+        this.load.image('lettuceDroppable','./assets/lettuceDroppable.png');
+
+
+
 
     }
     create(){
@@ -104,9 +125,7 @@ class Load extends Phaser.Scene{
     }   
     update(){
 
-        if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('menuScene');
-        }
+        this.scene.start('menuScene');
 
         this.clock = this.time.delayedCall(1000, ()=>{
             this.scene.start("menuScene");

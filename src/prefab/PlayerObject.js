@@ -73,9 +73,6 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         if(!this.dashing && this.attacking == 0 && this.guarding)
             this.guard();
 
-        if(playerGuard.isUp)
-            this.invuln = false;
-
         //Creates the parry
         if(this.parrying)
             this.parry();
@@ -154,6 +151,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         if(this.jumpCount > 0 && this.jumping){
             this.setVelocityY(-500);
             this.jumpCount -= 1;
+            this.scene.sound.play('jump');
         }
 
         //Jump collision stuff
@@ -178,30 +176,10 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         this.setVelocityY(-600);
     }
 
-    //Lets the player lose health, only if they're invuln
-    //If not this wont work.
-    loseHealth(){
-        //Cant lose health if you're invuln
-        if(this.invuln == 0){
-            //Subtracts health
-            this.health -= 1;
-            //Pushes player up
-            this.pushUp();
-            
-            //Sets invulun
-            this.invuln = 1;
-
-            //Invuln timer gonne
-            this.scene.time.delayedCall(500, () => {
-                this.invuln = 0;
-            }, null, this);
-        }
-    }
-
     //Player Dashing
     dash(){
         //Dashes the playe rand gets the speed and direction
-        var dashSpeed = this.playerFacing * 500;
+        var dashSpeed = this.playerFacing * 800;
         this.setVelocityX(dashSpeed);
         this.setVelocityY(0);
 
@@ -215,10 +193,11 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Player attacking method
     attack(){
         //Creates the attack hitbox and stuff
-        var attackHitBox = this.scene.physics.add.sprite(this.x + (32 * this.playerFacing), this.y, 'attackHitbox').setScale(.25).setOrigin(0.5);
+        var attackHitBox = this.scene.physics.add.sprite(this.x + (32 * this.playerFacing), this.y, 'attackHitbox').setOrigin(0.5);
         attackHitBox.body.allowGravity = false;
         this.scene.attackGroup.add(attackHitBox);
         this.attacking = 2;
+        this.scene.sound.play('hit');
 
         //stops player from moving, then deletes the hitbox
         if(this.attacking == 2){
@@ -226,7 +205,9 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
             this.setVelocityY(0);
             this.scene.time.delayedCall(100, () => {
                 attackHitBox.destroy();
-                this.attacking = 0;
+                this.scene.time.delayedCall(200, () => {
+                    this.attacking = 0;
+                }, null, this);
             }, null, this);
         }
 
@@ -235,17 +216,16 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Player Guards
     guard(){
         this.setVelocityX(0);
-        this.invuln = 1;
     }
 
     //Creates the parry
     parry(){
         //Creates a parry hitbox, cannot be attacked
-        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(.5);
+        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'parryHitbox').setScale(1.8).setOrigin(0.5);
         parryHitbox.body.allowGravity = false;
-        parryHitbox.body.setCircle(62);
+        parryHitbox.body.setCircle(16);
         this.scene.parryGroup.add(parryHitbox);
-        this.scene.time.delayedCall(100, () => {
+        this.scene.time.delayedCall(50, () => {
             parryHitbox.destroy();
         }, null, this);        
         this.parrying = false;
@@ -254,7 +234,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Lose health and sets invuln
     loseHealth(){
         //Only works if player is NOT invulnerable
-        if(!this.invuln){
+        if(!this.invuln && !this.guarding){
             this.health -= 1;
             this.alpha = 0.5;
             this.invuln = true;
