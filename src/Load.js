@@ -59,12 +59,15 @@ class Load extends Phaser.Scene{
             fontSize: '40px'
         }
         this.add.text(width/2, height, "LOADING", textConfig);
-        //progress bar replace with a burger
+        //progress bar replace with a burger //check out Asset Bonanza// boot strap load, get something on 
+        //screen before loading the other assets
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
         progressBox.fillRect(330,270,320,50);
         var loadMessage =  this.add.text(centerX,centerY+100,"Loading.");
+        // this.add.sprite(centerX, centerY, "loadsheet", "load");
+        
         this.load.on('progress', function(value){
             console.log(value);
             progressBar.clear();
@@ -72,7 +75,9 @@ class Load extends Phaser.Scene{
             progressBar.fillRect(340,280,300*value, 30);
             loadMessage.setText("Loading..").setOrigin(0.5);
             loadMessage.setText("Loading...").setOrigin(0.5);
-          
+            // this.add.sprite(centerX, centerY, "loadsheet", "load01");
+            // this.add.sprite(centerX, centerY, "loadsheet", "load02");
+            // this.add.sprite(centerX, centerY, "loadsheet", "load03");
         });
         this.load.on('fileprogress', function(file){
             console.log(file.src);
@@ -81,6 +86,7 @@ class Load extends Phaser.Scene{
             console.log('complete');
             progressBar.destroy();
             progressBox.destroy();
+            // this.add.sprite(centerX, centerY, "loadsheet", "load04");
             loadMessage.setText("Loading Complete!").setOrigin(0.5);
             
         });

@@ -193,7 +193,8 @@ class Play extends Phaser.Scene{
         //Debug
        // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        
+       
+
         //Camera setup: from Prof. Nathan's repo
         //Camera follows the mainPlayer
         this.cameras.main.setBounds(0,0, map02.widthInPixels, map02.heightInPixels);
@@ -232,9 +233,9 @@ class Play extends Phaser.Scene{
         //this.topBunAmt.setText(540,400,"topBun: "+this.topBunCount);
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('endScene');
+            this.scene.start('badEndScene');
         }
-
+        
         //sounds
         if(mainPlayer.jumping)
             this.sound.play('jump');

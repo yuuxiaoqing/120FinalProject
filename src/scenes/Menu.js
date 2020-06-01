@@ -17,12 +17,12 @@ class Menu extends Phaser.Scene{
         }
         //this.add.text(centerX, centerY + 250, 'PRESS S TO START', textConfig).setOrigin(0.5);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        //start button
+        //start button, start prologue
         this.start = this.add.text(centerX, centerY+250, "start game", {fill:'#2f631c', fontSize: '40px',fontFamily: 'Caveat Brush'}).setOrigin(0.5)
         .setInteractive()
         .on('pointerdown', ()=>{this.start.setStyle({fill:'#fa0', fontSize: '50px',fontFamily: 'Caveat Brush'});
         this.clock = this.time.delayedCall(100, () =>{
-            this.scene.start("playScene");
+            this.scene.start("prologueScene");
         }, null, this);
         })
         .on('pointerover', ()=>{this.start.setStyle({fill:'#fa0',fontSize: '50px',fontFamily: 'Caveat Brush'}); })
@@ -63,7 +63,7 @@ class Menu extends Phaser.Scene{
     update(){
 
         if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('playScene');
+            this.scene.start('prologueScene');
         }
 
     }

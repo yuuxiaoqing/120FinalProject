@@ -43,8 +43,8 @@ let config = {
             }
         }
     },    
-    scene:[Load,Menu,Tutorial,Play,End,Credit,Info]
-    //scene: [Load]
+    //scene:[Boot,Load,Menu,Tutorial,Play,End,Credit,Info]
+    scene: [Boot, Load, Menu, Prologue, Tutorial, Play, GoodEnd, BadEnd, Credit, Info]
 };
 
 function preload(){
@@ -80,6 +80,7 @@ let ingredientAmt = 5;
 
 //Player Objects
 let mainPlayer;
+let cursors = null;
 
 //Player Movement / Keybinds
 let playerLeft, playerRight, playerJump, playerAttack, playerDash, playerGuard;
