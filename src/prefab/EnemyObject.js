@@ -6,9 +6,9 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         scene.add.existing(this);
         
         //Health of the enemy
-        //this.health = 60;
+        this.health = 60;
         //EnemyTesting
-        this.health = 1;
+        //this.health = 1;
 
         //Original Positions
         this.originalX = x;
@@ -21,6 +21,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         //Creates a detection circle
         this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'detectionHitbox').setScale(6);
         this.detectionField.body.allowGravity = false;
+        this.detectionField.alpha = 0;
         this.detectionField.body.setCircle(62);
 
         //Creates a variable to tell if it's being bounced back
