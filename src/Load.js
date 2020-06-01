@@ -101,6 +101,10 @@ class Load extends Phaser.Scene{
             loadMessage.setText("Loading Complete!").setOrigin(0.5);
             
         });
+<<<<<<< HEAD
+=======
+        
+>>>>>>> parent of cbe679f... Merge branch 'master' into UX
 
     }
     create(){
@@ -114,7 +118,9 @@ class Load extends Phaser.Scene{
     }   
     update(){
 
-        this.scene.start('menuScene');
+        if(Phaser.Input.Keyboard.JustDown(keyS)){
+            this.scene.start('menuScene');
+        }
 
         this.clock = this.time.delayedCall(1000, ()=>{
             this.scene.start("menuScene");

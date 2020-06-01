@@ -1,14 +1,18 @@
 class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
     //Constructor
-    constructor(scene, x, y, texture, ingredientKey){
+    constructor(scene, x, y, texture){
         super(scene, x, y, texture);
         scene.add.existing(this);
         
         //Health of the enemy
+<<<<<<< HEAD
         this.health = 60;
         //EnemyTesting
         //this.health = 1;
+=======
+        this.health = 18;
+>>>>>>> parent of cbe679f... Merge branch 'master' into UX
 
         //Original Positions
         this.originalX = x;
@@ -19,7 +23,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         this.attackedByPlayer = false;
 
         //Creates a detection circle
-        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'detectionHitbox').setScale(6);
+        this.detectionField = this.scene.physics.add.sprite(this.x, this.y, 'guardHitbox').setScale(2);
         this.detectionField.body.allowGravity = false;
         this.detectionField.body.setCircle(62);
 
@@ -33,13 +37,6 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
         //Creates a variable for the living situation
         this.alive = true;
-
-        //Ingredient key for which ingredient it is
-        this.ingredientKey = ingredientKey;
-
-        //Creates a variable to check if the enemy is voided or not
-        this.voided = false;
-        
     }
 
     create(){
@@ -89,6 +86,9 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
     //Move towards player
     detectionFieldUpdate(){
+        //this.detectionField.body.velocity.x = this.body.velocity.x;
+        //this.detectionField.body.velocity.y = this.body.velocity.y;
+
         this.detectionField.x = this.x;
         this.detectionField.y = this.y;
     }
@@ -101,9 +101,9 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
     }
 
     //Lose health
-    loseHealth(healthLost){
+    loseHealth(){
         if(this.attackedByPlayer){
-            this.health -= healthLost;
+            this.health -= 1;
             this.attackedByPlayer = false;
         }
     }
@@ -113,11 +113,10 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         //Deleting objects straight up crashes the game
         //To the void they go.
         if(this.health <= 0){
-            this.x = 69420;
+            this.x = -69420;
             this.y = 69420
-            this.detectionField.x = 69420;
+            this.detectionField.x = -69420;
             this.detectionField.y = 69420
-            this.voided = true;
         }
     }
 

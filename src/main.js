@@ -63,7 +63,7 @@ let centerX = width/2;
 let centerY = height/2;
 
 //debug key
-let keyS, buildBurgerButton, addBun, addMEAT, addLettuce;
+let keyS;
 
 //loading google text, taken from: https://phaser.io/examples/v2/text/google-webfonts
 let WebFontConfig = {
@@ -75,15 +75,9 @@ let WebFontConfig = {
 //ingredients counter: can change here
 let ingredientAmt = 5;
 
-//The burger array
-burgerArray = [];
-
 //Player Objects
 let mainPlayer;
 let cursors = null;
 
 //Player Movement / Keybinds
 let playerLeft, playerRight, playerJump, playerAttack, playerDash, playerGuard;
-
-//Map collisions
-let ground;
