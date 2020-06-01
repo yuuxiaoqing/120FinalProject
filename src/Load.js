@@ -101,10 +101,6 @@ class Load extends Phaser.Scene{
             loadMessage.setText("Loading Complete!").setOrigin(0.5);
             
         });
-<<<<<<< HEAD
-=======
-        
->>>>>>> parent of cbe679f... Merge branch 'master' into UX
 
     }
     create(){

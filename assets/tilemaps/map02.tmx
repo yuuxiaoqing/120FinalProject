@@ -103,7 +103,7 @@
 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
 </data>
  </layer>
- <layer id="2" name="ground" width="74" height="68">
+ <layer id="2" name="ground" width="74" height="68" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -175,83 +175,83 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3" name="object" visible="0" locked="1">
+ <objectgroup id="3" name="object">
   <object id="2" name="player" x="409.153" y="2529.3">
    <point/>
   </object>
-  <object id="3" name="bun02" x="1571.53" y="2004.56">
+  <object id="3" name="bun02" x="1307.53" y="784.56">
    <ellipse/>
   </object>
-  <object id="6" name="bun02" x="2421.58" y="1251.08">
+  <object id="6" name="bun02" x="1965.58" y="795.08">
    <ellipse/>
   </object>
-  <object id="7" name="bun02" x="898.572" y="4207.44">
+  <object id="7" name="bun02" x="910.572" y="767.44">
    <ellipse/>
   </object>
-  <object id="8" name="lettuce" x="360.254" y="1455.25">
+  <object id="8" name="lettuce" x="1528.25" y="787.25">
    <ellipse/>
   </object>
-  <object id="9" name="meat" x="643.836" y="1462.69">
+  <object id="9" name="meat" x="1739.84" y="790.69">
    <ellipse/>
   </object>
-  <object id="10" name="lettuce" x="1087.92" y="2614.36">
+  <object id="10" name="lettuce" x="2595.92" y="706.36">
    <ellipse/>
   </object>
-  <object id="11" name="lettuce" x="4128.29" y="3982.84">
+  <object id="11" name="lettuce" x="3360.29" y="546.84">
    <ellipse/>
   </object>
-  <object id="12" name="meat" x="2635.1" y="3988.79">
+  <object id="12" name="meat" x="2323.1" y="536.79">
    <ellipse/>
   </object>
-  <object id="14" name="meat" x="2693.97" y="1239.51">
+  <object id="14" name="meat" x="2177.97" y="791.51">
    <ellipse/>
   </object>
-  <object id="15" name="lettuce" x="2767.2" y="2923.56">
+  <object id="15" name="lettuce" x="3311.2" y="775.56">
    <ellipse/>
   </object>
-  <object id="16" name="lettuce" x="586.322" y="3826.84">
+  <object id="16" name="lettuce" x="506.322" y="758.84">
    <ellipse/>
   </object>
-  <object id="17" name="bun01" x="1984.72" y="4221.17">
+  <object id="17" name="bun01" x="4332.72" y="785.17">
    <ellipse/>
   </object>
-  <object id="18" name="meat" x="1355.33" y="4009.03">
+  <object id="18" name="meat" x="711.33" y="761.03">
    <ellipse/>
   </object>
-  <object id="19" name="bun02" x="1660.29" y="4230.22">
+  <object id="19" name="bun02" x="4008.29" y="794.22">
    <ellipse/>
   </object>
-  <object id="20" name="bun01" x="2080.14" y="3175.2">
+  <object id="20" name="bun01" x="3012.14" y="571.2">
    <ellipse/>
   </object>
-  <object id="22" name="bun01" x="2241.01" y="3175.2">
+  <object id="22" name="bun01" x="3145.01" y="683.2">
    <ellipse/>
   </object>
-  <object id="23" name="meat" x="3656.89" y="3978.33">
+  <object id="23" name="meat" x="2888.89" y="542.33">
    <ellipse/>
   </object>
-  <object id="24" name="bun02" x="1844.35" y="3038.85">
+  <object id="24" name="bun02" x="2756.35" y="558.85">
    <ellipse/>
   </object>
-  <object id="25" name="bun01" x="2325.66" y="1988.85">
+  <object id="25" name="bun01" x="2385.66" y="792.85">
    <ellipse/>
   </object>
-  <object id="26" name="bun01" x="1988.39" y="1994.61">
+  <object id="26" name="bun01" x="1104.39" y="790.61">
    <ellipse/>
   </object>
-  <object id="27" name="monster" x="3095.1" y="4236.31">
+  <object id="27" name="monster" x="2791.1" y="1508.31">
    <point/>
   </object>
   <object id="28" name="monster" x="2144.09" y="1193.08">
    <point/>
   </object>
-  <object id="29" name="monster" x="3031.7" y="2507.2">
+  <object id="29" name="monster" x="3547.7" y="823.2">
    <point/>
   </object>
-  <object id="30" name="burger" x="4000" y="2466.86">
+  <object id="30" name="burger" x="3824" y="838.86">
    <point/>
   </object>
-  <object id="31" name="demon" x="4570.61" y="2518.73">
+  <object id="31" name="demon" x="4346.61" y="2062.73">
    <point/>
   </object>
  </objectgroup>

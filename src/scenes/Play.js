@@ -62,19 +62,6 @@ class Play extends Phaser.Scene{
             runChildUpdate: true
         });
 
-<<<<<<< HEAD
-        //Temp ingredients so the game doesn't crash, shoved into the void.
-        this.bunPickup = new IngredientObject(this, 69420, 69420, 1).setOrigin(0.5);
-        this.meatPickup = new IngredientObject(this, 69420, 69420, 2).setOrigin(0.5);
-        this.lettucePickup = new IngredientObject(this, 69420, 69420, 3).setOrigin(0.5);
-
-        this.burgerStation = new BurgerCompiler(this, 200, 650).setOrigin(0.5);
-        this.physics.add.existing(this.burgerStation);
-        this.burgerStation.body.allowGravity =false ;
-
-        this.physics.world.bounds.setTo(0,0,map02.widthInPixels, map02.heightInPixels);
-        
-=======
         //Creates the main player
         const playerSpawn = map02.findObject("object", obj=> obj.name ==="player");
         mainPlayer = new PlayerObject(this, playerSpawn.x, playerSpawn.Y, "playerPrototype").setOrigin(0.5);
@@ -88,7 +75,6 @@ class Play extends Phaser.Scene{
         this.physics.world.bounds.setTo(0,0,map02.widthInPixels, map02.heightInPixels);
         //make sure mainPlayer don't fall through the ground
         this.physics.add.collider(mainPlayer, ground);
->>>>>>> parent of cbe679f... Merge branch 'master' into UX
         //console.log(ground);
         
   
@@ -194,11 +180,7 @@ class Play extends Phaser.Scene{
 
 
         //Debug
-<<<<<<< HEAD
-        this.bunEnemy1 = new EnemyObject(this, centerX, centerY - 600,  'enemytemp', 1).setOrigin(0.5);
-=======
         this.enemy = new EnemyObject(this, centerX, centerY,  "kenney_sheet", 317).setOrigin(0.5);
->>>>>>> parent of cbe679f... Merge branch 'master' into UX
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.enemy);
         //this.enemy.body.allowGravity = false;
@@ -217,14 +199,10 @@ class Play extends Phaser.Scene{
         //Camera follows the mainPlayer
         this.cameras.main.setBounds(0,0, map02.widthInPixels, map02.heightInPixels);
         //console.log(mainPlayer);
-<<<<<<< HEAD
-        this.cameras.main.startFollow(mainPlayer, true,  0.15, 0.15);
-=======
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
         
 
     
->>>>>>> parent of cbe679f... Merge branch 'master' into UX
     
         //temp scene title
         this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\nGather '+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:"center"}).setOrigin(0.5);
@@ -252,41 +230,6 @@ class Play extends Phaser.Scene{
             this.scene.start('badEndScene');
         }
         
-<<<<<<< HEAD
-        this.toDoList.setText("Buns: "+ this.topBunCount
-                            +" lettuce: "+ this.lettuceCount
-                            +" meat: "+this.meatCount);
-
-    }
-
-    //handles the ingredient behavior
-    ingredientBehavior(){
-        if(this.physics.overlap(this.bunPickup, mainPlayer)){
-            this.ingredientPickup(this.bunPickup);
-            this.topBunCount += 1;
-        }
-        if(this.physics.overlap(this.meatPickup, mainPlayer)){
-            this.ingredientPickup(this.meatPickup);
-            this.meatCount += 1;
-        }
-        if(this.physics.overlap(this.lettucePickup, mainPlayer)){
-            this.ingredientPickup(this.lettucePickup);
-            this.lettuceCount += 1;
-        }
-    }
-
-    //Adds ingredient to the burger array then rebuilds the burger accordingly
-    ingredientPickup(ingredientToAdd){
-            this.burgerStation.addIngredient(ingredientToAdd.ingredientKey);
-            this.burgerStation.buildBurger();
-            ingredientToAdd.destroy();
-    }
-
-    //All the functions and physics stuff for the enemy ai
-    //This takes in an EnemyObject then deals with all the stuff like attacks
-    //AI etc
-    enemyBehavior(enemyAffected){
-=======
         //sounds
         if(mainPlayer.jumping)
             this.sound.play('jump');
@@ -294,7 +237,6 @@ class Play extends Phaser.Scene{
         if(mainPlayer.attacking)
             this.sound.play('hit');
 
->>>>>>> parent of cbe679f... Merge branch 'master' into UX
         //If the enemy is in the state to attack accerlate towards player
         //(it just runs towards player)
         if(this.enemy.attacking && this.enemy.alive){
@@ -317,15 +259,7 @@ class Play extends Phaser.Scene{
         //Checks if a player is parrying the enemy
         if(this.physics.overlap(this.enemy, this.parryGroup)){
             console.log("Enemy Parried");
-<<<<<<< HEAD
-            enemyAffected.bounceBack(500);
-            enemyAffected.attackedByPlayer = true;
-            enemyAffected.loseHealth(10);
-            mainPlayer.attackConnected = true;
-            console.log(enemyAffected.health);
-=======
             this.enemy.bounceBack(500);
->>>>>>> parent of cbe679f... Merge branch 'master' into UX
         }
 
         //Sends the enemy to the void if they're "dead"
