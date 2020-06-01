@@ -117,7 +117,7 @@ class BurgerCompiler extends Phaser.Physics.Arcade.Sprite{
         //If it's not a bun
         if(ingredientObj != 1){
             //Checks if the top bun is placed, if it is, replace with ingredient then put bun on top.
-            if(burgerArray[burgerArray.length - 1] == 1){
+            if(burgerArray[burgerArray.length - 1] == 1 && burgerArray.length > 1){
                 burgerArray[burgerArray.length - 1] = ingredientObj;
                 burgerArray.push(1);
             } else{
