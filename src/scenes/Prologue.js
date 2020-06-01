@@ -23,11 +23,14 @@ class Prologue extends Phaser.Scene{
         this.prologueText = this.add.text(this.TEXT_X, this.TEXT_Y, '', {align:'center'}).setOrigin(0.5);
         this.nextText = this.add.text(centerX, centerY+200, '').setOrigin(0.5);
         this.typeText();
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
        
     }
     update(){
-        
-     
+                //Debug
+                if(Phaser.Input.Keyboard.JustDown(keyS)){
+                    this.scene.start('playScene');
+                }
         if(Phaser.Input.Keyboard.JustDown(cursors.space)&& !this.dialogTyping){
             this.typeText();
         }
@@ -35,6 +38,7 @@ class Prologue extends Phaser.Scene{
     }
 
     typeText() {
+
         this.dialogTyping = true;
         this.prologueText.text = '';
         this.nextText.text = '';

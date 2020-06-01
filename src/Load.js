@@ -14,11 +14,28 @@ class Load extends Phaser.Scene{
         this.load.audio('jump', './assets/Jump.wav');
         this.load.audio('hit', './assets/Lose.wav');
 
-        //temp loading
-        this.load.image('playerSprite', './assets/meme.png');
-        this.load.image('attackHitbox', './assets/attacktemp.png');
-        this.load.image('guardHitbox', './assets/guardtemp.png');
+        //Player Sprites
+        this.load.image('attackHitbox', './assets/attackHitbox.png');
+        this.load.image('parryHitbox', './assets/parryHitbox.png');
+        this.load.image('detectionHitbox', './assets/detectionHitbox.png');
+        this.load.image('playerPrototype','./assets/player_prototype.png');
         this.load.image('enemytemp', './assets/enemytemp.png');
+
+        //burger layer sprites -> remember to turn it into a spritesheet
+        this.load.image('plate','./assets/plate.png');
+        this.load.image('bun1','./assets/bun1.png');
+        this.load.image('meat','./assets/meat.png');
+        this.load.image('lettuce','./assets/lettuce.png');
+        this.load.image('bun2','./assets/bun2.png');
+
+        //Temp Enemy
+        this.load.image('enemytemp','./assets/enemytemp.png');
+
+
+        //Ingredient Sprites
+        this.load.image('bunsDroppable','./assets/bunsDroppable.png');
+        this.load.image('burgerDroppable','./assets/burgerDroppable.png');
+        this.load.image('lettuceDroppable','./assets/lettuceDroppable.png');
         
          //once the spritesheets are set, move all these loading to loading scene
          //from Prof. Nathan's Tiled examples
@@ -42,13 +59,7 @@ class Load extends Phaser.Scene{
         this.load.image('bun1','bun1.png');
         this.load.image('meat','meat.png');
         this.load.image('lettuce','lettuce.png');
-        this.load.image('bun2','bun2.png');
-        
-        //player sprites
-        this.load.image('playerSprite', 'penisfuckjesus.png');
-        this.load.image('attackHitbox', 'attacktemp.png');
-        this.load.image('guardHitbox', 'guardtemp.png');
-        this.load.image('playerPrototype','player_prototype.png');
+        this.load.image('bun2','bun2.png');  
 
         //title scene assets:
         this.load.image('title', 'title.png');
@@ -90,28 +101,6 @@ class Load extends Phaser.Scene{
             loadMessage.setText("Loading Complete!").setOrigin(0.5);
             
         });
-        
-        //Player Sprites
-        this.load.image('attackHitbox', './assets/attackHitbox.png');
-        this.load.image('parryHitbox', './assets/parryHitbox.png');
-        this.load.image('detectionHitbox', './assets/detectionHitbox.png');
-        this.load.image('playerPrototype','./assets/player_prototype.png');
-        this.load.image('enemytemp', './assets/enemytemp.png');
-
-        //burger layer sprites -> remember to turn it into a spritesheet
-        this.load.image('plate','./assets/plate.png');
-        this.load.image('bun1','./assets/bun1.png');
-        this.load.image('meat','./assets/meat.png');
-        this.load.image('lettuce','./assets/lettuce.png');
-        this.load.image('bun2','./assets/bun2.png');
-
-        //Ingredient Sprites
-        this.load.image('bunsDroppable','./assets/bunsDroppable.png');
-        this.load.image('burgerDroppable','./assets/burgerDroppable.png');
-        this.load.image('lettuceDroppable','./assets/lettuceDroppable.png');
-
-
-
 
     }
     create(){

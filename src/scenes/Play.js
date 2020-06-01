@@ -77,11 +77,11 @@ class Play extends Phaser.Scene{
         this.meatPickup = new IngredientObject(this, 69420, 69420, 2).setOrigin(0.5);
         this.lettucePickup = new IngredientObject(this, 69420, 69420, 3).setOrigin(0.5);
 
-        this.burgerStation = new BurgerCompiler(this, 200, 300).setOrigin(0.5);
+        this.burgerStation = new BurgerCompiler(this, 200, 650).setOrigin(0.5);
         this.physics.add.existing(this.burgerStation);
         this.burgerStation.body.allowGravity =false ;
 
-        this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
+        this.physics.world.bounds.setTo(0,0,map02.widthInPixels, map02.heightInPixels);
         
         //console.log(ground);
         
@@ -92,7 +92,7 @@ class Play extends Phaser.Scene{
                                              , {fill:'#fff',align:"center"}).setOrigin(0.5);
 
         //Debug
-        this.bunEnemy1 = new EnemyObject(this, centerX, centerY + 500,  'enemytemp', 1).setOrigin(0.5);
+        this.bunEnemy1 = new EnemyObject(this, centerX, centerY - 600,  'enemytemp', 1).setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.bunEnemy1);
         this.bunEnemy1.body.collideWorldBounds = true;
@@ -107,7 +107,7 @@ class Play extends Phaser.Scene{
         //Camera follows the mainPlayer
         this.cameras.main.setBounds(0,0, map02.widthInPixels, map02.heightInPixels);
         //console.log(mainPlayer);
-        this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
+        this.cameras.main.startFollow(mainPlayer, true,  0.15, 0.15);
     
         //temp scene title
         this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\nGather '+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:"center"}).setOrigin(0.5);
@@ -115,20 +115,14 @@ class Play extends Phaser.Scene{
         //BURGER TEXT
         //this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
 
-      
         //To Do list text bar
         this.ingredientBar = this.add.rectangle(centerX, 60, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        this.add.text(centerX, 50, "TO DO LIST: Gather "+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX, 50, "TO DO LIST: Gather "+ ingredientAmt +" of each ingredients to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
         this.toDoList = this.add.text(centerX,80,"top bun: "+ this.topBunCount
                                                 +" lettuce: "+ this.lettuceCount
                                                 +" meat: "+this.meatCount
                                                 +" bottom bun: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
            
-     
-   
-   
-   
-       
     }
     
     update(){
@@ -155,28 +149,6 @@ class Play extends Phaser.Scene{
 
     //handles the ingredient behavior
     ingredientBehavior(){
-        if(Phaser.Input.Keyboard.JustDown(addBun)){
-            this.bunPickup = new IngredientObject(this, 100, 100 - 32, 1).setOrigin(0.5);
-            this.physics.add.existing(this.bunPickup);
-            this.bunPickup.body.collideWorldBounds = true;
-            this.physics.add.collider(this.bunPickup, ground);
-            this.bunPickup.setVelocityY(-500);
-        }
-
-        if(Phaser.Input.Keyboard.JustDown(addMEAT)){
-            this.meatPickup =new IngredientObject(this, 200, 100, 2).setOrigin(0.5);
-            this.physics.add.existing(this.meatPickup);
-            this.meatPickup.body.collideWorldBounds = true;
-            this.physics.add.collider(this.meatPickup, ground);
-        }
-
-        if(Phaser.Input.Keyboard.JustDown(addLettuce)){
-            this.lettucePickup =new IngredientObject(this, 300, 100, 3).setOrigin(0.5);
-            this.physics.add.existing(this.lettucePickup);
-            this.lettucePickup.body.collideWorldBounds = true;
-            this.physics.add.collider(this.lettucePickup, ground);
-        }
-
         if(this.physics.overlap(this.bunPickup, mainPlayer)){
             this.ingredientPickup(this.bunPickup);
             this.topBunCount += 1;
@@ -196,15 +168,6 @@ class Play extends Phaser.Scene{
             this.burgerStation.addIngredient(ingredientToAdd.ingredientKey);
             this.burgerStation.buildBurger();
             ingredientToAdd.destroy();
-    }
-
-    //Ingredient Spawn
-    ingredientCreate(x, y, ingredient, ingredientNumber){
-        ingredient = new IngredientObject(this, x, y - 32, ingredientNumber).setOrigin(0.5);
-        this.physics.add.existing(ingredient);
-        ingredient.body.collideWorldBounds = true;
-        this.physics.add.collider(ingredient, ground);
-        ingredient.setVelocityY(-500);
     }
 
     //All the functions and physics stuff for the enemy ai
@@ -238,7 +201,7 @@ class Play extends Phaser.Scene{
             console.log("Enemy Parried");
             enemyAffected.bounceBack(500);
             enemyAffected.attackedByPlayer = true;
-            enemyAffected.loseHealth(3);
+            enemyAffected.loseHealth(10);
             mainPlayer.attackConnected = true;
             console.log(enemyAffected.health);
         }

@@ -55,9 +55,6 @@ function create(){
     this.add.image(0,0, 'load').setOrigin(0.5);
 }
 
-
-
-
 //Game Window stuff
 let game = new Phaser.Game(config);
 let width = game.config.width;
