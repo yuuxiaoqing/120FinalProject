@@ -214,11 +214,20 @@ class Play extends Phaser.Scene{
             this.physics.accelerateTo(enemyAffected, mainPlayer.x, enemyAffected.y, 600, 1000);
         }
 
+        //Plays noise to alert player they're being targeted
+        if(enemyAffected.attackingNoise == 1){
+            this.sound.play('enemyDetection');
+            enemyAffected.attackingNoise = 2;
+        }
+
         //Checks if the player is in the detection field, if it is set attacking to true if not dont attack
         if(this.physics.overlap(enemyAffected.detectionField, mainPlayer)){
             enemyAffected.attacking = true;
+            if(enemyAffected.attackingNoise == 0)
+                enemyAffected.attackingNoise = 1;
         } else {
             enemyAffected.resetAttacking();
+            enemyAffected.attackingNoise = 0;
         }
 
         //Checks if a player runs into an enemy, lose health and set invuln for a time

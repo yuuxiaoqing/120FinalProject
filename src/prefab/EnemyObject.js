@@ -16,6 +16,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
         //States for attacking and being attacked
         this.attacking = false;
+        this.attackingNoise = 0;
         this.attackedByPlayer = false;
 
         //Creates a detection circle
@@ -93,6 +94,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
     //Reset Attack
     resetAttacking(){
         this.attacking = false;
+        this.attackingNoise = 0;
         this.setVelocityX(0);
         this.setAccelerationX(0);
     }
