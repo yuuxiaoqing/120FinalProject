@@ -245,11 +245,14 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
             }, null, this);   
         }
 
-        if(this.health <= 0){
-            this.x = centerX;
-            this.y = centerY;
-            this.health = 10;
-            
+        if(this.health <= 0 && !this.invuln){
+            this.invuln = true;
+            this.scene.time.delayedCall(1000, () => {
+                this.x = centerX;
+                this.y = centerY;
+                this.health = 10;
+                
+            }, null, this); 
         }
     }
     

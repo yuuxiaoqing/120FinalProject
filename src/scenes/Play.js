@@ -71,14 +71,14 @@ class Play extends Phaser.Scene{
         this.meatPickup = new IngredientObject(this, 69420, 69420, 2).setOrigin(0.5);
         this.lettucePickup = new IngredientObject(this, 69420, 69420, 3).setOrigin(0.5);
 
-        this.burgerStation = new BurgerCompiler(this, 200, 300).setOrigin(0.5);
+        this.burgerStation = new BurgerCompiler(this, 200, 700).setOrigin(0.5);
         this.physics.add.existing(this.burgerStation);
         this.burgerStation.body.allowGravity =false ;
 
 
 
         //Debug
-        this.bunEnemy1 = new EnemyObject(this, centerX, centerY + 500,  'enemytemp', 1).setOrigin(0.5);
+        this.bunEnemy1 = new EnemyObject(this, centerX, centerY - 300,  'enemytemp', 1).setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.bunEnemy1);
         this.bunEnemy1.body.collideWorldBounds = true;
