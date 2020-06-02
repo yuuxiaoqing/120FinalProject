@@ -73,9 +73,7 @@ class Play extends Phaser.Scene{
 
         this.burgerStation = new BurgerCompiler(this, 200, 700).setOrigin(0.5);
         this.physics.add.existing(this.burgerStation);
-        this.burgerStation.body.allowGravity =false ;
-
-
+        this.burgerStation.body.allowGravity = false;
 
         //Debug
         this.bunEnemy1 = new EnemyObject(this, centerX, centerY - 300,  'enemytemp', 1).setOrigin(0.5);
