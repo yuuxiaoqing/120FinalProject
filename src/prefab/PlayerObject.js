@@ -197,7 +197,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         attackHitBox.body.allowGravity = false;
         this.scene.attackGroup.add(attackHitBox);
         this.attacking = 2;
-        this.scene.sound.play('hit');
+        this.scene.sound.play('playerAttack');
 
         //stops player from moving, then deletes the hitbox
         if(this.attacking == 2){
@@ -227,6 +227,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         this.scene.parryGroup.add(parryHitbox);
         this.scene.time.delayedCall(50, () => {
             parryHitbox.destroy();
+            this.scene.sound.play('playerGuard');
         }, null, this);        
         this.parrying = false;
     }
@@ -239,21 +240,25 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
             this.alpha = 0.5;
             this.invuln = true;
             this.pushUp();
+            this.scene.sound.play('playerHurt');
             this.scene.time.delayedCall(1000, () => {
                 this.invuln = false;
                 this.alpha = 1;
             }, null, this);   
         }
 
-        if(this.health <= 0 && !this.invuln){
-            this.invuln = true;
+        if(this.health == 0){
+            this.health--;
+            this.scene.sound.play('playerReset');
+            this.setVelocityX(0);
+            this.setAccelerationY(-100);
             this.scene.time.delayedCall(1000, () => {
                 this.x = centerX;
                 this.y = centerY;
                 this.health = 10;
-                
             }, null, this); 
         }
+
     }
     
 }

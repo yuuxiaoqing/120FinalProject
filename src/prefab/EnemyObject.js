@@ -112,9 +112,12 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         if(this.health <= 0){
             this.x = -69420;
             this.y = 69420
+            this.scene.sound.play('enemyDie');
             this.detectionField.x = -69420;
             this.detectionField.y = 69420
+            this.health = 69;
         }
+        
     }
 
 }

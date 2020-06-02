@@ -11,8 +11,14 @@ class Load extends Phaser.Scene{
     
     preload(){
         //Loads sounds
-        this.load.audio('jump', './assets/Jump.wav');
-        this.load.audio('hit', './assets/Lose.wav');
+        this.load.audio('jump', './assets/sounds/jump.wav');
+        this.load.audio('playerAttack', './assets/sounds/playerAttack.wav');
+        this.load.audio('playerGuard', './assets/sounds/playerGuard.wav');
+        this.load.audio('playerReset', './assets/sounds/playerReset.wav');
+        this.load.audio('playerHurt', './assets/sounds/playerHurt.wav');
+        this.load.audio('enemyDetection', './assets/sounds/enemyDetection.wav');
+        this.load.audio('enemyDie', './assets/sounds/enemyDie.wav');
+
 
         //Player Sprites
         this.load.image('attackHitbox', './assets/attackHitbox.png');
