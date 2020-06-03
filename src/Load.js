@@ -67,7 +67,7 @@ class Load extends Phaser.Scene{
         });
 
         //Loads the levels
-        this.load.tilemapTiledJSON('tutorial', './assets/tilemaps/Tutorial.json');
+        this.load.tilemapTiledJSON('tutorialLevel', './assets/tilemaps/tutorial.json');
 
 
 

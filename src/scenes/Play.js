@@ -16,12 +16,12 @@ class Play extends Phaser.Scene{
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         //from Prof. Nathan's Mappy tutorial
-        const tutorial = this.add.tilemap('tutorial');
-        const groundSprites = tutorial.addTilesetImage('groundsheet');
+        const tutorialLevel = this.add.tilemap('tutorialLevel');
+        const groundSprites = tutorialLevel.addTilesetImage('groundsheet');
         /* create a new layer specifically for the burger
         */
-        const background = tutorial.createDynamicLayer("background",groundSprites, 0,0);
-        ground = tutorial.createStaticLayer("tutorial",groundSprites,0,0);
+        const background = tutorialLevel.createDynamicLayer("background",groundSprites, 0,0);
+        ground = tutorialLevel.createStaticLayer("tutorialLevel",groundSprites,0,0);
 
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
