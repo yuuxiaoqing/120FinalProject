@@ -57,13 +57,13 @@ class Load extends Phaser.Scene{
         this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
          
         this.load.tilemapTiledJSON('map02', './tilemaps/map02.json');
-        this.load.image('temp', 'temp.png');
+            this.load.image('temp', 'temp.png');
         **/
 
         //Loads the tilesheet
-        this.load.spritesheet('groundsheet', './assets/tilemaps/TileSprites/groundsheet.json',{
-            frameWidth: 32,
-            frameHeight: 32,
+        this.load.spritesheet('groundsheet', './assets/tilemaps/groundsheet.png',{
+            frameWidth:32,
+            frameHeight:32,
         });
 
         //Loads the levels
