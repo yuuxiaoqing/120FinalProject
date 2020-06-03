@@ -156,12 +156,12 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
 
         //Jump collision stuff
         //Resets the jump
-        if(this.body.onFloor() && this.jumpCount == 0 && this.body.velocity.y == 0){
+        if(this.body.onFloor() && this.jumpCount < 2 && this.body.velocity.y == 0){
             this.resetJump();
         }
 
         //Handles jumping on objects (all objects)
-        if(this.jumpCount == 0 && this.body.velocity.y == 0  && !this.body.onCeiling()) {
+        if(this.jumpCount < 2 && this.body.velocity.y == 0  && !this.body.onCeiling()) {
             this.resetJump();
         }
     }

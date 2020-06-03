@@ -24,16 +24,16 @@ class Play extends Phaser.Scene{
         ground = tutorial.createStaticLayer("ground",groundSprites,0,0);
 
         ground.setCollisionByProperty({collide:true});
-        const debugGraphics = this.add.graphics().setAlpha(0.75);
+        //const debugGraphics = this.add.graphics().setAlpha(0.75);
 
-
+        /**
         ground.renderDebug(debugGraphics,{
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243,134,48,255),
             faceColor: new Phaser.Display.Color(40,39,37,255)
 
         });
-
+        **/
         this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
         
         /* PLAYER CODE */
@@ -46,7 +46,7 @@ class Play extends Phaser.Scene{
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         //Creates the main player
-        mainPlayer = new PlayerObject(this, centerX, centerY - 200, 'playerPrototype').setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, 82, 50, 'playerPrototype').setOrigin(0.5);
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
 
@@ -71,12 +71,12 @@ class Play extends Phaser.Scene{
         this.meatPickup = new IngredientObject(this, 69420, 69420, 2).setOrigin(0.5);
         this.lettucePickup = new IngredientObject(this, 69420, 69420, 3).setOrigin(0.5);
 
-        this.burgerStation = new BurgerCompiler(this, 200, 700).setOrigin(0.5);
+        this.burgerStation = new BurgerCompiler(this, 1152, 500).setOrigin(0.5);
         this.physics.add.existing(this.burgerStation);
         this.burgerStation.body.allowGravity = false;
 
         //Debug
-        this.bunEnemy1 = new EnemyObject(this, centerX, centerY - 300,  'enemytemp', 1).setOrigin(0.5);
+        this.bunEnemy1 = new EnemyObject(this, 1152, 672,  'enemytemp', 1).setOrigin(0.5);
         //this.enemyGroup.add(this.enemy);
         this.physics.add.existing(this.bunEnemy1);
         this.bunEnemy1.body.collideWorldBounds = true;
@@ -109,9 +109,9 @@ class Play extends Phaser.Scene{
 
       
         //To Do list text bar
-        this.ingredientBar = this.add.rectangle(centerX, 60, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        this.add.text(centerX, 50, "TO DO LIST: Gather 2 buns, 1 meat, and 1 lettuce to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
-        this.toDoList = this.add.text(centerX,80,"top bun: "+ this.topBunCount
+        this.ingredientBar = this.add.rectangle(centerX, 20, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX, 20, "TO DO LIST: Gather 2 buns, 1 meat, and 1 lettuce to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
+        this.toDoList = this.add.text(centerX,50,"top bun: "+ this.topBunCount
                                                 +" lettuce: "+ this.lettuceCount
                                                 +" meat: "+this.meatCount
                                                 +" bottom bun: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
@@ -126,12 +126,6 @@ class Play extends Phaser.Scene{
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
             this.scene.start('badEndScene');
-        }
-
-        //If the enemy is in the state to attack accerlate towards player
-        //(it just runs towards player)
-        if(this.bunEnemy1.attacking && this.bunEnemy1.alive){
-            this.physics.accelerateTo(this.bunEnemy1, mainPlayer.x, this.bunEnemy1.y, 200, 500);
         }
 
         //Runs the behavior for enemies
@@ -170,6 +164,7 @@ class Play extends Phaser.Scene{
         }
 
         if(this.physics.overlap(this.bunPickup, mainPlayer)){
+            console.log("Bun colliding");
             this.ingredientPickup(this.bunPickup);
             this.topBunCount += 1;
         }
@@ -239,7 +234,7 @@ class Play extends Phaser.Scene{
             console.log("Enemy Parried");
             enemyAffected.bounceBack(500);
             enemyAffected.attackedByPlayer = true;
-            enemyAffected.loseHealth(3);
+            enemyAffected.loseHealth(10);
             mainPlayer.attackConnected = true;
             console.log(enemyAffected.health);
         }
@@ -261,7 +256,7 @@ class Play extends Phaser.Scene{
         }
     }
 
-    //Kills the enemy, separate function because this will get FUCKING HUGE
+        //Kills the enemy, separate function because this will get FUCKING HUGE
     //So key thing to note is that you cannot pass a this.bunpickup etc in a separate function
     //It fucks witht he hitboxes etc etc idk why but it breaks i dont care this works
     //Who cares
@@ -295,11 +290,10 @@ class Play extends Phaser.Scene{
                         this.physics.add.collider(this.lettucePickup, ground);
                         this.lettucePickup.setVelocityY(-500);
                         poopOnce = false;
-                        poopOnce = false;
                         break;
                 }
             }
             enemyAffected.body.collideWorldBounds = false;
             enemyAffected.toTheVoid();
-        }
+    }
 }

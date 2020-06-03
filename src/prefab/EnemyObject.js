@@ -1,14 +1,14 @@
 class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
     //Constructor
-    constructor(scene, x, y, texture){
+    constructor(scene, x, y, texture, ingredientKey){
         super(scene, x, y, texture);
         scene.add.existing(this);
         
         //Health of the enemy
-        this.health = 60;
+        //this.health = 60;
         //EnemyTesting
-        //this.health = 1;
+        this.health = 1;
 
         //Original Positions
         this.originalX = x;
@@ -35,6 +35,12 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
         //Creates a variable for the living situation
         this.alive = true;
+
+        //Ingredient key for which ingredient it is
+        this.ingredientKey = ingredientKey;
+
+        //Creates a variable to check if the enemy is voided or not
+        this.voided = false;
     }
 
     create(){
@@ -100,9 +106,9 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
     }
 
     //Lose health
-    loseHealth(){
+    loseHealth(healthLost){
         if(this.attackedByPlayer){
-            this.health -= 1;
+            this.health -= healthLost;
             this.attackedByPlayer = false;
         }
     }
@@ -112,14 +118,12 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         //Deleting objects straight up crashes the game
         //To the void they go.
         if(this.health <= 0){
-            this.x = -69420;
+            this.x = 69420;
             this.y = 69420
-            this.scene.sound.play('enemyDie');
-            this.detectionField.x = -69420;
+            this.detectionField.x = 69420;
             this.detectionField.y = 69420
-            this.health = 69;
+            this.voided = true;
         }
-        
     }
 
 }
