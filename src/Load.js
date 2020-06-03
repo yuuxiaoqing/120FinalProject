@@ -19,33 +19,31 @@ class Load extends Phaser.Scene{
         this.load.audio('enemyDetection', './assets/sounds/enemyDetection.wav');
         this.load.audio('enemyDie', './assets/sounds/enemyDie.wav');
 
-
         //Player Sprites
-        this.load.image('attackHitbox', './assets/attackHitbox.png');
-        this.load.image('parryHitbox', './assets/parryHitbox.png');
-        this.load.image('detectionHitbox', './assets/detectionHitbox.png');
-        this.load.image('playerPrototype','./assets/player_prototype.png');
-        this.load.image('enemytemp', './assets/enemytemp.png');
+        this.load.image('attackHitbox', './assets/playerSprites/attackHitbox.png');
+        this.load.image('parryHitbox', './assets/playerSprites/parryHitbox.png');
+        this.load.image('playerPrototype','./assets/playerSprites/player_prototype.png');
 
         //burger layer sprites -> remember to turn it into a spritesheet
-        this.load.image('plate','./assets/plate.png');
-        this.load.image('bun1','./assets/bun1.png');
-        this.load.image('meat','./assets/meat.png');
-        this.load.image('lettuce','./assets/lettuce.png');
-        this.load.image('bun2','./assets/bun2.png');
-
-        //Temp Enemy
-        this.load.image('enemytemp','./assets/enemytemp.png');
-
+        this.load.image('plate','./assets/burgerSprites/plate.png');
+        this.load.image('bun1','./assets/burgerSprites/bun1.png');
+        this.load.image('meat','./assets/burgerSprites/meat.png');
+        this.load.image('lettuce','./assets/burgerSprites/lettuce.png');
+        this.load.image('bun2','./assets/burgerSprites/bun2.png');
 
         //Ingredient Sprites
-        this.load.image('bunsDroppable','./assets/bunsDroppable.png');
-        this.load.image('burgerDroppable','./assets/burgerDroppable.png');
-        this.load.image('lettuceDroppable','./assets/lettuceDroppable.png');
+        this.load.image('bunsDroppable','./assets/burgerSprites/bunsDroppable.png');
+        this.load.image('burgerDroppable','./assets/burgerSprites/burgerDroppable.png');
+        this.load.image('lettuceDroppable','./assets/burgerSprites/lettuceDroppable.png');
+
+        //Enemy Sprites
+        this.load.image('enemytemp','./assets/enemySprites/enemytemp.png');
+        this.load.image('detectionHitbox', './assets/enemySprites/detectionHitbox.png');
         
          //once the spritesheets are set, move all these loading to loading scene
          //from Prof. Nathan's Tiled examples
-        this.load.path = "./assets/";
+        //this.load.path = "./assets/";
+        /** 
          //prototype tile sheet
         this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
             frameWidth: 16,
@@ -60,15 +58,21 @@ class Load extends Phaser.Scene{
          
         this.load.tilemapTiledJSON('map02', './tilemaps/map02.json');
         this.load.image('temp', 'temp.png');
+        **/
 
-        //burger layer sprites -> remember to turn it into a spritesheet
-        this.load.image('bun1','bun1.png');
-        this.load.image('meat','meat.png');
-        this.load.image('lettuce','lettuce.png');
-        this.load.image('bun2','bun2.png');  
+        //Loads the tilesheet
+        this.load.spritesheet('groundsheet', './assets/tilemaps/TileSprites/groundsheet.json',{
+            frameWidth: 32,
+            frameHeight: 32,
+        });
+
+        //Loads the levels
+        this.load.tilemapTiledJSON('tutorial', './assets/tilemaps/Tutorial.json');
+
+
 
         //title scene assets:
-        this.load.image('title', 'title.png');
+        this.load.image('title', './assets/title.png');
         //text config
         let textConfig = {
             fontFamily: 'Caveat Brush',

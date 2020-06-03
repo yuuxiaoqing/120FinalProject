@@ -16,12 +16,12 @@ class Play extends Phaser.Scene{
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         //from Prof. Nathan's Mappy tutorial
-        const map02 = this.add.tilemap('map02');
-        const tileset02 = map02.addTilesetImage('proto_sheet', 'proto_sheet')
+        const tutorial = this.add.tilemap('tutorial');
+        const groundSprites = tutorial.addTilesetImage('groundsheet');
         /* create a new layer specifically for the burger
         */
-        const background = map02.createDynamicLayer("background",tileset02, 0,0);
-        ground = map02.createStaticLayer("ground",tileset02,0,0);
+        const background = tutorial.createDynamicLayer("background",groundSprites, 0,0);
+        ground = tutorial.createStaticLayer("tutorial",groundSprites,0,0);
 
         ground.setCollisionByProperty({collide:true});
         const debugGraphics = this.add.graphics().setAlpha(0.75);
@@ -34,7 +34,7 @@ class Play extends Phaser.Scene{
 
         });
 
-        this.physics.world.bounds.setTo(0,0,map02.widthInPixels, map02.heightInPixels);
+        this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
         
         /* PLAYER CODE */
         //Assigns the Keybinds
@@ -110,17 +110,12 @@ class Play extends Phaser.Scene{
       
         //To Do list text bar
         this.ingredientBar = this.add.rectangle(centerX, 60, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        this.add.text(centerX, 50, "TO DO LIST: Gather "+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX, 50, "TO DO LIST: Gather 2 buns, 1 meat, and 1 lettuce to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
         this.toDoList = this.add.text(centerX,80,"top bun: "+ this.topBunCount
                                                 +" lettuce: "+ this.lettuceCount
                                                 +" meat: "+this.meatCount
                                                 +" bottom bun: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
            
-     
-   
-   
-   
-       
     }
     
     update(){
