@@ -17,10 +17,10 @@ class Play extends Phaser.Scene{
 
         //from Prof. Nathan's Mappy tutorial
         const tutorial = this.add.tilemap('tutorialLevel');
-        const groundSprites = tutorial.addTilesetImage('groundsheet');
+        const groundSprites = tutorial.addTilesetImage("groundsheet", 'groundsheet');
         /* create a new layer specifically for the burger
         */
-        const background = tutorial.createDynamicLayer("background",groundSprites, 0,0);
+        //const background = tutorial.createDynamicLayer("background",groundSprites, 0,0);
         ground = tutorial.createStaticLayer("ground",groundSprites,0,0);
 
         ground.setCollisionByProperty({collide:true});
@@ -94,7 +94,7 @@ class Play extends Phaser.Scene{
 
         //Camera setup: from Prof. Nathan's repo
         //Camera follows the mainPlayer
-        this.cameras.main.setBounds(0,0, map02.widthInPixels, map02.heightInPixels);
+        this.cameras.main.setBounds(0,0, tutorial.widthInPixels, tutorial.heightInPixels);
         //console.log(mainPlayer);
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
         

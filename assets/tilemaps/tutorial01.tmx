@@ -1,10 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
  <editorsettings>
-  <export target="Tutorial.json" format="json"/>
+  <export target="tutorial01.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="Ground Tiles.tsx"/>
- <layer id="2" name="ground" width="50" height="25" locked="1">
+ <tileset firstgid="1" name="groundsheet" tilewidth="32" tileheight="32" tilecount="12" columns="3">
+  <image source="groundsheet.png" width="96" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="1" name="ground" width="50" height="25">
   <data encoding="csv">
 6,0,0,0,8,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,4,4,4,4,4,
 6,0,0,0,8,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,4,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,4,4,4,4,4,
