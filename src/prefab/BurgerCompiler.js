@@ -13,6 +13,10 @@ class BurgerCompiler extends Phaser.Physics.Arcade.Sprite{
 
         //Array that holds the sprites of the pieces being added
         this.burgerPieces = [];
+
+        //Burger Complete Variable
+        this.burgerComplete = false;
+
     }
 
     update(){
@@ -64,6 +68,10 @@ class BurgerCompiler extends Phaser.Physics.Arcade.Sprite{
                     break;
             }
         }
+
+        //Checks if the burger is completed or not
+        if(burgerArray.length == 4)
+            this.burgerComplete = true;
     }
 
     //Clears the burger sprites so it doesn't make like 3 billion and crash the fucking game

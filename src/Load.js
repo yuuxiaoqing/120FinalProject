@@ -1,8 +1,4 @@
 // Our Load scene
-
-
-
-
 class Load extends Phaser.Scene{
     constructor(){
         super('loadScene');
@@ -68,6 +64,7 @@ class Load extends Phaser.Scene{
 
         //Loads the levels
         this.load.tilemapTiledJSON('tutorialLevel', './assets/tilemaps/tutorial01.json');
+        this.load.tilemapTiledJSON('mainLevel', './assets/tilemaps/gameMap.json');
 
 
 

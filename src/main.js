@@ -44,8 +44,8 @@ let config = {
         }
     },    
     //scene:[Boot,Load,Menu,Tutorial,Play,End,Credit,Info]
-    //scene: [Boot, Load, Menu, Prologue, Tutorial, Play, GoodEnd, BadEnd, Credit, Info]
-    scene: [Boot, Load, Menu, Prologue, Play]
+    scene: [Boot, Load, Menu, Prologue, Tutorial, Play, GoodEnd, BadEnd, Credit, Info]
+    //scene: [Boot, Load, Menu, Prologue, Play]
 };
 
 function preload(){
@@ -74,7 +74,7 @@ let WebFontConfig = {
     }
 }
 //ingredients counter: can change here
-let ingredientAmt = 5;
+let ingredientAmt = 4;
 
 //The burger array
 burgerArray = [];
@@ -87,4 +87,4 @@ let cursors = null;
 let playerLeft, playerRight, playerJump, playerAttack, playerDash, playerGuard;
 
 //Map collisions
-let ground;
+let ground, ground2;

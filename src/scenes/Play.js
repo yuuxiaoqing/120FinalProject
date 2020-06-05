@@ -3,7 +3,6 @@
 class Play extends Phaser.Scene{
     constructor(){
         super('playScene');
-
         //create ingredient count
         this.topBunCount = 0, this.meatCount = 0, this.lettuceCount = 0, this.bottomBunCount =0;
     }
@@ -13,29 +12,32 @@ class Play extends Phaser.Scene{
 
     //Create Function
     create(){
+        burgerArray = [];
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         //from Prof. Nathan's Mappy tutorial
-        const tutorial = this.add.tilemap('tutorialLevel');
-        const groundSprites = tutorial.addTilesetImage("groundsheet", 'groundsheet');
+        const mainLevel = this.add.tilemap('mainLevel');
+        const groundSprites = mainLevel.addTilesetImage("groundsheet", 'groundsheet');
         /* create a new layer specifically for the burger
         */
-        //const background = tutorial.createDynamicLayer("background",groundSprites, 0,0);
-        ground = tutorial.createStaticLayer("ground",groundSprites,0,0);
+        // const background = mainLevel.createDynamicLayer("background",groundSprites, 0,0);
+        ground = mainLevel.createStaticLayer("ground",groundSprites,0,0);
 
         ground.setCollisionByProperty({collide:true});
-        //const debugGraphics = this.add.graphics().setAlpha(0.75);
 
-        /**
+        this.physics.world.bounds.setTo(0,0,mainLevel.widthInPixels, mainLevel.heightInPixels);
+
+        /*
+        const debugGraphics = this.add.graphics().setAlpha(0.75);
+
         ground.renderDebug(debugGraphics,{
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243,134,48,255),
             faceColor: new Phaser.Display.Color(40,39,37,255)
 
         });
-        **/
-        this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
-        
+        */
+
         /* PLAYER CODE */
         //Assigns the Keybinds
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -46,7 +48,7 @@ class Play extends Phaser.Scene{
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         //Creates the main player
-        mainPlayer = new PlayerObject(this, 82, 50, 'playerPrototype').setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, 3520, 1280, 'playerPrototype').setOrigin(0.5);
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
 
@@ -61,28 +63,35 @@ class Play extends Phaser.Scene{
             runChildUpdate: true
         });
 
-        //Creates a physic group for the enemies
-        this.enemyGroup = this.add.group({
-            runChildUpdate: true
-        });
-
         //Temp ingredients so the game doesn't crash, shoved into the void.
         this.bunPickup = new IngredientObject(this, 69420, 69420, 1).setOrigin(0.5);
         this.meatPickup = new IngredientObject(this, 69420, 69420, 2).setOrigin(0.5);
         this.lettucePickup = new IngredientObject(this, 69420, 69420, 3).setOrigin(0.5);
 
-        this.burgerStation = new BurgerCompiler(this, 1152, 500).setOrigin(0.5);
+        this.burgerStation = new BurgerCompiler(this, 3650, 1340).setOrigin(0.5);
         this.physics.add.existing(this.burgerStation);
         this.burgerStation.body.allowGravity = false;
 
-        //Debug
-        this.bunEnemy1 = new EnemyObject(this, 1152, 672,  'enemytemp', 1).setOrigin(0.5);
-        //this.enemyGroup.add(this.enemy);
+        //Enemy Spawns
+        this.bunEnemy1 = new EnemyObject(this, 1696, 1998,  'enemytemp', 1).setOrigin(0.5);
         this.physics.add.existing(this.bunEnemy1);
         this.bunEnemy1.body.collideWorldBounds = true;
         this.physics.add.collider(this.bunEnemy1, ground);
 
+        this.bunEnemy2 = new EnemyObject(this, 1920, 320,  'enemytemp', 1).setOrigin(0.5);
+        this.physics.add.existing(this.bunEnemy2);
+        this.bunEnemy2.body.collideWorldBounds = true;
+        this.physics.add.collider(this.bunEnemy2, ground);
 
+        this.meatEnemy = new EnemyObject(this, 320, 1536,  'enemytemp', 2).setOrigin(0.5);
+        this.physics.add.existing(this.meatEnemy);
+        this.meatEnemy.body.collideWorldBounds = true;
+        this.physics.add.collider(this.meatEnemy, ground);
+
+        this.lettuceEnemy = new EnemyObject(this, 1792, 1152,  'enemytemp', 3).setOrigin(0.5);
+        this.physics.add.existing(this.lettuceEnemy);
+        this.lettuceEnemy.body.collideWorldBounds = true;
+        this.physics.add.collider(this.lettuceEnemy, ground);
 
         //Debug
        // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
@@ -94,19 +103,9 @@ class Play extends Phaser.Scene{
 
         //Camera setup: from Prof. Nathan's repo
         //Camera follows the mainPlayer
-        this.cameras.main.setBounds(0,0, tutorial.widthInPixels, tutorial.heightInPixels);
+        this.cameras.main.setBounds(0,0, mainLevel.widthInPixels, mainLevel.heightInPixels);
         //console.log(mainPlayer);
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
-        
-
-    
-    
-        //temp scene title
-        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\nGather '+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:"center"}).setOrigin(0.5);
-
-        //BURGER TEXT
-        //this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
-
       
         //To Do list text bar
         this.ingredientBar = this.add.rectangle(centerX, 20, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
@@ -121,21 +120,40 @@ class Play extends Phaser.Scene{
     update(){
         //Updates main player
         mainPlayer.update();
+        
+        //Updates enemies
         this.bunEnemy1.update();
-        this.burgerStation.update();
-        //Debug
-        if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('badEndScene');
-        }
+        this.bunEnemy2.update();
+        this.meatEnemy.update();
+        this.lettuceEnemy.update();
 
+        //Updates the burger station
+        this.burgerStation.update();
+        
         //Runs the behavior for enemies
         this.enemyBehavior(this.bunEnemy1);
+        this.enemyBehavior(this.bunEnemy2);
+        this.enemyBehavior(this.meatEnemy);
+        this.enemyBehavior(this.lettuceEnemy);
 
+        //Runs behavior for ingredients
         this.ingredientBehavior();
         
         this.toDoList.setText("Buns: "+ this.topBunCount
                             +" lettuce: "+ this.lettuceCount
                             +" meat: "+this.meatCount);
+
+        //If the burger is complete, you can touch it to get oUUT
+        if(this.burgerStation.burgerComplete){
+            if(this.physics.overlap(this.burgerStation, mainPlayer)){
+                this.scene.start('goodEndScene');
+            }
+        }
+
+        //Debug
+        if(Phaser.Input.Keyboard.JustDown(keyS)){
+            this.scene.start('badEndScene');
+        }
 
     }
 
@@ -185,15 +203,6 @@ class Play extends Phaser.Scene{
             ingredientToAdd.destroy();
     }
 
-    //Ingredient Spawn
-    ingredientCreate(x, y, ingredient, ingredientNumber){
-        ingredient = new IngredientObject(this, x, y - 32, ingredientNumber).setOrigin(0.5);
-        this.physics.add.existing(ingredient);
-        ingredient.body.collideWorldBounds = true;
-        this.physics.add.collider(ingredient, ground);
-        ingredient.setVelocityY(-500);
-    }
-
     //All the functions and physics stuff for the enemy ai
     //This takes in an EnemyObject then deals with all the stuff like attacks
     //AI etc
@@ -241,7 +250,40 @@ class Play extends Phaser.Scene{
 
         //Sends the enemy to the void if they're "dead"
         if(enemyAffected.health <= 0 && !enemyAffected.voided){
-            this.enemyPoop(enemyAffected);
+            var poopOnce = true;
+            console.log("HELLO I AM THE NUMBER " + enemyAffected.ingredientKey);
+            if(poopOnce){
+                switch(enemyAffected.ingredientKey){
+                    case 1:
+                        this.bunPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
+                        this.physics.add.existing(this.bunPickup);
+                        this.bunPickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.bunPickup, ground);
+                        this.bunPickup.setVelocityY(-500);
+                        poopOnce = false;
+                        break;
+        
+                    case 2:
+                        this.meatPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 2).setOrigin(0.5);
+                        this.physics.add.existing(this.meatPickup);
+                        this.meatPickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.meatPickup, ground);
+                        this.meatPickup.setVelocityY(-500);
+                        poopOnce = false;
+                        break;
+        
+                    case 3:
+                        this.lettucePickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 3).setOrigin(0.5);
+                        this.physics.add.existing(this.lettucePickup);
+                        this.lettucePickup.body.collideWorldBounds = true;
+                        this.physics.add.collider(this.lettucePickup, ground);
+                        this.lettucePickup.setVelocityY(-500);
+                        poopOnce = false;
+                        break;
+                }
+            }
+            enemyAffected.body.collideWorldBounds = false;
+            enemyAffected.toTheVoid();
         }
         
 
@@ -262,38 +304,6 @@ class Play extends Phaser.Scene{
     //Who cares
     //I'm done.
     enemyPoop(enemyAffected){
-        var poopOnce = true;
-            if(poopOnce){
-                switch(enemyAffected.ingredientKey){
-                    case 1:
-                        this.bunPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
-                        this.physics.add.existing(this.bunPickup);
-                        this.bunPickup.body.collideWorldBounds = true;
-                        this.physics.add.collider(this.bunPickup, ground);
-                        this.bunPickup.setVelocityY(-500);
-                        poopOnce = false;
-                        break;
         
-                    case 2:
-                        this.meatPickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
-                        this.physics.add.existing(this.meatPickup);
-                        this.meatPickup.body.collideWorldBounds = true;
-                        this.physics.add.collider(this.meatPickup, ground);
-                        this.meatPickup.setVelocityY(-500);
-                        poopOnce = false;
-                        break;
-        
-                    case 3:
-                        this.lettucePickup = new IngredientObject(this, enemyAffected.x, enemyAffected.y - 64, 1).setOrigin(0.5);
-                        this.physics.add.existing(this.lettucePickup);
-                        this.lettucePickup.body.collideWorldBounds = true;
-                        this.physics.add.collider(this.lettucePickup, ground);
-                        this.lettucePickup.setVelocityY(-500);
-                        poopOnce = false;
-                        break;
-                }
-            }
-            enemyAffected.body.collideWorldBounds = false;
-            enemyAffected.toTheVoid();
     }
 }
