@@ -40,7 +40,7 @@ class Play extends Phaser.Scene{
         //Assigns the Keybinds
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         playerRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         playerAttack = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
         playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);

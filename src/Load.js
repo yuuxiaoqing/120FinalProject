@@ -78,9 +78,9 @@ class Load extends Phaser.Scene{
         this.load.image('title', './assets/background/title.png');
         //text config
         let textConfig = {
-            fontFamily: 'Caveat Brush',
+            fontFamily: 'VT323',
             fill: '#ffffff',
-            fontSize: '40px'
+            fontSize: '40px',
         }
         this.add.text(width/2, height, "LOADING", textConfig);
         //progress bar replace with a burger //check out Asset Bonanza// boot strap load, get something on 

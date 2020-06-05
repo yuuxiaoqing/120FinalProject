@@ -18,11 +18,17 @@ class Prologue extends Phaser.Scene{
         //put the dialog here and do a letter by letter type out
         this.prologue = this.cache.json.get('prologue');
         //console.log(this.prologue);
-        
+        let textConfig = {
+            fontFamily: 'VT323',
+            fill: '#ffffff',
+            fontSize: '30px',
+            align: "center",
+            
+        }
         //add the story bg
         this.add.image(centerX,centerY, "storybg").setOrigin(0.5);
         cursors = this.input.keyboard.createCursorKeys();
-        this.prologueText = this.add.text(this.TEXT_X, this.TEXT_Y, '', {align:'center'}).setOrigin(0.5);
+        this.prologueText = this.add.text(this.TEXT_X, this.TEXT_Y, '', textConfig).setOrigin(0.5);
         this.nextText = this.add.text(centerX, centerY+200, '').setOrigin(0.5);
         this.typeText();
         
@@ -31,9 +37,9 @@ class Prologue extends Phaser.Scene{
     }
     update(){
                 //Debug
-                if(Phaser.Input.Keyboard.JustDown(keyS)){
-                    this.scene.start('playScene');
-                }
+                // if(Phaser.Input.Keyboard.JustDown(keyS)){
+                //     this.scene.start('playScene');
+                // }
         //change it to something other than SPACE
         if(Phaser.Input.Keyboard.JustDown(cursors.space)&& !this.dialogTyping){
             this.typeText();

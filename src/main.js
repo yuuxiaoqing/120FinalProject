@@ -68,7 +68,7 @@ let keyS, buildBurgerButton, addBun, addMEAT, addLettuce;
 let WebFontConfig = {
     active: function() {game.time.events.add(Phaser.Timer.SECOND,createText,this);},
     google:{
-        families: ['Caveat Brush']
+        families: ['Caveat Brush','Gochi Hand', 'Nanum Pen Script', 'Loved by the King', 'VT323']
     }
 }
 //ingredients counter: can change here
