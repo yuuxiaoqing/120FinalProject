@@ -249,8 +249,27 @@ class Play extends Phaser.Scene{
         }
 
         //Sends the enemy to the void if they're "dead"
-        if(enemyAffected.health <= 0 && !enemyAffected.voided){
-            var poopOnce = true;
+        if(enemyAffected.health <= 0 && !enemyAffected.voided)
+            this.enemyPoop(enemyAffected);
+
+        //Checks if the player is attacking the enemy
+        if(this.physics.overlap(enemyAffected, this.attackGroup)){
+            console.log("Enemy Attacked");
+            enemyAffected.bounceBack(200);
+            enemyAffected.attackedByPlayer = true;
+            enemyAffected.loseHealth(1);
+            mainPlayer.attackConnected = true;
+            console.log(enemyAffected.health);
+        }
+    }
+
+        //Kills the enemy, separate function because this will get FUCKING HUGE
+    //So key thing to note is that you cannot pass a this.bunpickup etc in a separate function
+    //It fucks witht he hitboxes etc etc idk why but it breaks i dont care this works
+    //Who cares
+    //I'm done.
+    enemyPoop(enemyAffected){
+        var poopOnce = true;
             console.log("HELLO I AM THE NUMBER " + enemyAffected.ingredientKey);
             if(poopOnce){
                 switch(enemyAffected.ingredientKey){
@@ -282,28 +301,8 @@ class Play extends Phaser.Scene{
                         break;
                 }
             }
+            //Turns off collision and sends to the void
             enemyAffected.body.collideWorldBounds = false;
             enemyAffected.toTheVoid();
-        }
-        
-
-        //Checks if the player is attacking the enemy
-        if(this.physics.overlap(enemyAffected, this.attackGroup)){
-            console.log("Enemy Attacked");
-            enemyAffected.bounceBack(200);
-            enemyAffected.attackedByPlayer = true;
-            enemyAffected.loseHealth(1);
-            mainPlayer.attackConnected = true;
-            console.log(enemyAffected.health);
-        }
-    }
-
-        //Kills the enemy, separate function because this will get FUCKING HUGE
-    //So key thing to note is that you cannot pass a this.bunpickup etc in a separate function
-    //It fucks witht he hitboxes etc etc idk why but it breaks i dont care this works
-    //Who cares
-    //I'm done.
-    enemyPoop(enemyAffected){
-        
     }
 }

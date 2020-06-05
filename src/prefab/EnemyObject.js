@@ -6,15 +6,15 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
         scene.add.existing(this);
         
         //Health of the enemy
-        this.health = 60;
+        //this.health = 60;
         //EnemyTesting
-        //this.health = 1;
+        this.health = 1;
 
         //Original Positions
         this.originalX = x;
         this.originalY = y;
 
-        //States for attacking and being attacked
+        //States for attacking and being attacked 
         this.attacking = false;
         this.attackingNoise = 0;
         this.attackedByPlayer = false;
@@ -41,6 +41,7 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
 
         //Creates a variable to check if the enemy is voided or not
         this.voided = false;
+
     }
 
     create(){
@@ -124,6 +125,8 @@ class EnemyObject extends Phaser.Physics.Arcade.Sprite{
             this.detectionField.y = 69420
             this.voided = true;
         }
+        //Plays death noise
+        this.scene.sound.play('enemyDie');
     }
 
 }
