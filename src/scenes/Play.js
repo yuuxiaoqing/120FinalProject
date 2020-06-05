@@ -102,10 +102,7 @@ class Play extends Phaser.Scene{
     
     
         //temp scene title
-        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\nGather '+ingredientAmt+" of each ingredients to build a burger!", {fill: '#fff', align:"center"}).setOrigin(0.5);
-
-        //BURGER TEXT
-        //this.add.text(540, 400, "↓おいしいハンバーガー↓\n↓delicious hamburger↓", {fill: '#fff', align:'center'}).setOrigin(0.5);
+        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\n', {fill: '#fff', align:"center"}).setOrigin(0.5);
 
       
         //To Do list text bar
@@ -125,7 +122,7 @@ class Play extends Phaser.Scene{
         this.burgerStation.update();
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('badEndScene');
+            this.scene.start('goodEndScene');
         }
 
         //Runs the behavior for enemies
