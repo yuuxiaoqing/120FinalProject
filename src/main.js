@@ -43,8 +43,6 @@ let config = {
             }
         }
     },    
-    //scene:[Boot,Load,Menu,Tutorial,Play,End,Credit,Info]
-    //scene: [Boot, Load, Menu, Prologue, Tutorial, Play, GoodEnd, BadEnd, Credit, Info]
     scene: [Boot, Load, Menu, Tutorial,Prologue, Play, GoodEnd, Credit, Info]
 };
 

@@ -18,10 +18,13 @@ class GoodEnd extends Phaser.Scene{
     }
 
     create(){
-        //put the good end story here and typing out
+        //put the good end story here and type it out letter by letter out
         //get the good end story json
         this.goodEnd = this.cache.json.get('goodEnd');
-        console.log(this.goodEnd);
+        //console.log(this.goodEnd);
+
+        //add storybg
+        this.add.image(centerX,centerY, 'storybg').setOrigin(0.5);
         //for transitioning story lines
         cursors = this.input.keyboard.createCursorKeys();
         this.goodEndText = this.add.text(this.TEXT_X, this.TEXT_Y, '', {align:'center'}).setOrigin(0.5);
@@ -41,10 +44,12 @@ class GoodEnd extends Phaser.Scene{
         this.dialogTyping = true;
         this.goodEndText.text = '';
         
+        this.spaceText = this.add.text(centerX, centerY+200, "").setOrigin(0.5);
     
         if(this.goodEndLine >= this.goodEnd.length){
             //end the story scene if there's no more lines, return to menu
             console.log("end of good end")
+            this.spaceText.destroy();
               //retry button
             this.menu = this.add.text(centerX, centerY+250, "return to menu", {fill:'#2f631c', fontSize: '40px',fontFamily: 'Caveat Brush'}).setOrigin(0.5)
             .setInteractive()
@@ -73,7 +78,7 @@ class GoodEnd extends Phaser.Scene{
                     
                     if(this.textTimer.getRepeatCount() == 0){
                         this.dialogTyping = false;
-                        this.add.text(centerX, centerY+200, "press SPACE to continue").setOrigin(0.5);
+                        this.spaceText.setText("press SPACE to continue").setOrigin(0.5);
                         this.textTimer.destroy();
                     }
                 },
