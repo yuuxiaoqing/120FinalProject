@@ -42,7 +42,7 @@ class Play extends Phaser.Scene{
         //Assigns the Keybinds
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         playerRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         playerAttack = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
         playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
@@ -106,6 +106,9 @@ class Play extends Phaser.Scene{
         this.cameras.main.setBounds(0,0, mainLevel.widthInPixels, mainLevel.heightInPixels);
         //console.log(mainPlayer);
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
+        
+        //temp scene title
+        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\n', {fill: '#fff', align:"center"}).setOrigin(0.5);
       
         //To Do list text bar
         this.ingredientBar = this.add.rectangle(centerX, 20, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
@@ -152,7 +155,7 @@ class Play extends Phaser.Scene{
 
         //Debug
         if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('badEndScene');
+            this.scene.start('goodEndScene');
         }
 
     }

@@ -66,15 +66,18 @@ class Load extends Phaser.Scene{
         this.load.tilemapTiledJSON('tutorialLevel', './assets/tilemaps/tutorial01.json');
         this.load.tilemapTiledJSON('mainLevel', './assets/tilemaps/gameMap.json');
 
-
+        //Load the story bg, info bg, and credit bg
+        this.load.image('storybg', "./assets/background/storybg.png");
+        this.load.image('infobg', "./assets/background/infobg.png");
+        this.load.image('creditbg', "./assets/background/creditbg.png");
 
         //title scene assets:
-        this.load.image('title', './assets/title.png');
+        this.load.image('title', './assets/background/title.png');
         //text config
         let textConfig = {
-            fontFamily: 'Caveat Brush',
+            fontFamily: 'VT323',
             fill: '#ffffff',
-            fontSize: '40px'
+            fontSize: '40px',
         }
         this.add.text(width/2, height, "LOADING", textConfig);
         //progress bar replace with a burger //check out Asset Bonanza// boot strap load, get something on 
@@ -83,6 +86,7 @@ class Load extends Phaser.Scene{
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
         progressBox.fillRect(330,270,320,50);
+
         var loadMessage =  this.add.text(centerX,centerY+100,"Loading.");
         // this.add.sprite(centerX, centerY, "loadsheet", "load");
         

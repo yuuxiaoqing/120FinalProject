@@ -7,7 +7,7 @@ class Tutorial extends Phaser.Scene{
         burgerArray = [1, 2, 3];
 
         //INSTRUCTIONS 
-        this.add.text(250, 500, 'SPACE to jump and double jump\n← → to move left & right\nShift to dash', {fill: '#fff', align:'center'}).setOrigin(0.5);
+        this.add.text(250, 500, '↑ to jump and double jump\n← → to move left & right\nShift to dash', {fill: '#fff', align:'center'}).setOrigin(0.5);
         this.add.text(1180, centerY + 200, 'Z to attack\nX to guard\n Time your guard to perform a powerful parry!\n\nRun over ingredients to collect them\nCollect enough to build a burger\nTouch the completed burger to finish!\n\nThe enemy will make a noise\nand run towards you when it detects you!', {fill: '#fff', align:'center'}).setOrigin(0.5);
         
         //from Prof. Nathan's Mappy tutorial
@@ -20,16 +20,21 @@ class Tutorial extends Phaser.Scene{
 
         ground.setCollisionByProperty({collide:true});
 
-        this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
-        
         /* PLAYER CODE */
         //Assigns the Keybinds
         playerLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         playerRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        playerJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         playerAttack = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
         playerGuard = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+
+        //Instruction bar: need to prettify
+        this.instructionBar = this.add.rectangle(centerX, 40, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX, 50, "↑ to jump, ← → to move left & right, Z to attack, X to guard, Shift to dash\n\nBump into ingredients to collect them\n\nCollect enough to build a burger", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
+        
+        //Camera
+        this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
 
         //Creates the main player
         mainPlayer = new PlayerObject(this, 82, 50, 'playerPrototype').setOrigin(0.5);
@@ -76,14 +81,18 @@ class Tutorial extends Phaser.Scene{
         //console.log(mainPlayer);
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
     
-        //To Do list text bar
-        this.ingredientBar = this.add.rectangle(centerX, 20, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        this.add.text(centerX, 20, "TO DO LIST: Gather 2 buns, 1 meat, and 1 lettuce to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
-        this.toDoList = this.add.text(centerX,50,"top bun: "+ this.topBunCount
-                                                +" lettuce: "+ this.lettuceCount
-                                                +" meat: "+this.meatCount
-                                                +" bottom bun: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
-        
+        //Back button
+        this.menu = this.add.text(70, 50, "menu", {fill:'#2f631c', fontSize: '40px',fontFamily: 'Caveat Brush'}).setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', ()=>{this.menu.setStyle({fill:'#fa0', fontSize: '50px',fontFamily: 'Caveat Brush'});
+        this.clock = this.time.delayedCall(100, () =>{
+            this.scene.start("menuScene");
+        }, null, this);
+        })
+        .on('pointerover', ()=>{this.menu.setStyle({fill:'#fa0',fontSize: '50px',fontFamily: 'Caveat Brush'}); })
+        .on('pointerout', ()=>{this.menu.setStyle({fill:'#2f631c', fontSize: '40px',fontFamily: 'Caveat Brush'}); }).setScrollFactor(0);
+            
+            
 
     }
 
@@ -102,11 +111,6 @@ class Tutorial extends Phaser.Scene{
 
         //Runs the behavior for the ingredients
         this.ingredientBehavior();
-        
-        //Updates the text
-        this.toDoList.setText("Buns: "+ this.topBunCount
-                            +" lettuce: "+ this.lettuceCount
-                            +" meat: "+this.meatCount);
 
         //If the burger is complete, you can touch it to get oUUT
         if(this.burgerStation.burgerComplete){
