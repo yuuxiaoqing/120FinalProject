@@ -18,8 +18,8 @@ class Menu extends Phaser.Scene{
         
         let textConfig2 = {
             fontFamily: 'VT323',
-            fill: '#fa0',
-            fontSize: '50px'
+            fill: '#ffab24',
+            fontSize: '45px'
         }
         
         //start button, start prologue

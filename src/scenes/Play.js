@@ -12,19 +12,28 @@ class Play extends Phaser.Scene{
 
     //Create Function
     create(){
+        let textConfig = {
+            fontFamily: 'VT323',
+            fill: '#ffffff',
+            fontSize: '30px'
+        }
+        //text config for the menu button
+        let textConfig2 = {
+            fontFamily: 'VT323',
+            fill: '#2f631c',
+            fontSize: '35px'
+        }
+        let textConfig3 = {
+            fontFamily: 'VT323',
+            fill: '#ffffff',
+            fontSize: '40px'
+        }
         burgerArray = [];
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-
         //from Prof. Nathan's Mappy tutorial
         const mainLevel = this.add.tilemap('mainLevel');
         const groundSprites = mainLevel.addTilesetImage("groundsheet", 'groundsheet');
-        /* create a new layer specifically for the burger
-        */
-        // const background = mainLevel.createDynamicLayer("background",groundSprites, 0,0);
         ground = mainLevel.createStaticLayer("ground",groundSprites,0,0);
-
         ground.setCollisionByProperty({collide:true});
-
         this.physics.world.bounds.setTo(0,0,mainLevel.widthInPixels, mainLevel.heightInPixels);
 
         /*
@@ -71,6 +80,7 @@ class Play extends Phaser.Scene{
         this.burgerStation = new BurgerCompiler(this, 3650, 1340).setOrigin(0.5);
         this.physics.add.existing(this.burgerStation);
         this.burgerStation.body.allowGravity = false;
+        this.burgerLocationMessage = this.add.text(3650, 1250, "Burger will be here\nonce completed.", {align:"center"}).setOrigin(0.5);
 
         //Enemy Spawns
         this.bunEnemy1 = new EnemyObject(this, 1696, 1998,  'enemytemp', 1).setOrigin(0.5);
@@ -94,8 +104,6 @@ class Play extends Phaser.Scene{
         this.physics.add.collider(this.lettuceEnemy, ground);
 
         //Debug
-       // this.add.text(centerX, centerY - 200, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff'}).setOrigin(0.5);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         buildBurgerButton = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
         addBun = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         addMEAT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -107,16 +115,26 @@ class Play extends Phaser.Scene{
         //console.log(mainPlayer);
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
         
-        //temp scene title
-        this.add.text(540, 350, 'PLAY SCENE\nPRESS S TO SKIP TO NEXT SCENE\n', {fill: '#fff', align:"center"}).setOrigin(0.5);
-      
+            
         //To Do list text bar
-        this.ingredientBar = this.add.rectangle(centerX, 20, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        this.add.text(centerX, 20, "TO DO LIST: Gather 2 buns, 1 meat, and 1 lettuce to build a burger!", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
-        this.toDoList = this.add.text(centerX,50,"top bun: "+ this.topBunCount
-                                                +" lettuce: "+ this.lettuceCount
-                                                +" meat: "+this.meatCount
-                                                +" bottom bun: "+this.bottomBunCount, {fill:'#fff',align:"center"}).setOrigin(0.5).setScrollFactor(0);
+        this.ingredientBar = this.add.image(centerX, 50,'hud').setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX+50, 30, "TO DO LIST: Gather 2 buns, 1 meat, and 1 lettuce to build a burger!", textConfig).setOrigin(0.5).setScrollFactor(0);
+        this.add.rectangle(centerX+50, 65, 800, 25, 0x7D4E04, 0.7).setOrigin(0.5).setScrollFactor(0);
+        this.toDoList = this.add.text(centerX+50,65,"bun: "+ this.topBunCount
+                                                +" meat: "+ this.meatCount
+                                                +" lettuce: "+this.lettuceCount, textConfig).setOrigin(0.5).setScrollFactor(0);
+
+         //menu button
+        this.menu = this.add.text(60, 50, "menu", textConfig2).setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', ()=>{this.menu.setStyle(textConfig3);
+        this.clock = this.time.delayedCall(100, () =>{
+            this.scene.start("menuScene");
+        }, null, this);
+        })
+        .on('pointerover', ()=>{this.menu.setStyle(textConfig3); })
+        .on('pointerout', ()=>{this.menu.setStyle(textConfig2); }).setScrollFactor(0);
+           
            
     }
     
@@ -142,22 +160,20 @@ class Play extends Phaser.Scene{
         //Runs behavior for ingredients
         this.ingredientBehavior();
         
-        this.toDoList.setText("Buns: "+ this.topBunCount
-                            +" lettuce: "+ this.lettuceCount
-                            +" meat: "+this.meatCount);
+        this.toDoList.setText("buns: "+ this.topBunCount
+                            +" meat: "+ this.meatCount
+                            +" lettuce: "+this.lettuceCount);
 
         //If the burger is complete, you can touch it to get oUUT
         if(this.burgerStation.burgerComplete){
+            this.burgerLocationMessage.setText("Touch the burger!").setOrigin(0.5);
+            this.toDoList.setText("Go back to the completed burger to hand it to the demon king!");
             if(this.physics.overlap(this.burgerStation, mainPlayer)){
                 this.scene.start('goodEndScene');
             }
         }
 
-        //Debug
-        if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('goodEndScene');
-        }
-
+       
     }
 
     //handles the ingredient behavior

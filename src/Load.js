@@ -36,25 +36,6 @@ class Load extends Phaser.Scene{
         this.load.image('enemytemp','./assets/enemySprites/enemytemp.png');
         this.load.image('detectionHitbox', './assets/enemySprites/detectionHitbox.png');
         
-         //once the spritesheets are set, move all these loading to loading scene
-         //from Prof. Nathan's Tiled examples
-        //this.load.path = "./assets/";
-        /** 
-         //prototype tile sheet
-        this.load.spritesheet('kenney_sheet', '/tilemaps/colored_packed.png', {
-            frameWidth: 16,
-            frameHeight: 16,
-        });
-        this.load.spritesheet('proto_sheet',"/tilemaps/proto_sheet.png",{
-            frameWidth:64,
-            frameHeight:64,
-        });
-         //map is 1024 x 1024 pixels, but canvas is 640 x 640
-        this.load.tilemapTiledJSON('map01', '/tilemaps/map01.json');
-         
-        this.load.tilemapTiledJSON('map02', './tilemaps/map02.json');
-            this.load.image('temp', 'temp.png');
-        **/
 
         //Loads the tilesheet
         this.load.spritesheet('groundsheet', './assets/tilemaps/groundsheet.png',{
@@ -71,8 +52,12 @@ class Load extends Phaser.Scene{
         this.load.image('infobg', "./assets/background/infobg.png");
         this.load.image('creditbg', "./assets/background/creditbg.png");
 
-        //title scene assets:
-        this.load.image('title', './assets/background/title.png');
+        //title scene assets
+        this.load.image('title', './assets/background/titlebg.png');
+        //HUD assets
+        this.load.image('hud', './assets/background/hud2.png');
+
+
         //text config
         let textConfig = {
             fontFamily: 'VT323',
@@ -88,7 +73,6 @@ class Load extends Phaser.Scene{
         progressBox.fillRect(330,270,320,50);
 
         var loadMessage =  this.add.text(centerX,centerY+100,"Loading.");
-        // this.add.sprite(centerX, centerY, "loadsheet", "load");
         
         this.load.on('progress', function(value){
             console.log(value);
@@ -97,9 +81,6 @@ class Load extends Phaser.Scene{
             progressBar.fillRect(340,280,300*value, 30);
             loadMessage.setText("Loading..").setOrigin(0.5);
             loadMessage.setText("Loading...").setOrigin(0.5);
-            // this.add.sprite(centerX, centerY, "loadsheet", "load01");
-            // this.add.sprite(centerX, centerY, "loadsheet", "load02");
-            // this.add.sprite(centerX, centerY, "loadsheet", "load03");
         });
         this.load.on('fileprogress', function(file){
             console.log(file.src);
@@ -108,26 +89,13 @@ class Load extends Phaser.Scene{
             console.log('complete');
             progressBar.destroy();
             progressBox.destroy();
-            // this.add.sprite(centerX, centerY, "loadsheet", "load04");
             loadMessage.setText("Loading Complete!").setOrigin(0.5);
             
         });
 
     }
-    create(){
-        //this.cameras.main.setBackgroundColor(0xE6B61C);
-        // //console.log(this.cameras.main);
-        // this.add.text(centerX, centerY - 200, 'LOAD SCENE\nPRESS S TO SKIP TO NEXT SCENE', {fill: '#fff', align:"center"}).setOrigin(0.5);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        // this.add.text(centerX, centerY - 100, 'by Angela, Xiao Qing, & Niko', {fill: '#fff', align:'center'}).setOrigin(0.5);
-        // this.add.text(centerX, centerY, '----in progress burger----', {fill: '#fff', align:'center'}).setOrigin(0.5);
-        // this.add.text(centerX, centerY +40, 'this.cameras.main.startFollow(burger, 0.25,0.25);', {fill: '#fff', align:'center'}).setOrigin(0.5);
-    }   
+      
     update(){
-
-        if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('menuScene');
-        }
 
         this.clock = this.time.delayedCall(1000, ()=>{
             this.scene.start("menuScene");

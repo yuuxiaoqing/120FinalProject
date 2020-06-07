@@ -4,20 +4,34 @@ class Tutorial extends Phaser.Scene{
     }
     
     create(){
+        //textConfig for the instructions
+        let textConfig = {
+            fontFamily: 'VT323',
+            fill: '#ffffff',
+            fontSize: '30px'
+        }
+    
+        //text config for the menu button
+        let textConfig2 = {
+            fontFamily: 'VT323',
+            fill: '#2f631c',
+            fontSize: '35px'
+        }
+        let textConfig3 = {
+            fontFamily: 'VT323',
+            fill: '#ffffff',
+            fontSize: '40px'
+        }
         burgerArray = [1, 2, 3];
 
         //INSTRUCTIONS 
         this.add.text(250, 500, '↑ to jump and double jump\n← → to move left & right\nShift to dash', {fill: '#fff', align:'center'}).setOrigin(0.5);
         this.add.text(1180, centerY + 200, 'Z to attack\nX to guard\n Time your guard to perform a powerful parry!\n\nRun over ingredients to collect them\nCollect enough to build a burger\nTouch the completed burger to finish!\n\nThe enemy will make a noise\nand run towards you when it detects you!', {fill: '#fff', align:'center'}).setOrigin(0.5);
-        
+        this.add.text(465, 300, 'press Shift while jumping\nto dash to the other platform',{fill: '#fff', align: 'center'}).setOrigin(0.5);
         //from Prof. Nathan's Mappy tutorial
         const tutorial = this.add.tilemap('tutorialLevel');
         const groundSprites = tutorial.addTilesetImage("groundsheet", 'groundsheet');
-        /* create a new layer specifically for the burger
-        */
-        //const background = tutorial.createDynamicLayer("background",groundSprites, 0,0);
         ground = tutorial.createDynamicLayer("ground",groundSprites,0,0);
-
         ground.setCollisionByProperty({collide:true});
 
         /* PLAYER CODE */
@@ -30,8 +44,8 @@ class Tutorial extends Phaser.Scene{
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         //Instruction bar: need to prettify
-        this.instructionBar = this.add.rectangle(centerX, 40, width, height/5, 0xe6ad12).setOrigin(0.5).setScrollFactor(0);
-        this.add.text(centerX, 50, "↑ to jump, ← → to move left & right, Z to attack, X to guard, Shift to dash\n\nBump into ingredients to collect them\n\nCollect enough to build a burger", {fill: '#fff', align:'center'}).setOrigin(0.5).setScrollFactor(0);
+        this.instructionBar = this.add.image(centerX, 50,'hud').setOrigin(0.5).setScrollFactor(0);
+        this.add.text(centerX+50, 50, "Burger Quest★ Tutorial", textConfig).setOrigin(0.5).setScrollFactor(0);
         
         //Camera
         this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
@@ -69,7 +83,6 @@ class Tutorial extends Phaser.Scene{
         this.physics.add.collider(this.bunEnemy1, ground);
 
         //Debug
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         buildBurgerButton = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
         addBun = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         addMEAT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -81,18 +94,18 @@ class Tutorial extends Phaser.Scene{
         //console.log(mainPlayer);
         this.cameras.main.startFollow(mainPlayer, true, 0.15,0.15);
     
-        //Back button
-        this.menu = this.add.text(70, 50, "menu", {fill:'#2f631c', fontSize: '40px',fontFamily: 'Caveat Brush'}).setOrigin(0.5)
+        //menu button
+        this.menu = this.add.text(60, 50, "menu", textConfig2).setOrigin(0.5)
         .setInteractive()
-        .on('pointerdown', ()=>{this.menu.setStyle({fill:'#fa0', fontSize: '50px',fontFamily: 'Caveat Brush'});
+        .on('pointerdown', ()=>{this.menu.setStyle(textConfig3);
         this.clock = this.time.delayedCall(100, () =>{
             this.scene.start("menuScene");
         }, null, this);
         })
-        .on('pointerover', ()=>{this.menu.setStyle({fill:'#fa0',fontSize: '50px',fontFamily: 'Caveat Brush'}); })
-        .on('pointerout', ()=>{this.menu.setStyle({fill:'#2f631c', fontSize: '40px',fontFamily: 'Caveat Brush'}); }).setScrollFactor(0);
+        .on('pointerover', ()=>{this.menu.setStyle(textConfig3); })
+        .on('pointerout', ()=>{this.menu.setStyle(textConfig2); }).setScrollFactor(0);
             
-            
+        this.doneText = this.add.text(1507, centerY+350, '', {fill: '#fff', align:'center'}).setOrigin(0.5);   
 
     }
 
@@ -114,16 +127,11 @@ class Tutorial extends Phaser.Scene{
 
         //If the burger is complete, you can touch it to get oUUT
         if(this.burgerStation.burgerComplete){
+            this.doneText.setText('Touch the burger!', {fill: '#fff', align:'center'}).setOrigin(0.5);
             if(this.physics.overlap(this.burgerStation, mainPlayer)){
                 this.scene.start('menuScene');
             }
         }
-
-        //Debug
-        if(Phaser.Input.Keyboard.JustDown(keyS)){
-            this.scene.start('badEndScene');
-        }
-
     }
 
     //handles the ingredient behavior
@@ -152,6 +160,7 @@ class Tutorial extends Phaser.Scene{
 
         if(this.physics.overlap(this.bunPickup, mainPlayer)){
             console.log("Bun colliding");
+            
             this.ingredientPickup(this.bunPickup);
             this.topBunCount += 1;
         }
