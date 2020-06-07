@@ -27,9 +27,9 @@ class Credit extends Phaser.Scene{
         //add credit bg
         this.add.image(centerX, centerY, "creditbg").setOrigin(0.5);
         this.add.text(centerX, centerY - 100, 'Burger Quest★\nis made by Angela Jiang, Xiao Qing Yu, & Nikolas Sanchez', textConfig).setOrigin(0.5);
-        
+
         //music credit text
-        this.add.text(centerX, centerY, 'Music credits:', textConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + 50, 'Music credits: \"Le Grand Chase\" Kevin MacLeod (incompetech.com)\n\"Cupid\'s Revenge\" Kevin MacLeod (incompetech.com)\n\"Midnight Tale\" Kevin MacLeod \(incompetech.com\)\nLicensed under Creative Commons: By Attribution 4.0 License\nhttp://creativecommons.org/licenses/by/4.0/', textConfig).setOrigin(0.5);
         
          //return to menu button
          this.menu = this.add.text(centerX, centerY+250, "return to menu", textConfig).setOrigin(0.5)

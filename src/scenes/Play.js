@@ -246,7 +246,7 @@ class Play extends Phaser.Scene{
             console.log("Enemy Parried");
             enemyAffected.bounceBack(500);
             enemyAffected.attackedByPlayer = true;
-            enemyAffected.loseHealth(10);
+            enemyAffected.loseHealth(6);
             mainPlayer.attackConnected = true;
             console.log(enemyAffected.health);
         }
