@@ -14,7 +14,6 @@ class GoodEnd extends Phaser.Scene{
         this.goodEndLine = 0;
         //check if the letters are still appearing
         this.goodEndTyping = false;
-
     }
 
     create(){
@@ -29,17 +28,19 @@ class GoodEnd extends Phaser.Scene{
             align: "center",
             
         }
+
         //add storybg
         this.add.image(centerX,centerY, 'storybg').setOrigin(0.5);
         //for transitioning story lines
         cursors = this.input.keyboard.createCursorKeys();
         this.goodEndText = this.add.text(this.TEXT_X, this.TEXT_Y, '', textConfig).setOrigin(0.5);
         this.typeText();
+        this.spaceText = this.add.text(centerX, centerY+180, "press SPACE to continue").setOrigin(0.5);
        
     }
     update(){
         
-     
+        
         if(Phaser.Input.Keyboard.JustDown(cursors.space)&& !this.dialogTyping){
             this.typeText();
         }
@@ -49,8 +50,7 @@ class GoodEnd extends Phaser.Scene{
     typeText() {
         this.dialogTyping = true;
         this.goodEndText.text = '';
-        
-        this.spaceText = this.add.text(centerX, centerY+200, "").setOrigin(0.5);
+      
         let textConfig = {
             fontFamily: 'VT323',
             fill: '#2f631c',
@@ -59,16 +59,19 @@ class GoodEnd extends Phaser.Scene{
         
         let textConfig2 = {
             fontFamily: 'VT323',
-            fill: '#fa0',
-            fontSize: '50px'
+            fill: '#ffab24',
+            fontSize: '45px'
         }
         if(this.goodEndLine >= this.goodEnd.length){
             //end the story scene if there's no more lines, return to menu
             console.log("end of good end")
-            
+            this.goodEndLine = 0; 
             this.spaceText.destroy();
-              //retry button
-            this.menu = this.add.text(centerX, centerY+250, "return to menu", textConfig).setOrigin(0.5)
+            console.log(this.spaceText)
+           
+
+            //return to menu button
+            this.menu = this.add.text(centerX, centerY+200, "return to menu", textConfig).setOrigin(0.5)
             .setInteractive()
             .on('pointerdown', ()=>{this.menu.setStyle(textConfig2);
             this.clock = this.time.delayedCall(100, () =>{
@@ -96,6 +99,7 @@ class GoodEnd extends Phaser.Scene{
                     if(this.textTimer.getRepeatCount() == 0){
                         this.dialogTyping = false;
                         this.spaceText.setText("press SPACE to continue").setOrigin(0.5);
+                        //this.spaceText.setVisible(true);
                         this.textTimer.destroy();
                     }
                 },

@@ -12,6 +12,11 @@ class Prologue extends Phaser.Scene{
         //check if the letters are still appearing
         this.prologueTyping = false;
 
+       
+
+    }
+    preload(){
+        this.load.json('prologue', './assets/json/prologue.json');
     }
 
     create(){
@@ -25,22 +30,33 @@ class Prologue extends Phaser.Scene{
             align: "center",
             
         }
+        let textConfig2 = {
+            fontFamily: 'VT323',
+            fill: '#fa0',
+            fontSize: '35px'
+        }
         //add the story bg
         this.add.image(centerX,centerY, "storybg").setOrigin(0.5);
         cursors = this.input.keyboard.createCursorKeys();
         this.prologueText = this.add.text(this.TEXT_X, this.TEXT_Y, '', textConfig).setOrigin(0.5);
         this.nextText = this.add.text(centerX, centerY+200, '').setOrigin(0.5);
+         //skip prologue button
+        this.skip = this.add.text(centerX+310, centerY+200, "skip prologue\n&\nstart game", textConfig).setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', ()=>{this.skip.setStyle(textConfig2);
+        this.clock = this.time.delayedCall(100, () =>{
+            this.scene.start("playScene");
+        }, null, this);
+        })
+        .on('pointerover', ()=>{this.skip.setStyle(textConfig2); })
+        .on('pointerout', ()=>{this.skip.setStyle(textConfig); });
         this.typeText();
-        
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        this.spaceText = this.add.text(centerX, centerY+180, "press SPACE to continue").setOrigin(0.5);
        
     }
     update(){
-                //Debug
-                // if(Phaser.Input.Keyboard.JustDown(keyS)){
-                //     this.scene.start('playScene');
-                // }
-        //change it to something other than SPACE
+        //transition throuhgh prologue
         if(Phaser.Input.Keyboard.JustDown(cursors.space)&& !this.dialogTyping){
             this.typeText();
         }
@@ -54,7 +70,10 @@ class Prologue extends Phaser.Scene{
         this.nextText.text = '';
 
         if(this.prologueLine >= this.prologue.length){
-            //end the story scene if there's no more lines, return to menu
+            //console.log("prologueLine: ",this.prologueLine, "prologuelength: ", this.prologue.length)
+            //end the story scene if there's no more lines, start game
+            this.prologueLine = 0;
+            this.spaceText.destroy();
             console.log("end of prologue")
             this.scene.start("playScene");
         }else{
@@ -73,7 +92,7 @@ class Prologue extends Phaser.Scene{
                     
                     if(this.textTimer.getRepeatCount() == 0){
                         this.dialogTyping = false;
-                        this.add.text(centerX, centerY+200,"press SPACE to continue").setOrigin(0.5);
+                        this.spaceText.setText("press SPACE to continue").setOrigin(0.5);
                         this.textTimer.destroy();
                     }
                 },
