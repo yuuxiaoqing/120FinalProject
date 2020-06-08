@@ -49,7 +49,15 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     }
 
     create(){
-        
+        let walk = {
+            key: 'playerwalking',
+            frames: this.anims.generateFrameNumbers('playerwalk', {start: 1,end: 2,first:1}),
+            frameRate:3,
+            repeat:0
+        }
+        this.anims.create(walk);
+        this.walkAnimated = this.scene.add.sprite(this.body.x,this.body.y,'playeridle').play('playerwalking');
+
     }
 
     update(){
@@ -77,6 +85,9 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         if(this.parrying)
             this.parry();
 
+        //Checks for idle
+        if(!playerLeft.isDown && !playerRight.isDown && !playerJump.isDown && !playerGuard.isDown && !playerAttack.isDown)
+            this.setTexture('playeridle');
     }
 
     //Player Inputs
@@ -87,6 +98,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         if(playerLeft.isDown){
             this.movingLeft = true;
             this.playerFacing = -1;
+            this.anims.play('playerwalking', true);
         } else {
             this.movingLeft = false;
         }
@@ -95,6 +107,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         if(playerRight.isDown){
             this.movingRight = true;
             this.playerFacing = 1;
+            this.anims.play('playerwalking', true);
         } else {
             this.movingRight = false;
         }
@@ -123,6 +136,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         if(playerGuard.isDown){
             this.guarding = true;
             console.log("Player is guarding");
+            this.setTexture('playerguard');
         } else {
             this.guarding = false;
         }
@@ -221,7 +235,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     //Creates the parry
     parry(){
         //Creates a parry hitbox, cannot be attacked
-        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'parryHitbox').setScale(1.8).setOrigin(0.5);
+        var parryHitbox = this.scene.physics.add.sprite(this.x, this.y, 'parryHitbox').setScale(2).setOrigin(0.5);
         parryHitbox.body.allowGravity = false;
         parryHitbox.body.setCircle(16);
         this.scene.parryGroup.add(parryHitbox);

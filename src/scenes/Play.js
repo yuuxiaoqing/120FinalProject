@@ -12,6 +12,15 @@ class Play extends Phaser.Scene{
 
     //Create Function
     create(){
+        //music stuff
+        if(!gameSong.isPlaying)
+            gameSong.play();
+        if(creditSong.isPlaying)
+            creditSong.stop();
+        if(menuSong.isPlaying)
+            menuSong.stop();
+
+
         let textConfig = {
             fontFamily: 'VT323',
             fill: '#ffffff',
@@ -57,8 +66,9 @@ class Play extends Phaser.Scene{
         playerDash = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         //Creates the main player
-        mainPlayer = new PlayerObject(this, 3520, 1280, 'playerPrototype').setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, 3520, 1280, 'playeridle').setOrigin(0.5);
         this.physics.add.existing(mainPlayer);
+        mainPlayer.setSize(32, 32, true);
         mainPlayer.body.collideWorldBounds = true;
 
         //make sure mainPlayer don't fall through the ground
@@ -153,6 +163,11 @@ class Play extends Phaser.Scene{
         
         //Runs the behavior for enemies
         this.enemyBehavior(this.bunEnemy1);
+        if(this.bunEnemy1.body.velocity[0] > 0){
+            this.bunEnemy1.setTexture('bunright');
+        } else if(this.bunEnemy1.body.velocity[0] > 0){
+            this.bunEnemy1.setTexture('bunleft');
+        }
         this.enemyBehavior(this.bunEnemy2);
         this.enemyBehavior(this.meatEnemy);
         this.enemyBehavior(this.lettuceEnemy);

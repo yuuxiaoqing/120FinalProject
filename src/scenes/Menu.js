@@ -8,6 +8,15 @@ class Menu extends Phaser.Scene{
 
     }
     create(){
+        //music stuff
+        if(gameSong.isPlaying)
+            gameSong.stop();
+        if(creditSong.isPlaying)
+            creditSong.stop();
+        if(!menuSong.isPlaying)
+            menuSong.play();
+
+
         this.cameras.main.setBackgroundColor(0xA3E01D);
         this.add.image(centerX, centerY, 'title');
         let textConfig = {

@@ -15,10 +15,22 @@ class Load extends Phaser.Scene{
         this.load.audio('enemyDetection', './assets/sounds/enemyDetection.wav');
         this.load.audio('enemyDie', './assets/sounds/enemyDie.wav');
 
+        //Loads Music
+        this.load.audio('menuSong', './assets/songs/CupidsRevenge.mp3');
+        this.load.audio('gameSong', './assets/songs/LeGrandChase.mp3');
+        this.load.audio('endingSong', './assets/songs/MidnightTale.mp3');
+
         //Player Sprites
         this.load.image('attackHitbox', './assets/playerSprites/attackHitbox.png');
         this.load.image('parryHitbox', './assets/playerSprites/parryHitbox.png');
-        this.load.image('playerPrototype','./assets/playerSprites/player_prototype.png');
+        this.load.image('playeridle','./assets/playerSprites/playeridle.png');
+        this.load.image('playerguard','./assets/playerSprites/playerguard.png');
+        this.load.spritesheet('playerwalk', './assets/playerSprites/playerwalk.png', {
+            frameWidth: 32,
+            frameHeight: 32,
+            endframe: 2
+        });
+
 
         //burger layer sprites -> remember to turn it into a spritesheet
         this.load.image('plate','./assets/burgerSprites/plate.png');
@@ -93,6 +105,21 @@ class Load extends Phaser.Scene{
             
         });
 
+    }
+
+    create(){
+        //Music stuff
+        menuSong = this.sound.add('menuSong');
+        menuSong.setLoop(true);
+        menuSong.stop();
+
+        gameSong = this.sound.add('gameSong');
+        gameSong.setLoop(true);
+        gameSong.stop(); 
+
+        creditSong = this.sound.add('endingSong');
+        creditSong.setLoop(true);
+        creditSong.stop(); 
     }
       
     update(){

@@ -17,6 +17,13 @@ class GoodEnd extends Phaser.Scene{
     }
 
     create(){
+        //Music stuff
+        if(gameSong.isPlaying)
+            gameSong.stop();
+        if(!creditSong.isPlaying)
+            creditSong.play();
+        if(menuSong.isPlaying)
+            menuSong.stop();
         //put the good end story here and type it out letter by letter out
         //get the good end story json
         this.goodEnd = this.cache.json.get('goodEnd');
