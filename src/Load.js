@@ -57,17 +57,17 @@ class Load extends Phaser.Scene{
         this.load.image('lettuceleft','./assets/enemySprites/lettuceleft.png');
         this.load.image('lettuceright','./assets/enemySprites/lettuceright.png');
 
-        this.load.spritesheet('bunidle.png', './assets/enemySprites/bunidle.png.png', {
+        this.load.spritesheet('bunidle', './assets/enemySprites/bunidle.png', {
             frameWidth: 128,
             frameHeight: 128,
             endframe: 3
         });
-        this.load.spritesheet('meatidle.png', './assets/enemySprites/meatidle.png.png', {
+        this.load.spritesheet('meatidle', './assets/enemySprites/meatidle.png', {
             frameWidth: 128,
             frameHeight: 128,
             endframe: 3
         });
-        this.load.spritesheet('lettuceidle.png', './assets/enemySprites/lettuceidle.png.png', {
+        this.load.spritesheet('lettuceidle', './assets/enemySprites/lettuceidle.png', {
             frameWidth: 128,
             frameHeight: 128,
             endframe: 3
@@ -147,7 +147,7 @@ class Load extends Phaser.Scene{
         let bunidlinganim = {
             key: 'bunidling',
             frames: this.anims.generateFrameNumbers('bunidle', {start: 1,end: 2,first:1}),
-            frameRate:10,
+            frameRate:30,
             repeat:0
         }
         this.anims.create(bunidlinganim);
@@ -155,7 +155,7 @@ class Load extends Phaser.Scene{
         let meatidlinganim = {
             key: 'meatidling',
             frames: this.anims.generateFrameNumbers('meatidle', {start: 1,end: 2,first:1}),
-            frameRate:10,
+            frameRate:30,
             repeat:0
         }
         this.anims.create(meatidlinganim);
@@ -163,7 +163,7 @@ class Load extends Phaser.Scene{
         let lettuceidlinganim = {
             key: 'lettuceidling',
             frames: this.anims.generateFrameNumbers('lettuceidle', {start: 1,end: 2,first:1}),
-            frameRate:10,
+            frameRate:30,
             repeat:0
         }
         this.anims.create(lettuceidlinganim);
