@@ -49,14 +49,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
     }
 
     create(){
-        let walk = {
-            key: 'playerwalking',
-            frames: this.anims.generateFrameNumbers('playerwalk', {start: 1,end: 2,first:1}),
-            frameRate:3,
-            repeat:0
-        }
-        this.anims.create(walk);
-        this.walkAnimated = this.scene.add.sprite(this.body.x,this.body.y,'playeridle').play('playerwalking');
+        
 
     }
 
@@ -209,6 +202,11 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
         //Creates the attack hitbox and stuff
         var attackHitBox = this.scene.physics.add.sprite(this.x + (32 * this.playerFacing), this.y, 'attackHitbox').setOrigin(0.5);
         attackHitBox.body.allowGravity = false;
+        if(this.playerFacing == -1){
+            attackHitBox.flipX = true;
+        } else {
+            attackHitBox.flipX = false;
+        }
         this.scene.attackGroup.add(attackHitBox);
         this.attacking = 2;
         this.scene.sound.play('playerAttack');

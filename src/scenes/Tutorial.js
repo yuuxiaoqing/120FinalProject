@@ -4,6 +4,10 @@ class Tutorial extends Phaser.Scene{
     }
     
     create(){
+        //Adds the background
+        this.gamebackground = this.add.tileSprite(1920, 1100, 4800, 3125, 'gamebackground').setOrigin(.5);
+        this.gamebackground.depth = -69;
+
         //Music stuff
         if(gameSong.isPlaying)
             gameSong.stop();
@@ -33,9 +37,9 @@ class Tutorial extends Phaser.Scene{
         burgerArray = [1, 2, 3];
 
         //INSTRUCTIONS 
-        this.add.text(250, 500, '↑ to jump and double jump\n← → to move left & right\nShift to dash', {fill: '#fff', align:'center'}).setOrigin(0.5);
-        this.add.text(1180, centerY + 200, 'Z to attack\nX to guard\n Time your guard to perform a powerful parry!\n\nRun over ingredients to collect them\nCollect enough to build a burger\nTouch the completed burger to finish!\n\nThe enemy will make a noise\nand run towards you when it detects you!', {fill: '#fff', align:'center'}).setOrigin(0.5);
-        this.add.text(465, 300, 'press Shift while jumping\nto dash to the other platform',{fill: '#fff', align: 'center'}).setOrigin(0.5);
+        this.add.text(250, 500, '↑ to jump and double jump\n← → to move left & right\nShift to dash', {fill: '#000', align:'center'}).setOrigin(0.5);
+        this.add.text(1180, centerY + 200, 'Z to attack\nX to guard\n Time your guard to perform a powerful parry!\n\nRun over ingredients to collect them\nCollect enough to build a burger\nTouch the completed burger to finish!\n\nThe enemy will make a noise\nand run towards you when it detects you!', {fill: '#000', align:'center'}).setOrigin(0.5);
+        this.add.text(465, 300, 'press Shift while jumping\nto dash to the other platform',{fill: '#000', align: 'center'}).setOrigin(0.5);
         //from Prof. Nathan's Mappy tutorial
         const tutorial = this.add.tilemap('tutorialLevel');
         const groundSprites = tutorial.addTilesetImage("groundsheet", 'groundsheet');
@@ -59,7 +63,7 @@ class Tutorial extends Phaser.Scene{
         this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
 
         //Creates the main player
-        mainPlayer = new PlayerObject(this, 82, 50, 'playeridle').setScale(.25).setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, 82, 50, 'playeridle').setOrigin(0.5);
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
 
@@ -115,11 +119,26 @@ class Tutorial extends Phaser.Scene{
             
         this.doneText = this.add.text(1507, centerY+350, '', {fill: '#fff', align:'center'}).setOrigin(0.5);   
 
+        //For the win sound
+        this.winSoundOnce = false;
+
     }
 
     update(){
         //Updates main player
         mainPlayer.update();
+
+        if(mainPlayer.body.velocity.x < 0){
+            this.gamebackground.x += 0.2;
+        } else if(mainPlayer.body.velocity.x > 0){
+            this.gamebackground.x -= 0.2;
+        }
+
+        if(mainPlayer.body.velocity.y < 0){
+            this.gamebackground.y += 0.2;
+        } else if(mainPlayer.body.velocity.y > 0){
+            this.gamebackground.y -= 0.2;
+        }
         
         //Updates the enemy
         this.bunEnemy1.update();
@@ -135,11 +154,18 @@ class Tutorial extends Phaser.Scene{
 
         //If the burger is complete, you can touch it to get oUUT
         if(this.burgerStation.burgerComplete){
-            this.doneText.setText('Touch the burger!', {fill: '#fff', align:'center'}).setOrigin(0.5);
             if(this.physics.overlap(this.burgerStation, mainPlayer)){
-                this.scene.start('menuScene');
+                mainPlayer.pushUp();
+                if(!this.winSoundOnce){
+                    this.winSoundOnce = true;
+                    this.sound.play('mkhappy');
+                }
+                this.time.delayedCall(1000, () => {
+                    this.scene.start('menuScene');
+                }, null, this);
             }
         }
+
     }
 
     //handles the ingredient behavior
@@ -187,6 +213,7 @@ class Tutorial extends Phaser.Scene{
             this.burgerStation.addIngredient(ingredientToAdd.ingredientKey);
             this.burgerStation.buildBurger();
             ingredientToAdd.destroy();
+            this.sound.play('pickup');
     }
 
     //Ingredient Spawn

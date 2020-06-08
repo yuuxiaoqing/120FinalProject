@@ -14,11 +14,18 @@ class Load extends Phaser.Scene{
         this.load.audio('playerHurt', './assets/sounds/playerHurt.wav');
         this.load.audio('enemyDetection', './assets/sounds/enemyDetection.wav');
         this.load.audio('enemyDie', './assets/sounds/enemyDie.wav');
+        this.load.audio('mkhappy', './assets/sounds/mkhappy.wav');
+        this.load.audio('pickup', './assets/sounds/pickup.wav');
 
         //Loads Music
         this.load.audio('menuSong', './assets/songs/CupidsRevenge.mp3');
         this.load.audio('gameSong', './assets/songs/LeGrandChase.mp3');
         this.load.audio('endingSong', './assets/songs/MidnightTale.mp3');
+
+        //Loads the background
+        this.load.image('gamebackground', './assets/background/gamebackground.png');
+        this.load.image('endgame', './assets/background/endgame.png');
+
 
         //Player Sprites
         this.load.image('attackHitbox', './assets/playerSprites/attackHitbox.png');
@@ -28,7 +35,7 @@ class Load extends Phaser.Scene{
         this.load.spritesheet('playerwalk', './assets/playerSprites/playerwalk.png', {
             frameWidth: 32,
             frameHeight: 32,
-            endframe: 2
+            endframe: 3
         });
 
 
@@ -46,6 +53,30 @@ class Load extends Phaser.Scene{
 
         //Enemy Sprites
         this.load.image('enemytemp','./assets/enemySprites/enemytemp.png');
+
+        this.load.image('bunleft','./assets/enemySprites/bunleft.png');
+        this.load.image('bunright','./assets/enemySprites/bunright.png');
+        this.load.image('meatleft','./assets/enemySprites/meatleft.png');
+        this.load.image('meatright','./assets/enemySprites/meatright.png');
+        this.load.image('lettuceleft','./assets/enemySprites/lettuceleft.png');
+        this.load.image('lettuceright','./assets/enemySprites/lettuceright.png');
+
+        this.load.spritesheet('bunidle', './assets/enemySprites/bunidle.png', {
+            frameWidth: 128,
+            frameHeight: 128,
+            endframe: 3
+        });
+        this.load.spritesheet('meatidle', './assets/enemySprites/meatidle.png', {
+            frameWidth: 128,
+            frameHeight: 128,
+            endframe: 3
+        });
+        this.load.spritesheet('lettuceidle', './assets/enemySprites/lettuceidle.png', {
+            frameWidth: 128,
+            frameHeight: 128,
+            endframe: 3
+        });
+
         this.load.image('detectionHitbox', './assets/enemySprites/detectionHitbox.png');
         
 
@@ -108,6 +139,41 @@ class Load extends Phaser.Scene{
     }
 
     create(){
+        //Creates the animations
+        let walk = {
+            key: 'playerwalking',
+            frames: this.anims.generateFrameNumbers('playerwalk', {start: 1,end: 2,first:1}),
+            frameRate:10,
+            repeat:0
+        }
+        this.anims.create(walk);
+
+        let bunidlinganim = {
+            key: 'bunidling',
+            frames: this.anims.generateFrameNumbers('bunidle', {start: 1,end: 2,first:1}),
+            frameRate:30,
+            repeat:0
+        }
+        this.anims.create(bunidlinganim);
+
+        let meatidlinganim = {
+            key: 'meatidling',
+            frames: this.anims.generateFrameNumbers('meatidle', {start: 1,end: 2,first:1}),
+            frameRate:30,
+            repeat:0
+        }
+        this.anims.create(meatidlinganim);
+
+        let lettuceidlinganim = {
+            key: 'lettuceidling',
+            frames: this.anims.generateFrameNumbers('lettuceidle', {start: 1,end: 2,first:1}),
+            frameRate:30,
+            repeat:0
+        }
+        this.anims.create(lettuceidlinganim);
+        
+
+
         //Music stuff
         menuSong = this.sound.add('menuSong');
         menuSong.setLoop(true);
