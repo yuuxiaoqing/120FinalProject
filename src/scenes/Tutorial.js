@@ -59,7 +59,7 @@ class Tutorial extends Phaser.Scene{
         this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
 
         //Creates the main player
-        mainPlayer = new PlayerObject(this, 82, 50, 'playeridle').setScale(.25).setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, 82, 50, 'playeridle').setOrigin(0.5);
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
 
@@ -115,6 +115,9 @@ class Tutorial extends Phaser.Scene{
             
         this.doneText = this.add.text(1507, centerY+350, '', {fill: '#fff', align:'center'}).setOrigin(0.5);   
 
+        //For the win sound
+        this.winSoundOnce = false;
+
     }
 
     update(){
@@ -135,11 +138,18 @@ class Tutorial extends Phaser.Scene{
 
         //If the burger is complete, you can touch it to get oUUT
         if(this.burgerStation.burgerComplete){
-            this.doneText.setText('Touch the burger!', {fill: '#fff', align:'center'}).setOrigin(0.5);
             if(this.physics.overlap(this.burgerStation, mainPlayer)){
-                this.scene.start('menuScene');
+                mainPlayer.pushUp();
+                if(!this.winSoundOnce){
+                    this.winSoundOnce = true;
+                    this.sound.play('mkhappy');
+                }
+                this.time.delayedCall(1000, () => {
+                    this.scene.start('menuScene');
+                }, null, this);
             }
         }
+
     }
 
     //handles the ingredient behavior
@@ -187,6 +197,7 @@ class Tutorial extends Phaser.Scene{
             this.burgerStation.addIngredient(ingredientToAdd.ingredientKey);
             this.burgerStation.buildBurger();
             ingredientToAdd.destroy();
+            this.sound.play('pickup');
     }
 
     //Ingredient Spawn

@@ -145,7 +145,8 @@ class Play extends Phaser.Scene{
         .on('pointerover', ()=>{this.menu.setStyle(textConfig3); })
         .on('pointerout', ()=>{this.menu.setStyle(textConfig2); }).setScrollFactor(0);
            
-           
+        //For the win sound
+        this.winSoundOnce = false;
     }
     
     update(){
@@ -163,14 +164,40 @@ class Play extends Phaser.Scene{
         
         //Runs the behavior for enemies
         this.enemyBehavior(this.bunEnemy1);
-        if(this.bunEnemy1.body.velocity[0] > 0){
-            this.bunEnemy1.setTexture('bunright');
-        } else if(this.bunEnemy1.body.velocity[0] > 0){
-            this.bunEnemy1.setTexture('bunleft');
-        }
         this.enemyBehavior(this.bunEnemy2);
         this.enemyBehavior(this.meatEnemy);
         this.enemyBehavior(this.lettuceEnemy);
+
+        //Sprite changes for the enemies
+        if(this.bunEnemy1.body.velocity.x > 0){
+            this.bunEnemy1.setTexture('bunright');
+        } else if(this.bunEnemy1.body.velocity.x < 0){
+            this.bunEnemy1.setTexture('bunleft');
+        } else if(this.bunEnemy1.body.velocity.x == 0){
+            this.bunEnemy1.anims.play('bunidling', true);
+        }
+        if(this.bunEnemy2.body.velocity.x > 0){
+            this.bunEnemy2.setTexture('bunright');
+        } else if(this.bunEnemy2.body.velocity.x < 0){
+            this.bunEnemy2.setTexture('bunleft');
+        } else if(this.bunEnemy2.body.velocity.x == 0){
+            this.bunEnemy2.anims.play('bunidling', true);
+        }
+        if(this.meatEnemy.body.velocity.x > 0){
+            this.meatEnemy.setTexture('meatright');
+        } else if(this.meatEnemy.body.velocity.x < 0){
+            this.meatEnemy.setTexture('meatleft');
+        } else if(this.meatEnemy.body.velocity.x == 0){
+            this.meatEnemy.anims.play('meatidling', true);
+        }
+        if(this.lettuceEnemy.body.velocity.x > 0){
+            this.lettuceEnemy.setTexture('lettuceright');
+        } else if(this.lettuceEnemy.body.velocity.x < 0){
+            this.lettuceEnemy.setTexture('lettuceleft');
+        } else if(this.lettuceEnemy.body.velocity.x == 0){
+            this.lettuceEnemy.anims.play('lettuceidling', true);
+        }
+
 
         //Runs behavior for ingredients
         this.ingredientBehavior();
@@ -184,7 +211,14 @@ class Play extends Phaser.Scene{
             this.burgerLocationMessage.setText("Touch the burger!").setOrigin(0.5);
             this.toDoList.setText("Go back to the completed burger to hand it to the demon king!");
             if(this.physics.overlap(this.burgerStation, mainPlayer)){
-                this.scene.start('goodEndScene');
+                mainPlayer.pushUp();
+                if(!this.winSoundOnce){
+                    this.winSoundOnce = true;
+                    this.sound.play('mkhappy');
+                }
+                this.time.delayedCall(1000, () => {
+                    this.scene.start('goodEndScene');
+                }, null, this);
             }
         }
 
@@ -235,6 +269,7 @@ class Play extends Phaser.Scene{
             this.burgerStation.addIngredient(ingredientToAdd.ingredientKey);
             this.burgerStation.buildBurger();
             ingredientToAdd.destroy();
+            this.sound.play('pickup');
     }
 
     //All the functions and physics stuff for the enemy ai
