@@ -6,7 +6,7 @@ class GoodEnd extends Phaser.Scene{
         super("goodEndScene");
         //center the text
         this.TEXT_X = centerX;
-        this.TEXT_Y = centerY;
+        this.TEXT_Y = centerY + 100;
         
         //how fast the letters appear
         this.LETTER_TIMER = 10;
@@ -42,7 +42,9 @@ class GoodEnd extends Phaser.Scene{
         cursors = this.input.keyboard.createCursorKeys();
         this.goodEndText = this.add.text(this.TEXT_X, this.TEXT_Y, '', textConfig).setOrigin(0.5);
         this.typeText();
-        this.spaceText = this.add.text(centerX, centerY+180, "press SPACE to continue").setOrigin(0.5);
+        this.spaceText = this.add.text(centerX, centerY + 175, "press SPACE to continue").setOrigin(0.5);
+        this.add.image(centerX,centerY - 100, 'endgame').setOrigin(0.5);
+
        
     }
     update(){

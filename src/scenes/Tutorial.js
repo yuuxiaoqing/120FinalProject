@@ -4,6 +4,10 @@ class Tutorial extends Phaser.Scene{
     }
     
     create(){
+        //Adds the background
+        this.gamebackground = this.add.tileSprite(1920, 1100, 4800, 3125, 'gamebackground').setOrigin(.5);
+        this.gamebackground.depth = -69;
+
         //Music stuff
         if(gameSong.isPlaying)
             gameSong.stop();
@@ -33,9 +37,9 @@ class Tutorial extends Phaser.Scene{
         burgerArray = [1, 2, 3];
 
         //INSTRUCTIONS 
-        this.add.text(250, 500, '↑ to jump and double jump\n← → to move left & right\nShift to dash', {fill: '#fff', align:'center'}).setOrigin(0.5);
-        this.add.text(1180, centerY + 200, 'Z to attack\nX to guard\n Time your guard to perform a powerful parry!\n\nRun over ingredients to collect them\nCollect enough to build a burger\nTouch the completed burger to finish!\n\nThe enemy will make a noise\nand run towards you when it detects you!', {fill: '#fff', align:'center'}).setOrigin(0.5);
-        this.add.text(465, 300, 'press Shift while jumping\nto dash to the other platform',{fill: '#fff', align: 'center'}).setOrigin(0.5);
+        this.add.text(250, 500, '↑ to jump and double jump\n← → to move left & right\nShift to dash', {fill: '#000', align:'center'}).setOrigin(0.5);
+        this.add.text(1180, centerY + 200, 'Z to attack\nX to guard\n Time your guard to perform a powerful parry!\n\nRun over ingredients to collect them\nCollect enough to build a burger\nTouch the completed burger to finish!\n\nThe enemy will make a noise\nand run towards you when it detects you!', {fill: '#000', align:'center'}).setOrigin(0.5);
+        this.add.text(465, 300, 'press Shift while jumping\nto dash to the other platform',{fill: '#000', align: 'center'}).setOrigin(0.5);
         //from Prof. Nathan's Mappy tutorial
         const tutorial = this.add.tilemap('tutorialLevel');
         const groundSprites = tutorial.addTilesetImage("groundsheet", 'groundsheet');
@@ -123,6 +127,18 @@ class Tutorial extends Phaser.Scene{
     update(){
         //Updates main player
         mainPlayer.update();
+
+        if(mainPlayer.body.velocity.x < 0){
+            this.gamebackground.x += 0.2;
+        } else if(mainPlayer.body.velocity.x > 0){
+            this.gamebackground.x -= 0.2;
+        }
+
+        if(mainPlayer.body.velocity.y < 0){
+            this.gamebackground.y += 0.2;
+        } else if(mainPlayer.body.velocity.y > 0){
+            this.gamebackground.y -= 0.2;
+        }
         
         //Updates the enemy
         this.bunEnemy1.update();

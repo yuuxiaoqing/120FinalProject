@@ -17,11 +17,15 @@ class Load extends Phaser.Scene{
         this.load.audio('mkhappy', './assets/sounds/mkhappy.wav');
         this.load.audio('pickup', './assets/sounds/pickup.wav');
 
-
         //Loads Music
         this.load.audio('menuSong', './assets/songs/CupidsRevenge.mp3');
         this.load.audio('gameSong', './assets/songs/LeGrandChase.mp3');
         this.load.audio('endingSong', './assets/songs/MidnightTale.mp3');
+
+        //Loads the background
+        this.load.image('gamebackground', './assets/background/gamebackground.png');
+        this.load.image('endgame', './assets/background/endgame.png');
+
 
         //Player Sprites
         this.load.image('attackHitbox', './assets/playerSprites/attackHitbox.png');

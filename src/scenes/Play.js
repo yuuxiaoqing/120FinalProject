@@ -12,6 +12,10 @@ class Play extends Phaser.Scene{
 
     //Create Function
     create(){
+        //Adds the background
+        this.gamebackground = this.add.tileSprite(1920, 1100, 4800, 3125, 'gamebackground').setOrigin(.5);
+        this.gamebackground.depth = -69;
+
         //music stuff
         if(!gameSong.isPlaying)
             gameSong.play();
@@ -152,6 +156,18 @@ class Play extends Phaser.Scene{
     update(){
         //Updates main player
         mainPlayer.update();
+
+        if(mainPlayer.body.velocity.x < 0){
+            this.gamebackground.x += 0.2;
+        } else if(mainPlayer.body.velocity.x > 0){
+            this.gamebackground.x -= 0.2;
+        }
+
+        if(mainPlayer.body.velocity.y < 0){
+            this.gamebackground.y += 0.2;
+        } else if(mainPlayer.body.velocity.y > 0){
+            this.gamebackground.y -= 0.2;
+        }
         
         //Updates enemies
         this.bunEnemy1.update();
@@ -167,37 +183,7 @@ class Play extends Phaser.Scene{
         this.enemyBehavior(this.bunEnemy2);
         this.enemyBehavior(this.meatEnemy);
         this.enemyBehavior(this.lettuceEnemy);
-
-        //Sprite changes for the enemies
-        if(this.bunEnemy1.body.velocity.x > 0){
-            this.bunEnemy1.setTexture('bunright');
-        } else if(this.bunEnemy1.body.velocity.x < 0){
-            this.bunEnemy1.setTexture('bunleft');
-        } else if(this.bunEnemy1.body.velocity.x == 0){
-            this.bunEnemy1.anims.play('bunidling', true);
-        }
-        if(this.bunEnemy2.body.velocity.x > 0){
-            this.bunEnemy2.setTexture('bunright');
-        } else if(this.bunEnemy2.body.velocity.x < 0){
-            this.bunEnemy2.setTexture('bunleft');
-        } else if(this.bunEnemy2.body.velocity.x == 0){
-            this.bunEnemy2.anims.play('bunidling', true);
-        }
-        if(this.meatEnemy.body.velocity.x > 0){
-            this.meatEnemy.setTexture('meatright');
-        } else if(this.meatEnemy.body.velocity.x < 0){
-            this.meatEnemy.setTexture('meatleft');
-        } else if(this.meatEnemy.body.velocity.x == 0){
-            this.meatEnemy.anims.play('meatidling', true);
-        }
-        if(this.lettuceEnemy.body.velocity.x > 0){
-            this.lettuceEnemy.setTexture('lettuceright');
-        } else if(this.lettuceEnemy.body.velocity.x < 0){
-            this.lettuceEnemy.setTexture('lettuceleft');
-        } else if(this.lettuceEnemy.body.velocity.x == 0){
-            this.lettuceEnemy.anims.play('lettuceidling', true);
-        }
-
+        this.enemySpriteUpdates();
 
         //Runs behavior for ingredients
         this.ingredientBehavior();
@@ -373,5 +359,38 @@ class Play extends Phaser.Scene{
             //Turns off collision and sends to the void
             enemyAffected.body.collideWorldBounds = false;
             enemyAffected.toTheVoid();
+    }
+
+    //Changes the sprites fot the enemies
+    enemySpriteUpdates(){
+        //Sprite changes for the enemies
+        if(this.bunEnemy1.body.velocity.x > 0){
+            this.bunEnemy1.setTexture('bunright');
+        } else if(this.bunEnemy1.body.velocity.x < 0){
+            this.bunEnemy1.setTexture('bunleft');
+        } else if(this.bunEnemy1.body.velocity.x == 0){
+            this.bunEnemy1.anims.play('bunidling', true);
+        }
+        if(this.bunEnemy2.body.velocity.x > 0){
+            this.bunEnemy2.setTexture('bunright');
+        } else if(this.bunEnemy2.body.velocity.x < 0){
+            this.bunEnemy2.setTexture('bunleft');
+        } else if(this.bunEnemy2.body.velocity.x == 0){
+            this.bunEnemy2.anims.play('bunidling', true);
+        }
+        if(this.meatEnemy.body.velocity.x > 0){
+            this.meatEnemy.setTexture('meatright');
+        } else if(this.meatEnemy.body.velocity.x < 0){
+            this.meatEnemy.setTexture('meatleft');
+        } else if(this.meatEnemy.body.velocity.x == 0){
+            this.meatEnemy.anims.play('meatidling', true);
+        }
+        if(this.lettuceEnemy.body.velocity.x > 0){
+            this.lettuceEnemy.setTexture('lettuceright');
+        } else if(this.lettuceEnemy.body.velocity.x < 0){
+            this.lettuceEnemy.setTexture('lettuceleft');
+        } else if(this.lettuceEnemy.body.velocity.x == 0){
+            this.lettuceEnemy.anims.play('lettuceidling', true);
+        }
     }
 }
