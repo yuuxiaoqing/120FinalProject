@@ -265,8 +265,8 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
             this.setVelocityX(0);
             this.setAccelerationY(-100);
             this.scene.time.delayedCall(1000, () => {
-                this.x = centerX;
-                this.y = centerY;
+                this.x = this.originalX;
+                this.y = this.originalY;
                 this.health = 10;
             }, null, this); 
         }
