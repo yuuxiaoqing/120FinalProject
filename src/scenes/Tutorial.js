@@ -59,7 +59,7 @@ class Tutorial extends Phaser.Scene{
         this.physics.world.bounds.setTo(0,0,tutorial.widthInPixels, tutorial.heightInPixels);
 
         //Creates the main player
-        mainPlayer = new PlayerObject(this, 82, 50, 'playeridle').setScale(.25).setOrigin(0.5);
+        mainPlayer = new PlayerObject(this, 82, 50, 'playeridle').setOrigin(0.5);
         this.physics.add.existing(mainPlayer);
         mainPlayer.body.collideWorldBounds = true;
 

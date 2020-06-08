@@ -108,6 +108,16 @@ class Load extends Phaser.Scene{
     }
 
     create(){
+
+        //Animation only works if we do this, idk why.
+        let walk = {
+            key: 'playerwalking',
+            frames: this.anims.generateFrameNumbers('playerwalk', {start: 1,end: 2,first:1}),
+            frameRate:3,
+            repeat:0
+        }
+        this.anims.create(walk);
+       
         //Music stuff
         menuSong = this.sound.add('menuSong');
         menuSong.setLoop(true);

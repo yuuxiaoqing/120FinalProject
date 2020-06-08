@@ -53,7 +53,7 @@ class PlayerObject extends Phaser.Physics.Arcade.Sprite{
             key: 'playerwalking',
             frames: this.anims.generateFrameNumbers('playerwalk', {start: 1,end: 2,first:1}),
             frameRate:3,
-            repeat:0
+            repeat:1
         }
         this.anims.create(walk);
         this.walkAnimated = this.scene.add.sprite(this.body.x,this.body.y,'playeridle').play('playerwalking');
